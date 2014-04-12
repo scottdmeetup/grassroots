@@ -3,4 +3,5 @@ Grassroots::Application.routes.draw do
 
   resources :users, only: [:show]
   resources :organizations, only: [:show]
+  resources :projects, only: [:index, :show]
 end

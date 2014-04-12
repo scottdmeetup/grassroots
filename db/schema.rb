@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140411205224) do
+ActiveRecord::Schema.define(version: 20140412164928) do
 
   create_table "organizations", force: true do |t|
     t.string   "name"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 20140411205224) do
     t.string   "zip"
     t.integer  "ntee_major_category_id"
     t.string   "funding_method"
+  end
+
+  create_table "projects", force: true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "skills"
+    t.string   "causes"
+    t.datetime "deadline"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
