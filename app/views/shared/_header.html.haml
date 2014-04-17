@@ -12,12 +12,18 @@
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       %ul.nav.navbar-nav
         %li.active
-          %a{:href => "#"} Community
+          = link_to "Communtiy", "#" if current_user
         %li
-          %a{:href => "#"} Services
+          = link_to "Services", "#" if current_user
         %li
-          %a{:href => "#"} Forum
+          = link_to "Profile", "#" if current_user
         %li
-          %a{:href => "#"} Profile
+          = link_to "Projects", projects_path if current_user
+        %li
+          = link_to "Register", new_user_path unless current_user
+        %li
+          = link_to "Log out", log_out_path if current_user
+        %li
+          = link_to "Sign in", sign_in_path unless current_user
     / /.navbar-collapse
   %body
