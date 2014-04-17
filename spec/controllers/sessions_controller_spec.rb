@@ -35,6 +35,8 @@ describe SessionsController do
 
         expect(flash[:notice]).to eq("You are logged in!")
       end
+      context "when user is recently accepted as staff and logs in"
+        it "redirects the user to the forum post with a question about the user's needs"
     end
 
     context 'with invalid input' do
