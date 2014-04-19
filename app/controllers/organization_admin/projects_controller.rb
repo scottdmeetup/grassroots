@@ -1,14 +1,4 @@
-class ProjectsController < ApplicationController
-  before_action :current_user
-
-  def index
-    @projects = Project.all
-  end
-
-  def show
-    @project = Project.find(params[:id])
-  end
-
+class OrganizationAdmin::ProjectsController < OrganizationAdminController
   def new
     @project = Project.new
   end
@@ -28,4 +18,5 @@ private
   def project_params
     params.require(:project).permit(:title, :organization_id, :user_id, :description, :skills, :deadline)
   end
+
 end
