@@ -8,15 +8,95 @@ body {
 	background-color: #fff;
 }
 
-.container-wrapper {
-	margin-bottom: 10px;
+.row-custom {
+	background-color: #E9EAEC;
 }
+
+.container-wrapper {
+	margin: 20px 0;
+}
+
+/* Organization Label Header */ 
 
 .thumbnail {
 	margin-top: 31px;
 	height: 11em; 
 }
 
+.img-org {
+	width: 165px;
+}
+
 .org-head {
 	line-height: .9;
+}
+
+@media screen and (max-width: 992px) {
+	.thumbnail {
+		margin: 1em auto 0;
+	}
+}
+
+/* Start of Project Area */ 
+
+.btn-project {
+	margin-top: 1em;
+}
+
+.thumbnail-project {
+	height: 33em;
+}
+
+dl {
+	float: left;
+	padding: 2px 37px 0 0;
+}
+
+.btn-project, .text-clear {
+	clear: both;
+}
+
+/* Staff Section */ 
+
+.thumbnail-staff {
+	height: 17em;
+}
+
+#img-staff {
+	width: 85px;
+	margin-top: 7px;
+	margin-left: 7px;
+}
+
+/* Newsfeed Changes */ 
+
+.row-wrapper {
+	padding: 7px 0;
+}
+
+.newsfeed-wrapper {
+	overflow: auto;
+	padding: 1em 0;
+	background-color: #fff;
+}
+
+.img-staff-newsfeed {
+	width: 100px;
+}
+
+.newsfeed-content-wrapper {
+	padding: 1em 0;
+	margin-left: -7%;
+}
+
+.vote-wrapper {
+	margin-left: 37px;
+}
+
+.comment-wrapper {
+	margin-left: 21px;
+}
+
+.profile-newsfeed-number {
+	text-align: center;
 }
