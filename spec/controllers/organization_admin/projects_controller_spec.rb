@@ -54,7 +54,7 @@ describe OrganizationAdmin::ProjectsController do
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization: huggey_bears)
 
         word_press = Project.first
-        expect(word_press.admin).to eq(alice)
+        expect(word_press.project_admin).to eq(alice)
       end
       it "creates a project associated with a work-type" do
         alice = Fabricate(:organization_administrator)

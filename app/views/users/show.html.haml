@@ -5,22 +5,27 @@
         %a.thumbnail.img-org{href: ""}
           %img{alt: "", "data-src" => "holder.js/100%x180"}/
       .col-lg-10.col-sm-12
-        %h1 Bob Smith
+        %h1 
+          = "#{@user.first_name} #{@user.last_name}"
         .row
           .col-lg-4.col-md-3
             %h4.org-head
-              %strong Position: Executive Director
+              %strong 
+                = @user.position
             %h4.org-head
-              %strong Skills: Grant Writing
+              %strong 
+                = "Skills: #{@user.skills}" 
             %h4.org-head 
-              %strong Cause: Human Rights
+              %strong 
+                = "Interests: #{@user.interests}"
           
 .container
   .row.row-custom
     .col-lg-6
       %h2 Projects
     .col-lg-6
-      %button.btn.btn-primary.btn-lg.pull-right.btn-project{:type => "button"} Create a Project
+      %button.btn.btn-primary.btn-lg.pull-right.btn-project{:type => "button"} 
+        = link_to "Create a Project", new_organization_admin_project_path
 
 .container
   .container-wrapper
