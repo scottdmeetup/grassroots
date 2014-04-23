@@ -1,0 +1,31 @@
+.container
+  .container-wrapper
+    .row
+      .col-lg-2.col-sm-12
+        %a.thumbnail.img-org{href: ""}
+          %img{alt: "", "data-src" => "holder.js/100%x180"}/
+      .col-lg-10.col-sm-12
+        %h1 
+          = @project.title
+        .row
+          .col-lg-3.col-md-3
+            %h4.org-head
+              %strong
+                = @project.deadline
+            %h4.org-head 
+              %strong 
+                = @project.skills
+                = @project.estimated_hours
+                = @project.created_at
+                = @project.updated_at
+            %h4.org-head 
+              %strong 
+                = "Cause: #{@project.causes}"
+%h2 Description
+.container
+  .container-wrapper
+    .row
+      %p 
+        = @project.description
+.col-lg-2.col-sm-12
+  %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join

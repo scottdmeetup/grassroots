@@ -16,9 +16,23 @@
         %li
           = link_to "Services", "#" if current_user
         %li
-          = link_to "Profile", "#" if current_user
+          = link_to "Profile", user_path(current_user.id) if current_user
+        %li
+          = link_to "Organization", organization_path(current_user.id) if current_user
         %li
           = link_to "Projects", projects_path if current_user
+        - if current_user
+          %li.dropdown
+            %a(href="#" id="dlabel" role="button" data-toggle="dropdown" class="dropdown-toggle" data-target="#")
+              = "Welcome, #{current_user.first_name}"
+              %b.caret
+            %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
+              %li
+                %a(href="#") Account
+                %a(href="#") Plan and Billing
+                = link_to "Profile", user_path(current_user.id)
+                = link_to "Organization", organization_path(current_user.id)
+                = link_to "Log Out", "#"
         %li
           = link_to "Register", new_user_path unless current_user
         %li

@@ -1,6 +1,6 @@
 class OrganizationAdmin::ProjectsController < OrganizationAdminController
   def new
-    @project = Project.new
+    @project = Project.new(organization_id: params[:organization_id])
   end
 
   def create

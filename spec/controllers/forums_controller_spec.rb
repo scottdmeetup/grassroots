@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FormsController do
+describe ForumsController do
   describe "GET show" do
     it "shows a post"
   end

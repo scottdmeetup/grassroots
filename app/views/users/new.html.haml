@@ -9,4 +9,5 @@
 					= f.password_field :password
 					= f.text_field :first_name, label: "First Name"
 					= f.text_field :last_name, label: "Last Name"
+					= f.hidden_field_tag :organization_id, @user.organization.id
 					= f.submit "Create"

@@ -9,20 +9,6 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
-  def new
-    @project = Project.new
-  end
-
-  def create
-    @project = Project.new(project_params)
-    if @project.save
-      flash[:notice] = "You successfully created a project"
-      redirect_to organization_path(current_user.organization.id)
-    else
-      render :new
-    end
-  end
-
 private
 
   def project_params

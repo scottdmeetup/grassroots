@@ -1,0 +1,15 @@
+.col-lg-3.col-sm-6
+  .thumbnail.thumbnail-project
+    = link_to image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"), project_path(project.id)
+    .caption
+    %p 
+      = project.description
+    %dl 
+      %dt Skill Set
+      %dd 
+        = project.skills
+    %dl 
+      %dt Deadline
+      %dd 
+        = project.deadline
+    %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join

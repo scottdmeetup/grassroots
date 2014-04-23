@@ -5,74 +5,33 @@
         %a.thumbnail.img-org{href: ""}
           %img{alt: "", "data-src" => "holder.js/100%x180"}/
       .col-lg-10.col-sm-12
-        %h1 Bob Smith
+        %h1 
+          = "#{@user.first_name} #{@user.last_name}"
         .row
           .col-lg-4.col-md-3
             %h4.org-head
-              %strong Position: Executive Director
+              %strong 
+                = @user.position
             %h4.org-head
-              %strong Skills: Grant Writing
+              %strong 
+                = "Skills: #{@user.skills}" 
             %h4.org-head 
-              %strong Cause: Human Rights
+              %strong 
+                = "Interests: #{@user.interests}"
           
 .container
   .row.row-custom
     .col-lg-6
       %h2 Projects
     .col-lg-6
-      %button.btn.btn-primary.btn-lg.pull-right.btn-project{:type => "button"} Create a Project
+      %button.btn.btn-primary.btn-lg.pull-right.btn-project{:type => "button"} 
+        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id)
 
 .container
   .container-wrapper
     .row
-      .col-lg-3.col-sm-6
-        .thumbnail.thumbnail-project
-          %img.img-responsive{:src => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"}/
-          .caption
-          %p The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic. The Earth was absolutely round. I believe I never knew what the word round meant until I saw Earth from space.
-          %dl 
-            %dt Skill Set
-            %dd Web Development
-          %dl 
-            %dt Deadline
-            %dd 3 Weeks
-          %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join
-      .col-lg-3.col-sm-6
-        .thumbnail.thumbnail-project
-          %img.img-responsive{:src => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"}/
-          .caption
-          %p The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic. The Earth was absolutely round. I believe I never knew what the word round meant until I saw Earth from space.
-          %dl 
-            %dt Skill Set
-            %dd Web Development
-          %dl 
-            %dt Deadline
-            %dd 3 Weeks
-          %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join 
-      .col-lg-3.col-sm-6
-        .thumbnail.thumbnail-project
-          %img.img-responsive{:src => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"}/
-          .caption
-          %p The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic. The Earth was absolutely round. I believe I never knew what the word round meant until I saw Earth from space.
-          %dl 
-            %dt Skill Set
-            %dd Web Development
-          %dl 
-            %dt Deadline
-            %dd 3 Weeks
-          %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join
-      .col-lg-3.col-sm-6
-        .thumbnail.thumbnail-project
-          %img.img-responsive{:src => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"}/
-          .caption
-          %p The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic. The Earth was absolutely round. I believe I never knew what the word round meant until I saw Earth from space.
-          %dl 
-            %dt Skill Set
-            %dd Web Development
-          %dl 
-            %dt Deadline
-            %dd 3 Weeks
-          %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join             
+      - @user.projects.each do |project|
+        = render 'shared/project_thumbnail', project: project     
 
 .container
   .row.row-custom
