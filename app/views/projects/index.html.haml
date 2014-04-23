@@ -1,0 +1,5 @@
+.container
+  .container-wrapper
+    .row
+      - @projects.each do |project|
+        = render 'shared/project_thumbnail', project: project

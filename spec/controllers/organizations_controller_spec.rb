@@ -2,10 +2,16 @@ require 'spec_helper'
 
 describe OrganizationsController do
   describe "GET show" do
-    it "shows the organization's profile" do
+    it "renders the organization show template" do
       amnesty = Fabricate(:organization)
       get :show, id: amnesty
       expect(response).to render_template(:show)
+    end
+    it "shows the organization's profile" do
+      amnesty = Fabricate(:organization)
+      get :show, id: amnesty.id
+      expect(assigns(:organization)).to eq(amnesty)
+
     end
     it "shows the projects associated with an organization"
   end

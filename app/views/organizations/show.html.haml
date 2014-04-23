@@ -5,78 +5,41 @@
         %a.thumbnail.img-org{href: ""}
           %img{alt: "", "data-src" => "holder.js/100%x180"}/
       .col-lg-10.col-sm-12
-        %h1 Organization Name
+        %h1 
+          = @organization.name
         .row
           .col-lg-3.col-md-3
             %h4.org-head
-              %strong 1912
+              %strong
+                = @organization.ruling_year
             %h4.org-head 
-              %strong New York, NY
+              %strong 
+                = @organization.street1
+                = @organization.street2
+                = @organization.city
+                = @organization.state_id
+                = @organization.zip
             %h4.org-head 
               %strong Budget: $22,000,000.00
             %h4.org-head 
-              %strong Cause: Human Rights
+              %strong 
+                = "Cause: #{@organization.ntee_major_category_id}"
           .col-lg-6.col-lg-offset-1.col-md-6.col-md-offset-1
-            %p The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin.
+            %p 
+              = @organization.mission_statement
 .container
   .row.row-custom
     .col-lg-6
       %h2 Projects
     .col-lg-6
       %button.btn.btn-primary.btn-lg.pull-right.btn-project{:type => "button"} 
-        = link_to "Create a Project", new_organization_admin_project_path
-
+        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @organization.id)
 .container
   .container-wrapper
     .row
-      .col-lg-3.col-sm-6
-        .thumbnail.thumbnail-project
-          %img.img-responsive{:src => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"}/
-          .caption
-          %p The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic. The Earth was absolutely round. I believe I never knew what the word round meant until I saw Earth from space.
-          %dl 
-            %dt Skill Set
-            %dd Web Development
-          %dl 
-            %dt Deadline
-            %dd 3 Weeks
-          %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join
-      .col-lg-3.col-sm-6
-        .thumbnail.thumbnail-project
-          %img.img-responsive{:src => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"}/
-          .caption
-          %p The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic. The Earth was absolutely round. I believe I never knew what the word round meant until I saw Earth from space.
-          %dl 
-            %dt Skill Set
-            %dd Web Development
-          %dl 
-            %dt Deadline
-            %dd 3 Weeks
-          %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join 
-      .col-lg-3.col-sm-6
-        .thumbnail.thumbnail-project
-          %img.img-responsive{:src => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"}/
-          .caption
-          %p The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic. The Earth was absolutely round. I believe I never knew what the word round meant until I saw Earth from space.
-          %dl 
-            %dt Skill Set
-            %dd Web Development
-          %dl 
-            %dt Deadline
-            %dd 3 Weeks
-          %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join
-      .col-lg-3.col-sm-6
-        .thumbnail.thumbnail-project
-          %img.img-responsive{:src => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"}/
-          .caption
-          %p The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic. The Earth was absolutely round. I believe I never knew what the word round meant until I saw Earth from space.
-          %dl 
-            %dt Skill Set
-            %dd Web Development
-          %dl 
-            %dt Deadline
-            %dd 3 Weeks
-          %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join             
+      - @organization.projects.each do |project|
+        = render 'shared/project_thumbnail', project: project
+             
 .container
   .row.row-custom
     .col-lg-12

@@ -21,6 +21,15 @@ describe OrganizationAdmin::ProjectsController do
       get :new
       expect(assigns(:project)).to be_a Project
     end
+
+    it "sets the project admin variable" do
+      alice = Fabricate(:organization_administrator)
+      huggey_bears = Fabricate(:organization, user_id: alice.id)
+      set_current_admin(alice)
+      
+      get :new, organization_id: huggey_bears.id
+      expect(assigns(:project).project_admin).to eq(alice)
+    end
     context "when a project type is selected"
       it "shows a link to desk.com with documentat that is associated with that project type"
   end
