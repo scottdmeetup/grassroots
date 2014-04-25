@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140423144632) do
+ActiveRecord::Schema.define(version: 20140425214407) do
 
   create_table "organizations", force: true do |t|
     t.string   "name"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140423144632) do
     t.integer  "ntee_major_category_id"
     t.string   "funding_method"
     t.integer  "user_id"
+    t.string   "cause"
   end
 
   create_table "projects", force: true do |t|

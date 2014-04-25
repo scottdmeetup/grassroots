@@ -49,34 +49,9 @@
 .container 
   .container-wrapper 
     .row
-      .col-lg-3.col-sm-4
-        .thumbnail.thumbnail-staff
-          %img.img-responsive#img-staff.pull-left{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-          .caption.text-clear
-            %dl
-              %dt Kenneth Parcells
-              %dd NBC Page
-      .col-lg-3.col-sm-4
-        .thumbnail.thumbnail-staff
-          %img.img-responsive#img-staff.pull-left{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-          .caption.text-clear
-            %dl
-              %dt Kenneth Parcells
-              %dd NBC Page
-      .col-lg-3.col-sm-4
-        .thumbnail.thumbnail-staff
-          %img.img-responsive#img-staff.pull-left{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-          .caption.text-clear
-            %dl
-              %dt Kenneth Parcells
-              %dd NBC Page
-      .col-lg-3.col-sm-4
-        .thumbnail.thumbnail-staff
-          %img.img-responsive#img-staff.pull-left{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-          .caption.text-clear
-            %dl
-              %dt Kenneth Parcells
-              %dd NBC Page     
+      - @organization.users.each do |user|
+        = render 'shared/user_thumbnail', user: user
+      
 
 .container
   .row.row-custom

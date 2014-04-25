@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Organization do
   it { should belong_to(:organization_administrator)}
   it { should have_many(:projects)}
+  it { should have_many(:users)}
 end
 
   describe "#organization_administrator" do
