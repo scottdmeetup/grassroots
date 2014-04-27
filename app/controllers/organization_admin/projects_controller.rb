@@ -6,6 +6,8 @@ class OrganizationAdmin::ProjectsController < OrganizationAdminController
   def create
     @project = Project.new(project_params)
     if @project.save
+      organization = Organization.find_by(params[:id])
+      current_user.projects << @project
       flash[:notice] = "You successfully created a project"
       redirect_to organization_path(current_user.organization.id)
     else

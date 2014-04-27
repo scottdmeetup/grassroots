@@ -7,6 +7,7 @@ describe UsersController do
       get :show, id: alice
       expect(response).to render_template(:show)
     end
+    it "shows the user's associated projects"
     context "when the user's type is defined"
       it "motivates the user to fill out their profile"
     context "when the user's type is undefined"

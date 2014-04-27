@@ -56,24 +56,26 @@ describe OrganizationAdmin::ProjectsController do
         word_press = Project.first
         expect(word_press.organization).to eq(huggey_bears)
       end
-      it "creates a project associated with the administrator of an organization" do
-        alice = Fabricate(:organization_administrator)
-        huggey_bears = Fabricate(:organization, user_id: alice.id)
+      it "adds the created project to the current user's dashboard of projects" do
+        huggey_bears = Fabricate(:organization, name: "Huggey Bears")
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        huggey_bears.organization_administrator = alice
         set_current_admin(alice)
-        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization: huggey_bears)
+        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id)
 
         word_press = Project.first
-        expect(word_press.project_admin).to eq(alice)
+        expect(alice.projects).to eq([word_press])
       end
       it "creates a project associated with a work-type" do
-        alice = Fabricate(:organization_administrator)
-        huggey_bears = Fabricate(:organization, user_id: alice.id)
+        huggey_bears = Fabricate(:organization)
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
         set_current_admin(alice)
-        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization: huggey_bears, skills: "Web Development")
+        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
 
         word_press = Project.first
         expect(word_press.skills).to eq("Web Development")
       end
+      it "sets the project's state to open"
       it "notifies the user that his/her project has been completed"
     context "when project fits the skill set of a freelancer"
       it "creates a notification for this type of freelancer"
