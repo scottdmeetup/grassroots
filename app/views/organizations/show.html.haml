@@ -37,8 +37,16 @@
 .container
   .container-wrapper
     .row
-      - @organization.projects.each do |project|
-        = render 'shared/project_thumbnail', project: project
+      .container
+        %ul.nav.nav-tabs
+          %li
+            %a{:href => "#"} Completed
+          %li
+            %a{:href => "#"} Expired
+          %li
+            %a{:href => "#"} Incomplete
+        - @organization.projects.each do |project|
+          = render 'shared/project_thumbnail', project: project
              
 .container
   .row.row-custom
