@@ -5,6 +5,20 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Organization.destroy_all
+huggey_bears = Organization.create(name: "Huggey Bear Land", cause: "Animal Rights", ruling_year: 1998, 
+  mission_statement: "We want to give everyone a huggey bear in their sad times", guidestar_membership: nil, 
+  ein: "192512653-6", street1: "2998 Hansen Heights", street2: nil, city: "New York", 
+  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil)
+
+amnesty_international = Organization.create(name: "Amnesty International", cause: "Human Rights", ruling_year: 1912,
+  mission_statement: "We want to see human rights spread across the globe -- chyea.", guidestar_membership: nil, 
+  ein: "987931299-1", street1: "3293 Dunnit Hill", street2: nil, city: "New York", 
+  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil)
+global_giving = Organization.create(name: "Global Giving", cause: "Social Good", ruling_year: 2000, 
+  mission_statement: "We make it rain on Nonprofits, erreday", guidestar_membership: nil, 
+  ein: "222222222-2", street1: "2222 Rick Ross", street2: nil, city: "DC", 
+  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil)
 
 User.destroy_all
 alice = User.create(organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 
@@ -48,20 +62,10 @@ jacob = User.create(first_name: "Jacob", last_name: "Seltzer", email: "jacob@exa
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: nil, volunteer: true, password: "password")
 
-Organization.destroy_all
-huggey_bears = Organization.create(name: "Huggey Bear Land", cause: "Animal Rights", ruling_year: 1998, 
-  mission_statement: "We want to give everyone a huggey bear in their sad times", guidestar_membership: nil, 
-  ein: "192512653-6", street1: "2998 Hansen Heights", street2: nil, city: "New York", 
-  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: 1)
+huggey_bears.update_columns(user_id: 1)
+amnesty_international.update_columns(user_id: 2)
+global_giving.update_columns(user_id: 3)
 
-amnesty_international = Organization.create(name: "Amnesty International", cause: "Human Rights", ruling_year: 1912,
-  mission_statement: "We want to see human rights spread across the globe -- chyea.", guidestar_membership: nil, 
-  ein: "987931299-1", street1: "3293 Dunnit Hill", street2: nil, city: "New York", 
-  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: 2)
-global_giving = Organization.create(name: "Global Giving", cause: "Social Good", ruling_year: 2000, 
-  mission_statement: "We make it rain on Nonprofits, erreday", guidestar_membership: nil, 
-  ein: "222222222-2", street1: "2222 Rick Ross", street2: nil, city: "DC", 
-  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: 3)
 
 Project.destroy_all
 word_press = Project.create(title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
