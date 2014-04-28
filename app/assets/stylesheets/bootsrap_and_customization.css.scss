@@ -4,14 +4,6 @@ body {
 	background-color: #E9EAEC;
 }
 
-.row {
-	background-color: #fff;
-}
-
-.row-custom {
-	background-color: #E9EAEC;
-}
-
 .container-wrapper {
 	margin: 20px 0;
 }
@@ -100,3 +92,16 @@ dl {
 .profile-newsfeed-number {
 	text-align: center;
 }
+
+/*===============================================
+			Bootstrap Overrides 
+================================================*/
+/* 		BackGround  Colors */
+.row {
+	background-color: #fff;
+}
+.row-custom {
+	/* Overrides Row Background Color
+	For Areas that Need Body Color */ 
+	background-color: #E9EAEC;
+}					

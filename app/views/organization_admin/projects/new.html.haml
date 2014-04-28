@@ -1,25 +1,39 @@
-%section.register.container
-	.row
-		.col-sm-6.col-sm-offset-1
+%section#form.register.container
+	.row.row-custom
+		.col-lg-9.col-project-form
 			= form_for [:organization_admin, @project], html: {class: 'form-horizontal'} do |f|
-				%header
-					%h1 Create a Project
+				%h1 Create a Project
 				%fieldset
+					.row
+						.col-lg-4
+							.form-group#skills
+								/ Changes to No. in .col-lg in next 3 labels must be updated in CSS 
+								%label.control-label.col-lg-5 Type of Work
+								.col-lg-7.project-gen-input-fix
+									= f.select :skills, options_for_select(skill_set.sort)
+						.col-lg-5
+							.form-group#deadline
+								%label.control-label.col-lg-3 Deadline
+								.col-lg-9.project-gen-input-fix			
+									= f.date_select(:deadline, :order => [:month, :day, :year])
+						.col-lg-3
+							.form-group#hours
+								%label.control-label.col-lg-8{:for => "estimated-hours"} Estimated Hours
+								.col-lg-4
+									= f.text_field :estimated_hours, class: "form-control input-sm"
 					.form-group
-						%label.control-label.col-sm-3 Deadline
-						.col-sm-3
-						= f.date_select(:deadline, :order => [:month, :day, :year])
+						%label.control-label.col-lg-2 Project Title
+						.col-lg-10
+							= f.text_field :title, class: "form-control"
 					.form-group
-						%label.control-label.col-sm-3 Estimated Hours
-						= f.text_field :estimated_hours, class: "form-control"
-					.form-group
-						%label.control-label.col-sm-3 Type of Work
-						= f.select :skills, options_for_select(skill_set.sort)
-					.form-group
-						%label.control-label.col-sm-3 Project Title
-						= f.text_field :title, class: "form-control"
-					.form-group
-						%label.control-label.col-sm-3 Description
-						= f.text_area :description, cols: 6, rows: 6, class: "form-control"
+						%label.control-label.col-lg-2 Description
+						.col-lg-10
+							= f.text_area :description, cols: 6, rows: 6, class: "form-control"
 						= f.hidden_field :organization_id
-						= f.submit "Create", class: "btn btn-lg btn-primary"
+					.form-group	
+						= f.submit "Create", class: "btn btn-lg btn-primary pull-right"
+		.col-lg-3
+			%p#form-tip <strong>Tip</strong>: The dreams of yesterday are the hopes of today and <a href="#">the reality of tomorrow</a>.
+				
+
+		
