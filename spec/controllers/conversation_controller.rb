@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe ConversationController do
   describe "GET new" do
+
     it "sets the @conversation"
     it "sets the content of the conversation"
     it "shows a send button"

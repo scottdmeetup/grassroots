@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 describe PrivateMessagesController do
   describe "GET new" do
     it "renders the new template for creating a private message" do
@@ -39,8 +40,7 @@ describe PrivateMessagesController do
         get :new, project_id: word_press.id
         expect(assigns(:private_message).recipient).to eq(alice)
       end
-    end
-  end
+
 
   describe "POST create" do
     context "with valid input" do
@@ -151,12 +151,11 @@ describe PrivateMessagesController do
     it "renders the show template for a private message"
     it "shows a received private message"
     it "shows the reply button"
-    it "shows the conversation between the sender and the recipient"
     it "redirects the user to a new conversation if the user clicks reply"
+    it "shows the conversation between the sender and the recipient"
     context "when its a join request"
       it "shows a an option to accept the join request"
       it "shows an option to reject the join request"
       it "shows an option to reply to the private message"
-      ##when a join request is accepted, all other join requests are rejected
   end
 end

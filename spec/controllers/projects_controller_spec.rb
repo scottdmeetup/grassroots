@@ -58,11 +58,8 @@ describe ProjectsController do
   end
 
   describe "POST join"
-    it "sends a private message to the organization admin"
-    it "changes the project’s state change from open to pending"
-    it "flash's a success notice that your join request has been sent"
-    it "appears on the freelancer’s and organization admin’s dashboards respectively as a pending project"
-    it "notifies the organization admin that a user wants to join his/her project"
+    ##I do not know if this should change the project's state 
+    ##when a PM is made to join or if PrivateMessage#create_join_request should    
   end
   describe "GET accept" do
     it "changes the projects state from pending to in production"
