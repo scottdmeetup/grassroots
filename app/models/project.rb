@@ -5,4 +5,8 @@ class Project < ActiveRecord::Base
   def project_admin
     organization.organization_administrator
   end
+
+  def open
+    self.state == "open"
+  end
 end

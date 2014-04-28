@@ -75,8 +75,16 @@ describe OrganizationAdmin::ProjectsController do
         word_press = Project.first
         expect(word_press.skills).to eq("Web Development")
       end
-      it "sets the project's state to open"
-      it "notifies the user that his/her project has been completed"
+      it "sets the project's state to open" do
+        huggey_bears = Fabricate(:organization)
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        set_current_admin(alice)
+        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
+
+        word_press = Project.first
+        expect(word_press.state).to eq("open")
+      end
+      it "emails the user with documentation on engaging volunteers"
     context "when project fits the skill set of a freelancer"
       it "creates a notification for this type of freelancer"
     context "when project does not fit the skill set of a freelancer"

@@ -21,4 +21,22 @@ describe ProjectsController do
       expect(assigns(:project)).to eq(word_press)
     end
   end
+
+  describe "GET join" do
+    it "changes the project’s state change from open to pending"
+    it "appears on the freelancer’s and organization admin’s dashboards respectively as a pending project"
+    it "notifies the organization admin that a user wants to join his/her project"
+  end
+  describe "GET accept" do
+    it "changes the projects state from pending to in production"
+    it "makes the project move from the pending tab to the in production tab on the freelancer’s and the organization admin’s dashboard"
+    it "notifies the user waiting for a response that someone accepted the user’s join request"
+  end
+
+  describe "GET complete" do
+    it "changes the projects state from in production to completed"
+    it "notifies the other user that this project is completed"
+    it "sends a feedback form to all parties involved"
+    it "moves the project from the tab, in production, to the tab, completed"
+  end
 end
