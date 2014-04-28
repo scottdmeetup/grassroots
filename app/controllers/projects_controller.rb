@@ -9,6 +9,10 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
+  def join
+    render 'show'
+  end
+
 private
 
   def project_params

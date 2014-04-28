@@ -22,8 +22,18 @@ describe ProjectsController do
     end
   end
 
-  describe "GET join" do
+  describe "GET request_join" do
+    it "renders the new private message view" do
+      get :request_join
+      expect(response).to render_template('private_messages/new')
+    end
+    it "shows a button in view to send a join request"
+  end
+
+  describe "POST join"
+    it "sends a private message to the organization admin"
     it "changes the project’s state change from open to pending"
+    it "flash's a success notice that your join request has been sent"
     it "appears on the freelancer’s and organization admin’s dashboards respectively as a pending project"
     it "notifies the organization admin that a user wants to join his/her project"
   end
