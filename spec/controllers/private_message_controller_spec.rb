@@ -15,6 +15,10 @@ describe PrivateMessageController do
       it "changes the project’s state from open to pending on the freelancers dashboard"
       it "changes the project’s state from open to pending on the organization admin's dashboard"
       it "changes the project’s state from open to pending on the organization's board"
+      it "changes the project’s state from open to pending only on the organization's board, organization admin's dashboard and the freelancers dashboard"
+      it ""
+      it "remains open on the project index"
+
       it "flash's a success notice that your join request has been sent"
       it "organization admin receives a private message from the freelancer"
       it "triggers a private message alert on the recipient's notification icon"
@@ -32,6 +36,7 @@ describe PrivateMessageController do
       it "shows a an option to accept the join request"
       it "shows an option to reject the join request"
       it "shows an option to reply to the private message"
+      ##when a join request is accepted, all other join requests are rejected
   end
 
 end
