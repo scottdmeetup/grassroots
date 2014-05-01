@@ -1,0 +1,20 @@
+.container
+  .container-wrapper
+    .row
+      .col-lg-2.col-sm-12
+        %a.thumbnail.img-org{href: ""}
+          %img{alt: "", "data-src" => "holder.js/100%x180"}/
+      .col-lg-10.col-sm-12
+        %h1 
+          = message.sender.first_name
+        .row
+          .col-lg-3.col-md-3
+            %h4.org-head
+              %strong
+                = message.subject
+%h2 Body
+.container
+  .container-wrapper
+    .row
+      %p 
+        = message.body

@@ -1,5 +1,10 @@
 - flash.each do |name, msg|
   %div(class="alert alert-#{name}")
+<<<<<<< HEAD
     %a.close(data-dismiss='alert') &#215;
     = content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String)
 
+=======
+    %a.close(data-dismiss="alert") &#215;
+    = content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String)
+>>>>>>> creates tests for changing project's state to pending, for sending a

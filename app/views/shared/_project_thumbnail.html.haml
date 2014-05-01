@@ -12,4 +12,5 @@
       %dt Deadline
       %dd 
         = project.deadline
-    %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join
+    %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} 
+      = link_to "Join Project", new_private_message_path(project_id: project.id)

@@ -6,7 +6,6 @@ Fabricator(:user) do
   skills { ["Grant Writing", "Web Development", "Graphic Design", "Business Planning", "Accounting"].sample}
   interests { ["Environment", "Human Rights", "Urban Issues", "Transportation", "Health"].sample }
   position {["Executive Director", "Product Manager", "Office Manager", "Intern", "Outreach Manager"].sample}
-  organization
   organization_administrator false
 end  
 

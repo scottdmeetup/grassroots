@@ -9,6 +9,10 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
+  def join
+    redirect_to new_private_message_path
+  end
+
 private
 
   def project_params

@@ -11,4 +11,8 @@ Grassroots::Application.routes.draw do
   resources :users, only: [:show, :new, :create]
   resources :organizations, only: [:show]
   resources :projects, only: [:index, :show]
+  get 'join', to: 'projects#join', as: 'join'
+
+  resources :private_messages, only: [:new, :create, :index]
+
 end
