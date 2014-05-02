@@ -1,0 +1,19 @@
+%section.register.container
+	.row
+		.col-sm-6.col-sm-offset-1
+			= form_for [@private_message], html: {class: 'form-horizontal'} do |f|
+				%fieldset
+					.form-group
+						%label.control-label.col-sm-3 To: 
+						= f.hidden_field :recipient_id, :value => @private_message.recipient.id
+					.form-group
+						%label.control-label.col-sm-3 From:
+						= f.hidden_field :sender_id, :value => current_user.id
+					.form-group
+						%label.control-label.col-sm-3 Subject:
+						= f.text_field :subject, class: "form-control"
+					.form-group
+						%label.control-label.col-sm-3 Body:
+						= f.text_area :body, cols: 6, rows: 6, class: "form-control"
+						= f.hidden_field :project_id
+						= f.submit "Create", class: "btn btn-lg btn-primary"

@@ -9,6 +9,14 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
+  def join
+<<<<<<< HEAD
+    redirect_to new_private_message_path
+=======
+    render 'show'
+>>>>>>> 433a5fc... sets up the start of writing out specs for a private messaging system
+  end
+
 private
 
   def project_params

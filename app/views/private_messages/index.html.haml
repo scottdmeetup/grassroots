@@ -1,0 +1,5 @@
+.container
+  .container-wrapper
+    .row
+      - @messages.each do |message|
+        = render 'shared/private_message_thumbnail', message: message

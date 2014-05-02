@@ -1,3 +1,5 @@
+
+
 # encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
@@ -11,7 +13,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140425214407) do
+ActiveRecord::Schema.define(version: 20140430201344) do
+
 
   create_table "organizations", force: true do |t|
     t.string   "name"
@@ -30,6 +33,16 @@ ActiveRecord::Schema.define(version: 20140425214407) do
     t.string   "cause"
   end
 
+  create_table "private_messages", force: true do |t|
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.string   "subject"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "project_id"
+  end
+
   create_table "projects", force: true do |t|
     t.string   "title"
     t.text     "description"
@@ -41,6 +54,7 @@ ActiveRecord::Schema.define(version: 20140425214407) do
     t.integer  "user_id"
     t.integer  "organization_id"
     t.integer  "estimated_hours"
+    t.string   "state"
   end
 
   create_table "users", force: true do |t|
@@ -63,6 +77,7 @@ ActiveRecord::Schema.define(version: 20140425214407) do
     t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "position"
+    t.integer  "project_id"
   end
 
 end
