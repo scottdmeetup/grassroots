@@ -19,10 +19,7 @@ class PrivateMessagesController < ApplicationController
     end
   end
 
-  def index
-    
-    @messages = current_user.sent_messages.all || current_user.received_messages.all
-  end
+ 
 
 private
   def message_params
