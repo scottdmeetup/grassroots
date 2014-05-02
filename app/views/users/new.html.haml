@@ -1,7 +1,7 @@
 %section.register.container
 	.row
 		.col-sm-10.col-sm-offset-1
-			= bootstrap_form_for(@user, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-4") do |f|
+			= bootstrap_form_for(@user, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-5") do |f|
 				%header
 					%h1 Register
 				%fieldset
@@ -9,5 +9,5 @@
 					= f.password_field :password
 					= f.text_field :first_name, label: "First Name"
 					= f.text_field :last_name, label: "Last Name"
-					= f.hidden_field_tag :organization_id, @user.organization.id
-					= f.submit "Create"
+					= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones
+					= f.submit "Create", class: "btn btn-success"

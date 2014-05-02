@@ -2,6 +2,10 @@
   .thumbnail.thumbnail-project
     = link_to image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"), project_path(project.id)
     .caption
+    %h3
+      = link_to project.organization.name, organization_path(project.organization.id)
+    %h4 
+      = project.title
     %p 
       = project.description
     %dl 
@@ -11,6 +15,6 @@
     %dl 
       %dt Deadline
       %dd 
-        = project.deadline
-    %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} 
-      = link_to "Join Project", new_private_message_path(project_id: project.id)
+        = fix_date_time(project.deadline)
+    %btn
+      = link_to "Join Project", new_private_message_path(project_id: project.id), class: 'btn btn-primary btn-lg btn-block btn-project'

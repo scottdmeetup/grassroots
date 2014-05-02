@@ -25,7 +25,7 @@
       %h2 Projects
     .col-lg-6
       %button.btn.btn-primary.btn-lg.pull-right.btn-project{:type => "button"} 
-        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id)
+        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id) if @user.organization_administrator
 
 .container
   .container-wrapper

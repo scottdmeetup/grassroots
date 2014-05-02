@@ -1,7 +1,7 @@
 class PrivateMessagesController < ApplicationController
   def new
     project = Project.find(params[:project_id])
-    @private_message = PrivateMessage.new(project_id: params[:project_id], recipient_id: project.project_admin.id)
+    @private_message = PrivateMessage.new(project_id: params[:project_id], recipient_id: project.project_admin.id, subject: "Project Request: #{project.title}")
   end
 
   def create
@@ -18,7 +18,7 @@ class PrivateMessagesController < ApplicationController
   end
 
   def index
-    binding.pry
+    
     @messages = current_user.sent_messages.all || current_user.received_messages.all
   end
 

@@ -29,7 +29,7 @@
                 %a(href="#") Account
                 %a(href="#") Plan and Billing
                 = link_to "Profile", user_path(current_user.id)
-                = link_to "Organization", organization_path(current_user.id)
+                = link_to "Organization", organization_path(current_user.id) if current_user.organization
                 = link_to "Log out", log_out_path
         %li
           = link_to "Register", new_user_path unless current_user

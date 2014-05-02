@@ -41,6 +41,15 @@ describe PrivateMessagesController do
         get :new, project_id: word_press.id
         expect(assigns(:private_message).recipient).to eq(alice)
       end
+      it "sets the subject line with the value of the project title with Project Request:" do
+        alice = Fabricate(:organization_administrator, organization_id: nil)
+        huggey_bear = Fabricate(:organization, user_id: alice.id)
+        alice.update_columns(organization_id: huggey_bear.id)
+        word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id)
+
+        get :new, project_id: word_press.id
+        expect(assigns(:private_message).subject).to eq("Project Request: word press website")
+      end
     end
   end
 
