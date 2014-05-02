@@ -5,9 +5,11 @@
 				%fieldset
 					.form-group
 						%label.control-label.col-sm-3 To: 
+						= "#{@private_message.recipient.first_name} #{@private_message.recipient.last_name}"
 						= f.hidden_field :recipient_id, :value => @private_message.recipient.id
 					.form-group
 						%label.control-label.col-sm-3 From:
+						= "#{current_user.first_name} #{current_user.last_name}"
 						= f.hidden_field :sender_id, :value => current_user.id
 					.form-group
 						%label.control-label.col-sm-3 Subject:
