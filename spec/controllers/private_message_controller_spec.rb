@@ -70,39 +70,19 @@ describe PrivateMessagesController do
         it "changes the project’s state from open to pending on the freelancers dashboard" do
           alice = Fabricate(:organization_administrator, organization_id: nil)
           bob = Fabricate(:user)
+          session[:user_id] = bob.id
           huggey_bear = Fabricate(:organization, user_id: alice.id)
           alice.update_columns(organization_id: huggey_bear.id)
           word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id)
           post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id}
 
-          expect(word_press.reload.state).to eq('pending')
+          expect(bob.projects).to eq([word_press])
         end
         
-        it "changes the project’s state from open to pending on the organization admin's dashboard" do
-          alice = Fabricate(:organization_administrator, organization_id: nil)
-          bob = Fabricate(:user)
-          huggey_bear = Fabricate(:organization, user_id: alice.id)
-          alice.update_columns(organization_id: huggey_bear.id)
-          word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id)
-          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id}
-
-          word_press = Project.where(user_id: alice.id).first
-          expect(word_press.state).to eq('pending')
-        end
-        it "changes the project’s state from open to pending on the organization's board" do
-          alice = Fabricate(:organization_administrator, organization_id: nil)
-          bob = Fabricate(:user)
-          huggey_bear = Fabricate(:organization, user_id: alice.id)
-          alice.update_columns(organization_id: huggey_bear.id)
-          word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id)
-          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id}
-
-          word_press = Project.where(organization_id: huggey_bear.id).first
-          expect(word_press.state).to eq('pending')
-        end
         it "makes the organization admin receive a private message from the freelancer" do
           alice = Fabricate(:organization_administrator, organization_id: nil)
           bob = Fabricate(:user)
+          session[:user_id] = bob.id
           huggey_bear = Fabricate(:organization, user_id: alice.id)
           alice.update_columns(organization_id: huggey_bear.id)
           word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id)
