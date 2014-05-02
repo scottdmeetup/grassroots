@@ -21,6 +21,7 @@ describe PrivateMessagesController do
       get :new, project_id: word_press.id
       expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
     end
+    
     context "when sending a join request" do
       it "sets the @project.id" do
         alice = Fabricate(:organization_administrator, organization_id: nil)
@@ -40,7 +41,8 @@ describe PrivateMessagesController do
         get :new, project_id: word_press.id
         expect(assigns(:private_message).recipient).to eq(alice)
       end
-
+    end
+  end
 
   describe "POST create" do
     context "with valid input" do
@@ -129,6 +131,7 @@ describe PrivateMessagesController do
         it "notifies the organization admin that a user wants to join his/her project"
         it "sends out an email to the recipient notifying him/her"
       end
+    end
     context "with invalid input" do
       it "renders the new template" do
         alice = Fabricate(:organization_administrator, organization_id: nil)

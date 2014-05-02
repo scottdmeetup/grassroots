@@ -1,4 +1,5 @@
 class OrganizationAdmin::ProjectsController < OrganizationAdminController
+  #before_action :current_user
   def new
     @project = Project.new(organization_id: params[:organization_id])
   end
@@ -10,7 +11,7 @@ class OrganizationAdmin::ProjectsController < OrganizationAdminController
       current_user.projects << @project
       @project.update_columns(state: "open")
       flash[:notice] = "You successfully created a project"
-      redirect_to organization_path(current_user.organization.id)
+      redirect_to project_path(@project.id)
     else
       render :new
     end

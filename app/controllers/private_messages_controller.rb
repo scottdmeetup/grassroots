@@ -8,7 +8,6 @@ class PrivateMessagesController < ApplicationController
     @private_message = PrivateMessage.new(message_params)
     if @private_message.save
       project = Project.find_by(params[:project_id])
-      @private_message.update_columns(sender_id: current_user)
       project.update_columns(state: "pending")
       flash[:success] = "Your join request has been sent."
       redirect_to private_messages_path

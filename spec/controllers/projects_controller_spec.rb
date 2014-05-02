@@ -24,18 +24,7 @@ describe ProjectsController do
      it "shows all freenlancers thumbnails"
   end
 
-  describe "GET request_join" do
-    it "renders the new private message view" do
-      get :join
-      expect(response).to redirect_to new_private_message_path
-    end
-    it "shows a button in view to send a join request"
-  end
 
-  describe "POST join" do
-    ##I do not know if this should change the project's state 
-    ##when a PM is made to join or if PrivateMessage#create_join_request should    
-  end
   describe "GET accept" do
     it "changes the projects state from pending to in production"
     it "makes the project move from the pending tab to the in production tab on the freelancer’s and the organization admin’s dashboard"
@@ -48,15 +37,7 @@ describe ProjectsController do
     it "sends a feedback form to all parties involved"
     it "moves the project from the tab, in production, to the tab, completed"
   end
-
-  describe "GET request_join" do
-    it "renders the new private message view" do
-      get :request_join
-      expect(response).to render_template('private_messages/new')
-    end
-    it "shows a button in view to send a join request"
-  end
-
+=begin
   describe "POST join"
     ##I do not know if this should change the project's state 
     ##when a PM is made to join or if PrivateMessage#create_join_request should    
@@ -73,4 +54,5 @@ describe ProjectsController do
     it "sends a feedback form to all parties involved"
     it "moves the project from the tab, in production, to the tab, completed"
   end
+=end
 end

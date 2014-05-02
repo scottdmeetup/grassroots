@@ -35,22 +35,29 @@ describe OrganizationAdmin::ProjectsController do
   end
 
   describe "POST create" do
-    context "with valid inputs"
+    context "with valid inputs" do
       it "creates a project" do
-        alice = Fabricate(:organization_administrator)
+        huggey_bears = Fabricate(:organization, name: "Huggey Bears")
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        huggey_bears.organization_administrator = alice
         session[:user_id] = alice.id
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site")
         expect(Project.count).to eq(1)
       end
-      it "redirects to the organization administrator to the view project's show view " 
-        alice = Fabricate(:organization_administrator)
+      it "redirects to the organization administrator to the view project's show view " do
+        huggey_bears = Fabricate(:organization, name: "Huggey Bears")
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        huggey_bears.organization_administrator = alice
         session[:user_id] = alice.id
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site")
         word_press = Project.first
         expect(response).to redirect_to(project_path(word_press.id))
+      end
       it "creates a project associated with an organization" do
-        alice = Fabricate(:organization_administrator)
-        huggey_bears = Fabricate(:organization, user_id: alice.id)
+        huggey_bears = Fabricate(:organization, name: "Huggey Bears")
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        huggey_bears.organization_administrator = alice
+
         session[:user_id] = alice.id
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization: huggey_bears)
 
@@ -92,5 +99,6 @@ describe OrganizationAdmin::ProjectsController do
       it "does not create notification for this type of freelancer"
     context "with invalid inputs"
       it "alerts the user to retry the project form"
+    end
   end
 end
