@@ -43,7 +43,6 @@ describe PrivateMessagesController do
 
 
   describe "POST create" do
-<<<<<<< HEAD
     context "with valid input" do
       context "when requesting to join a project" do
         it "changes the project's state from open to pending" do
@@ -130,7 +129,6 @@ describe PrivateMessagesController do
         it "notifies the organization admin that a user wants to join his/her project"
         it "sends out an email to the recipient notifying him/her"
       end
-    end
     context "with invalid input" do
       it "renders the new template" do
         alice = Fabricate(:organization_administrator, organization_id: nil)
@@ -142,20 +140,6 @@ describe PrivateMessagesController do
 
         expect(response).to render_template("new")
       end
-=======
-    context "when requesting to join a project" do
-      it "changes the project’s state from open to pending on the freelancers dashboard"
-      it "changes the project’s state from open to pending on the organization admin's dashboard"
-      it "changes the project’s state from open to pending on the organization's board"
-      it "changes the project’s state from open to pending only on the organization's board, organization admin's dashboard and the freelancers dashboard"
-      it ""
-      it "remains open on the project index"
-
-      it "flash's a success notice that your join request has been sent"
-      it "organization admin receives a private message from the freelancer"
-      it "triggers a private message alert on the recipient's notification icon"
-      it "notifies the organization admin that a user wants to join his/her project"
->>>>>>> ad56a7d... adds a few more specs to projects and private messages
     end
   end
 
