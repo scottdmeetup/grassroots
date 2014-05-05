@@ -6,4 +6,4 @@
         %dt 
           = "#{user.first_name} #{user.last_name}"
         %dd 
-          =	"#{user.organization_name}" if user.organization_administrator || user.organization_staff == true
+          =	"#{user.organization.name}" if user.organization_administrator || user.organization_staff == true

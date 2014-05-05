@@ -1,0 +1,6 @@
+.container
+  .container-wrapper
+    .row
+      - if @conversations
+        - @conversations.each do |conversation|
+          = render 'shared/conversation_thumbnail', conversation: conversation

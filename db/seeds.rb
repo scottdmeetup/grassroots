@@ -74,3 +74,6 @@ pretty_logo = Project.create(title: "Elegant Logo", description: "I want a logo 
   skills: "Graphic Design", causes: "Human Rights", deadline: Date.today + 1.month, user_id: 2, organization_id: 2, estimated_hours: 32)
 social_media = Project.create(title: "Twitter Help", description: "I need someone to push out 10 tweets a day for me", 
   skills: "Social Media", causes: "Social Good", deadline: Date.today + 1.month, user_id: 3, organization_id: 3, estimated_hours: 11)
+
+PrivateMessage.destroy_all
+Conversation.destroy_all

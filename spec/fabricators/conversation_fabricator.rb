@@ -1,0 +1,3 @@
+Fabricator(:conversation) do
+  
+end

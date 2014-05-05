@@ -4,9 +4,21 @@ class User < ActiveRecord::Base
   belongs_to :project
   has_many :projects
   has_many :sent_messages, class_name: 'PrivateMessage', foreign_key: 'sender_id'
-  has_many :received_messages, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
+  has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
+  has_many :conversations
 
-  def organization_name
-    organization.name
+  def private_messages
+    messages = self.sent_messages + self.received_messages
+    messages.sort!
+  end
+
+  def user_conversations
+    
+    collection = self.received_messages.select(:conversation_id).distinct
+    all_conversations = collection.map do |member|
+      convo_id = member.conversation_id
+      Conversation.find_by(id: convo_id)
+    end  
+    all_conversations.sort
   end
 end
