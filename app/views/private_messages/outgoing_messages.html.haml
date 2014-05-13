@@ -1,5 +1,17 @@
 .container
-  .container-wrapper
-    .row
+  .row#inbox-wrapper
+    .col-lg-2.col-lg-offset-1#inbox-tabs
+      %ul.nav.nav-tabs.nav-stacked
+        %li
+          %a{:href => "#"}Messages
+        %li 
+          %a{:href => "#"}Projects
+        %li 
+          %a{:href => "#"}Connections
+        %li 
+          %a{:href => "#"}Sent
+        %li 
+          %a{:href => "#"}Archived
+    .col-lg-9 
       - @messages.each do |message|
         = render 'shared/private_message_thumbnail', message: message
