@@ -18,12 +18,6 @@ class PrivateMessagesController < ApplicationController
     end
   end
 
-  def show
-    @message = PrivateMessage.find(params[:id])
-    @messages = Conversation.find_by(id: @message.conversation_id)
-    @private_message = PrivateMessage.new(subject: @message.subject, recipient_id: @message.sender.id, sender_id: current_user.id, conversation_id: @message.conversation_id)
-  end
-
   def outgoing_messages
     @messages = current_user.sent_messages
   end

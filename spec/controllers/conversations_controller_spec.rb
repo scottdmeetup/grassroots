@@ -41,14 +41,22 @@ describe ConversationsController do
 
       expect(response).to render_template(:show)
     end
-    it "sets the @conversation" do
+    it "sets the @messages" do
       conversation1 = Fabricate(:conversation)
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "OK great. when can you start?") 
       get :show, id: conversation1.id
 
-      expect(assigns(:conversation)).to be_instance_of(Conversation)
+      expect(assigns(:messages)).to be_instance_of(Conversation)
     end
+
+    it "shows a received private message" do
+      conversation1 = Fabricate(:conversation)
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+      get :show, id: conversation1.id
+      expect(conversation1.private_messages).to eq([message1])
+    end
+
     it "shows the private messages of the conversation" do
       conversation1 = Fabricate(:conversation)
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
@@ -56,6 +64,55 @@ describe ConversationsController do
       get :show, id: conversation1.id
 
       expect(conversation1.private_messages).to eq([message1, message2])
+    end
+
+    context "when replying to a message" do
+
+      it "sets the @private_message to new" do
+        conversation1 = Fabricate(:conversation)
+        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+        get :show, id: conversation1.id
+
+        expect(assigns(:private_message)).to be_a PrivateMessage
+      end
+
+      it "sets the recipient value" do
+        conversation1 = Fabricate(:conversation)
+        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+        get :show, id: conversation1.id
+
+        expect(assigns(:private_message).recipient).to eq(bob)
+      end
+      it "sets the sender value" do
+        conversation1 = Fabricate(:conversation)
+        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+        get :show, id: conversation1.id
+
+        expect(assigns(:private_message).sender).to eq(alice)
+      end
+      it "sets the subject line with the value of the message title with Project Request: the message's title" do
+        conversation1 = Fabricate(:conversation)
+        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+        get :show, id: conversation1.id
+
+        expect(assigns(:private_message).subject).to eq("Please let me join your project")
+      end
+
+      it "sets the conversation id of the sent message" do
+        conversation1 = Fabricate(:conversation)
+        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+        message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "OK great. when can you start?") 
+        get :show, id: conversation1.id
+
+        expect(assigns(:private_message).conversation).to eq(conversation1)
+      end
+      
+      it "shows the conversation between the sender and the recipient"
+      context "when its a join request" 
+        it "shows a an option to accept the join request"
+        it "shows an option to reject the join request"
+        it "shows an option to reply to the private message"
+      ##when a join request is accepted, all other join requests are rejected
     end
   end
 end

@@ -131,75 +131,7 @@ describe PrivateMessagesController do
     end
   end
 
-  describe "GET show" do
-    let(:bob) { Fabricate(:user) }
-    let(:message) { Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") }
-
-    before do
-      alice.update_columns(organization_id: huggey_bear.id)
-      session[:user_id] = bob.id
-    end
-
-    it "renders the show template for a private message" do
-      get :show, id: message.id
-      expect(response).to render_template(:show)
-    end
-
-    it "shows a received private message" do
-      get :show, id: message.id
-      expect(message.subject).to eq("Please let me join your project")
-    end
-
-    it "sets @message" do
-      get :show, id: message.id
-      expect(assigns(:message)).to eq(message)
-    end
-
-    context "when replying to a message" do
-      
-      before do
-        session[:user_id] = alice.id
-      end
-
-      it "sets the @private_message to new" do
-        get :show, id: message.id
-
-        expect(assigns(:private_message)).to be_a PrivateMessage
-      end
-
-      it "sets the recipient value" do
-        get :show, id: message.id
-
-        expect(assigns(:private_message).recipient).to eq(bob)
-      end
-      it "sets the sender value" do
-        get :show, id: message.id
-
-        expect(assigns(:private_message).sender).to eq(alice)
-      end
-      it "sets the subject line with the value of the message title with Project Request: the message's title" do
-        get :show, id: message.id
-
-        expect(assigns(:private_message).subject).to eq("Please let me join your project")
-      end
-
-      it "sets the conversation id of the sent message" do
-        convo = message.conversation
-        get :show, id: message.id
-
-        expect(assigns(:private_message).conversation).to eq(convo)
-      end
-    end
-        
-    it "shows the conversation between the sender and the recipient"
-    context "when its a join request" do
-      it "shows a an option to accept the join request"
-      it "shows an option to reject the join request"
-      it "shows an option to reply to the private message"
-      ##when a join request is accepted, all other join requests are rejected
-    end
-  end
-
+=begin
   describe "GET outgoing_messages" do
     let(:bob) { Fabricate(:user) }
     let(:message1) { Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id) }
@@ -227,4 +159,5 @@ describe PrivateMessagesController do
       expect(response).to render_template(:outgoing_messages)
     end
   end
+=end
 end
