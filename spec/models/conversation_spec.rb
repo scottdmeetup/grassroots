@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Conversation do
-  it {should have_many(:private_messages).order("created_at DESC")}
+  it {should have_many(:private_messages).order("created_at ASC")}
 
   describe "#sender_user_name_of_recent_message" do
     it "returns the name of the sender of the most recent message" do
