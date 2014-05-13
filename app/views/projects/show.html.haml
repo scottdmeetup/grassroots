@@ -1,31 +1,52 @@
-.container
+.container#project-details-info
   .container-wrapper
     .row
-      .col-lg-2.col-sm-12
-        %a.thumbnail.img-org{href: ""}
-          %img{alt: "", "data-src" => "holder.js/100%x180"}/
-      .col-lg-10.col-sm-12
-        %h1 
-          = @project.title
+      .col-lg-12
         .row
-          .col-lg-3.col-md-3
+          .col-lg-6
+            %h4 Status: Open
+            %h1 
+              = @project.title
             %h4.org-head
-              %strong
+              %strong 
+                = @project.skills
+          .col-lg-6#project-details-top-right
+            %h4.org-head 
+              %strong 
                 = @project.deadline
             %h4.org-head 
               %strong 
-                = @project.skills
-                = @project.estimated_hours
-                = @project.created_at
-                = @project.updated_at
-            %h4.org-head 
-              %strong 
-                = "Cause: #{@project.causes}"
-%h2 Description
-.container
-  .container-wrapper
+                = "Estimated Hours:  #{@project.estimated_hours}"
     .row
-      %p 
-        = @project.description
-.col-lg-2.col-sm-12
-  %btn.btn.btn-primary.btn-lg.btn-block.btn-project{:type => "button"} Request to Join
+      .col-lg-4.col-lg-offset-8
+        .form-group
+          %btn.btn.btn-primary.btn-lg.btn-project{:type => "button"} Request to Join
+.container
+  .row.row-custom
+    .col-lg-6
+      %h2 Project Description 
+.container#project-desc-wrapper
+  .container-wrapper
+    .row#project-desc-row
+      .col-lg-12
+        %p 
+          = @project.description
+.container#project-details-org
+  .container-wrapper 
+    .row 
+      .col-lg-7
+        %h1 Organization Name
+        %a.thumbnail.img-org#img-org-project.pull-left{href: ""}
+          %img{alt: "", "data-src" => "holder.js/100%x180"}/
+        %h4#project-details-cause
+          %strong 
+            = "Cause: #{@project.causes}"
+        %h4#project-details-cause
+          %strong 
+            Project Admin
+        %a.thumbnail.img-staff.pull-left{href: ""}
+          %img{alt: "", "data-src" => "holder.js/100%x180"}/
+      .col-lg-5
+        %h1 Volunteer Requests
+  
+  

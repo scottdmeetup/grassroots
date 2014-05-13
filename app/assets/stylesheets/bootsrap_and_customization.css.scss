@@ -6,17 +6,7 @@ body {
 
 .container-wrapper {
 	margin: 20px 0;
-}
-
-/* Organization Label Header */ 
-
-.thumbnail {
-	margin-top: 31px;
-	height: 11em; 
-}
-
-.img-org {
-	width: 165px;
+	padding: 25px 0;
 }
 
 .org-head {
@@ -54,8 +44,9 @@ dl {
 	height: 17em;
 }
 
-#img-staff {
-	width: 85px;
+.img-staff {
+	width: 100px;
+	height: 100px;
 	margin-top: 7px;
 	margin-left: 7px;
 }
