@@ -18,7 +18,7 @@
         %li
           = link_to "Projects", projects_path if current_user
         %li
-          = link_to "Messages", conversations_path if current_user
+          = link_to "Messages", conversations_path if current_user          
         - if current_user
           %li.dropdown
             %a(href="#" id="dlabel" role="button" data-toggle="dropdown" class="dropdown-toggle" data-target="#")
