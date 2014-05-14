@@ -4,6 +4,37 @@ body {
 	background-color: #E9EAEC;
 }
 
+/* Top Navigation */
+#search-bar {
+	margin-left: 33%;
+}
+	#search-bar input {
+		width: 350px;
+	}
+#account-tabs {
+	float:right;
+	border: 0px;
+}
+
+/* SideBar Navigation */
+	#sidebar-custom {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		border-color: #fff;
+		border-radius: 0px;
+	}
+		#sidebar-custom ul {
+			margin-top: 56px;
+		}
+
+/* Active Pane */ 
+
+	#active-pane {
+		padding: 0 5% 0 0;
+	}
+
 .container-wrapper {
 	margin: 20px 0;
 	padding: 25px 0;
@@ -25,31 +56,27 @@ body {
 	margin-top: 1em;
 }
 
-.thumbnail-project {
-	height: 33em;
-}
-
-dl {
-	float: left;
-	padding: 2px 37px 0 0;
-}
-
 .btn-project, .text-clear {
 	clear: both;
 }
 
 /* Staff Section */ 
 
-.thumbnail-staff {
-	height: 17em;
+#staff-wrapper {
+	padding: 20px;
 }
-
-.img-staff {
-	width: 100px;
-	height: 100px;
-	margin-top: 7px;
-	margin-left: 7px;
-}
+	.thumbnail-staff {
+		padding: 5px 10px 0;
+	}
+		.img-staff {
+			width: 150px;
+			margin-top: 7px;
+			margin-bottom: 10px;
+			margin-left: 17px;
+		}
+	.thumbnail-staff h3{
+		margin-top: 5px;
+	}
 
 /* Newsfeed Changes */ 
 

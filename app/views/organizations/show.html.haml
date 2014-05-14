@@ -1,94 +1,87 @@
-.container
-  .container-wrapper
-    .row#profile-details-row
-      .col-lg-2.col-sm-12
-        %a.thumbnail.img-org{href: ""}
-          %img{alt: "", "data-src" => "holder.js/100%x180"}/
-      .col-lg-10.col-sm-12
-        %h1 
-          = @organization.name
-        .row
-          .col-lg-3.col-md-3
-            %h4.org-head
-              %strong
-                = @organization.ruling_year
-            %h4.org-head 
-              %strong 
-                = @organization.street1
-                = @organization.street2
-                = @organization.city
-                = @organization.state_id
-                = @organization.zip
-            %h4.org-head 
-              %strong Budget: $22,000,000.00
-            %h4.org-head 
-              %strong 
-                = "Cause: #{@organization.ntee_major_category_id}"
-          .col-lg-6.col-lg-offset-1.col-md-6.col-md-offset-1
-            %p 
-              = @organization.mission_statement
-.container
+.row#profile-details-row
+  .col-lg-3
+    %a.thumbnail.img-org{href: ""}
+      %img{alt: "", "data-src" => "holder.js/100%x180"}/
+  .col-lg-8#org-info
+    %h1 
+      = @organization.name
+    .row
+      .col-lg-3
+        %h4.org-head
+          %strong
+            = @organization.ruling_year
+        %h4.org-head 
+          %strong 
+            = @organization.street1
+            = @organization.street2
+            = @organization.city
+            = @organization.state_id
+            = @organization.zip
+        %h4.org-head 
+          %strong Budget: $22,000,000.00
+        %h4.org-head 
+          %strong 
+            = "Cause: #{@organization.ntee_major_category_id}"
+      .col-lg-6.col-lg-offset-1
+        %p 
+          = @organization.mission_statement
+
+.container-wrapper 
   .row.row-custom
     .col-lg-6
       %h2 Projects
     .col-lg-6
-      %button.btn.btn-primary.btn-lg.pull-right.btn-project{:type => "button"} 
-        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @organization.id)
-.container
-  .container-wrapper
-    .row
-      .container
-        %ul.nav.nav-tabs
-          %li
-            %a{:href => "#"} Completed
-          %li
-            %a{:href => "#"} Expired
-          %li
-            %a{:href => "#"} Incomplete
-        - @organization.projects.each do |project|
-          = render 'shared/project_thumbnail', project: project
+      %btn
+        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
+
+.row
+  %ul.nav.nav-tabs
+    %li
+      %a{:href => "#"} Completed
+    %li
+      %a{:href => "#"} Expired
+    %li
+      %a{:href => "#"} Incomplete
+  - @organization.projects.each do |project|
+    = render 'shared/project_thumbnail', project: project
              
-.container
-  .row.row-custom
-    .col-lg-12
-      %h2 Staff
+
+.row.row-custom
+  .col-lg-12
+    %h2 Staff
     
 
-.container 
-  .container-wrapper 
-    .row
-      - @organization.users.each do |user|
-        = render 'shared/user_thumbnail', user: user
-      
+.container-wrapper 
+  .row#staff-wrapper
+    - @organization.users.each do |user|
+      = render 'shared/user_thumbnail', user: user
 
-.container
-  .row.row-custom
-    .col-lg-12
-      %h2 Amnesty International's Updates
-    
-.container
-  .row
-    .col-lg-12
+.row.row-custom
+  .col-lg-12
+    %h2 Amnesty International's Updates
+
+.row
+  .col-lg-12
+    .row.row-custom.row-wrapper
+      %div.newsfeed-wrapper
+        .col-lg-2.col-lg-offset-1
+          %img.img-staff-newsfeed{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+        .col-lg-6
+          %div.newsfeed-content-wrapper
+            %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
+        .col-lg-3
       .row.row-custom.row-wrapper
-        %div.newsfeed-wrapper
-          .col-lg-2.col-lg-offset-1
-            %img.img-staff-newsfeed{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-          .col-lg-6
-            %div.newsfeed-content-wrapper
-              %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-          .col-lg-3
-        .row.row-custom.row-wrapper
-        %div.newsfeed-wrapper
-          .col-lg-2.col-lg-offset-1
-            %div.newsfeed-vote-wrapper
-              %dl.vote-wrapper
-                %dt.profile-newsfeed-number 3
-                %dd Votes
-              %dl.comment-wrapper
-                %dt.profile-newsfeed-number 10 
-                %dd Comments
-          .col-lg-6
-            %div.newsfeed-content-wrapper
-              %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-          .col-lg-3
-        
+      %div.newsfeed-wrapper
+        .col-lg-2.col-lg-offset-1
+          %div.newsfeed-vote-wrapper
+            %dl.vote-wrapper
+              %dt.profile-newsfeed-number 3
+              %dd Votes
+            %dl.comment-wrapper
+              %dt.profile-newsfeed-number 10 
+              %dd Comments
+        .col-lg-6
+          %div.newsfeed-content-wrapper
+            %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
+        .col-lg-3
+      

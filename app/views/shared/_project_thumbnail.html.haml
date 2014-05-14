@@ -1,18 +1,23 @@
-.col-lg-3.col-sm-6
+.col-lg-3.col-sm-6.project-thumb-wrapper
   .thumbnail.thumbnail-project
-    = link_to image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"), project_path(project.id)
+    = link_to image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk", :class => "thumb-img-org") , project_path(project.id)
     .caption
-    %h3
+    %div.volunteer-project-requests
+      %span.glyphicon.glyphicon-user.volunteer-glyph
+      %div.volunteer-plus
+        %span.glyphicon.glyphicon-plus.volunteer-plus-glyph 
+          %span.volunteer-number 2
+    %h3.project-org-name
       = link_to project.organization.name, organization_path(project.organization.id)
     %h4 
       = project.title
     %p 
       = project.description
-    %dl 
+    %dl.skillset
       %dt Skill Set
       %dd 
         = project.skills
-    %dl 
+    %dl.deadline
       %dt Deadline
       %dd 
         = fix_date_time(project.deadline)

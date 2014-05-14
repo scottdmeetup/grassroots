@@ -91,4 +91,5 @@ ActiveRecord::Schema.define(version: 20140507144356) do
     t.integer  "project_id"
     t.string   "time_zone"
   end
+
 end

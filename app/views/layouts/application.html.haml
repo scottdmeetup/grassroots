@@ -1,17 +1,22 @@
 !!! 5
 %html(lang="en-US")
-	%head
-		%title "Grassroots"
-		%meta(charset="UTF-8")
-		%meta(name="viewport" content="width=device-width, initial-scale=1.0")
-		= csrf_meta_tag
-		= stylesheet_link_tag "application"
-		= javascript_include_tag "application"
-	%body
-		%header
-			= render 'shared/header'
-		%section.content.clearfix
-			= render 'shared/messages'
-			= yield
-		%footer
-			&copy 2014 Grassroots
+  %head
+    %title "Grassroots"
+    %meta(charset="UTF-8")
+    %meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    = csrf_meta_tag
+    = stylesheet_link_tag "application"
+    = javascript_include_tag "application"
+  %body
+    %header
+      = render 'shared/header'
+      .container
+        .row.row-custom
+          %div
+            = render 'shared/sidebar'
+          .col-lg-10.col-lg-offset-2#active-pane
+            %section.content.clearfix
+              = render 'shared/messages'
+              = yield   
+    %footer
+      &copy 2014 Grassroots
