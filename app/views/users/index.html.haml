@@ -1,0 +1,3 @@
+.container
+  = @users.each do |user|
+    = render "shared/user_thumbnail", user: user

@@ -1,8 +1,13 @@
 class PrivateMessagesController < ApplicationController
   before_filter :current_user
   def new
-    project = Project.find(params[:project_id])
-    @private_message = PrivateMessage.new(project_id: params[:project_id], recipient_id: project.project_admin.id, subject: "Project Request: #{project.title}")
+    if params[:project_id]
+      project = Project.find(params[:project_id])
+      @private_message = PrivateMessage.new(project_id: params[:project_id], recipient_id: project.project_admin.id, subject: "Project Request: #{project.title}")
+    else
+      @user = User.find_by(id: params[:user])
+      @private_message = PrivateMessage.new(recipient_id: @user.id)
+    end
   end
 
   def create

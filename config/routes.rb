@@ -8,12 +8,12 @@ Grassroots::Application.routes.draw do
     resources :projects, only: [:new, :create]
   end
 
-  resources :users, only: [:show, :new, :create]
+  resources :users, only: [:show, :new, :create, :index]
   resources :organizations, only: [:show]
   resources :projects, only: [:index, :show]
   get 'join', to: 'projects#join', as: 'join'
 
-  resources :private_messages, only: [:new, :create, :show]
+  resources :private_messages, only: [:new, :create]
   get 'outgoing_messages', to: 'private_messages#outgoing_messages', as: 'outgoing_messages'
 
   resources :conversations, only: [:show, :index]

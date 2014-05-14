@@ -10,20 +10,35 @@ describe PrivateMessagesController do
     before do
       alice.update_columns(organization_id: huggey_bear.id)
     end
+    context "When only sending a message" do
+      let(:bob) { Fabricate(:user, first_name: "Bob") }
 
-    it "renders the new template for creating a private message" do
-      get :new, project_id: word_press.id
+      it "renders the new template for creating a private message" do
+        get :new, user: bob
 
-      expect(response).to render_template(:new)
-    end
-    
-    it "sets @private_message" do
-      get :new, project_id: word_press.id
+        expect(response).to render_template(:new)
+      end
 
-      expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
+      it "sets the recipient value to that of the submitted parameters, @user" do
+        get :new, user: bob
+
+        expect(assigns(:private_message).recipient_id).to eq(bob.id)
+      end
     end
     
     context "when sending a join request" do
+      it "renders the new template for creating a private message" do
+        get :new, project_id: word_press.id
+
+        expect(response).to render_template(:new)
+      end
+    
+      it "sets @private_message" do
+        get :new, project_id: word_press.id
+
+        expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
+      end
+
       it "sets the @project.id" do
         get :new, project_id: word_press.id
 

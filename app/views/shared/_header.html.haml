@@ -11,14 +11,16 @@
     / Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       %ul.nav.navbar-nav
-        %li.active
+        %li
           = link_to "Communtiy", "#" if current_user
+        %li
+          = link_to "People", users_path if current_user
         %li
           = link_to "Services", "#" if current_user
         %li
           = link_to "Projects", projects_path if current_user
         %li
-          = link_to "Messages", conversations_path if current_user          
+          = link_to "Inbox", conversations_path if current_user          
         - if current_user
           %li.dropdown
             %a(href="#" id="dlabel" role="button" data-toggle="dropdown" class="dropdown-toggle" data-target="#")
@@ -29,7 +31,7 @@
                 %a(href="#") Account
                 %a(href="#") Plan and Billing
                 = link_to "Profile", user_path(current_user.id)
-                = link_to "Organization", organization_path(current_user.id) if current_user.organization
+                = link_to "Organization", organization_path(current_user.organization.id) if current_user.organization
                 = link_to "Log out", log_out_path
         %li
           = link_to "Register", new_user_path unless current_user

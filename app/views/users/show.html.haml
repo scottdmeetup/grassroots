@@ -18,14 +18,17 @@
             %h4.org-head 
               %strong 
                 = "Interests: #{@user.interests}"
+            %btn
+              = link_to "Message", new_private_message_path(user: @user), class: 'btn btn-primary btn-lg btn-block'
           
 .container
   .row.row-custom
     .col-lg-6
       %h2 Projects
     .col-lg-6
-      %button.btn.btn-primary.btn-lg.pull-right.btn-project{:type => "button"} 
-        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id) if @user.organization_administrator
+      %button.btn.btn-primary.btn-lg.pull-right.btn-project{:type => "button"}
+        - if @user.organization_administrator && current_user == @user
+          = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id)
 
 .container
   .container-wrapper

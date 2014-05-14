@@ -1,6 +1,21 @@
 require 'spec_helper'
 
 describe UsersController do
+  describe "GET index" do
+    it "renders the index template" do
+      get :index
+      expect(response).to render_template(:index)
+    end
+
+    it "sets @users" do
+      bob = Fabricate(:user, first_name: "Bob", last_name: "Smith")
+      alice = Fabricate(:user, first_name: "Alice", last_name: "Smith")
+      cat = Fabricate(:user, first_name: "Cat", last_name: "Smith")
+
+      get :index
+      expect(assigns(:users)).to match_array([bob, alice, cat])
+    end
+  end
   describe "GET show" do
     it "shows the user's profile" do
       alice = Fabricate(:user)
