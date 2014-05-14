@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140507144356) do
+ActiveRecord::Schema.define(version: 20140514191454) do
 
   create_table "conversations", force: true do |t|
     t.datetime "created_at"
@@ -45,6 +45,13 @@ ActiveRecord::Schema.define(version: 20140507144356) do
     t.datetime "updated_at"
     t.integer  "project_id"
     t.integer  "conversation_id"
+  end
+
+  create_table "project_users", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "projects", force: true do |t|
@@ -91,4 +98,5 @@ ActiveRecord::Schema.define(version: 20140507144356) do
     t.integer  "project_id"
     t.string   "time_zone"
   end
+
 end

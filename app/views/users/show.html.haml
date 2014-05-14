@@ -11,7 +11,8 @@
           .col-lg-4.col-md-3
             %h4.org-head
               %strong 
-                = @user.position
+                = "#{@user.position} at"
+                = link_to "#{@user.organization_name}", organization_path(@user.organization.id)
             %h4.org-head
               %strong 
                 = "Skills: #{@user.skills}" 

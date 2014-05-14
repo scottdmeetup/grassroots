@@ -3,7 +3,8 @@ require 'spec_helper'
 describe User do
   it { should belong_to(:organization)}
   it { should belong_to(:project)}
-  it { should have_many(:projects)}
+  it { should have_many(:project_users)}
+  it { should have_many(:projects).through(:project_users)}
   it { should have_many(:sent_messages)}
   it { should have_many(:received_messages).order("created_at DESC")}
 
@@ -76,7 +77,16 @@ describe User do
       
 
       expect(alice.user_conversations).to eq([convo1])
+    end
+  end
 
+  describe "#organization_name" do
+    it "returns the name of the organization of the user" do
+      bob = Fabricate(:user, first_name: "Bob")
+      org = Fabricate(:organization)
+      bob.update(organization_id: 1)
+
+      expect(bob.organization_name).to eq(org.name)
     end
   end
 end
