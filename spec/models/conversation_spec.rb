@@ -58,4 +58,19 @@ describe Conversation do
       expect(convo.private_message_body).to eq(message4.body)
     end
   end
+
+  describe "#join_request" do
+    it "returns true if a private message requests to join a project" do
+      convo = Conversation.create
+      alice = Fabricate(:user, first_name: "Alice", last_name: "Smith")
+      bob = Fabricate(:user, first_name: "Bob", last_name: "Smith")
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id)
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id)
+      bob.projects << word_press
+      alice.projects << word_press
+
+      expect(convo.join_request).to eq(true)
+    end
+  end
 end

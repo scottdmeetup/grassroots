@@ -14,19 +14,19 @@ describe PrivateMessagesController do
       let(:bob) { Fabricate(:user, first_name: "Bob") }
 
       it "renders the new template for creating a private message" do
-        get :new, user: bob
+        get :new, user_id: bob.id
 
         expect(response).to render_template(:new)
       end
 
       it "sets the recipient value to that of the submitted parameters, @user" do
-        get :new, user: bob
+        get :new, user_id: bob.id
 
         expect(assigns(:private_message).recipient_id).to eq(bob.id)
       end
 
       it "does not associate a project id with the initialized @private_message" do
-        get :new, user: bob
+        get :new, user_id: bob.id
 
         expect(assigns(:private_message).project_id).to be_nil
       end
@@ -131,8 +131,15 @@ describe PrivateMessagesController do
       end
 
       context "when creating a join request" do
-        it "associates the user with the project"
+        before do
+          session[:user_id] = bob.id
+        end
 
+        it "associates the user who is sending the message with the project" do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(bob.projects).to eq([word_press])
+        end
       end
     end
 

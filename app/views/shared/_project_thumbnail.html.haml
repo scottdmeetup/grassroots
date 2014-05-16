@@ -2,6 +2,8 @@
   .thumbnail.thumbnail-project
     = link_to image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk"), project_path(project.id)
     .caption
+    .span.glyphicon.glyphicon-user 
+      = "#{project.users.count - 1}"
     %h3
       = link_to project.organization.name, organization_path(project.organization.id)
     %h4 

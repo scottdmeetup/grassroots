@@ -2,10 +2,10 @@ class PrivateMessagesController < ApplicationController
   before_filter :current_user
   def new
     if params[:project_id]
-      project = Project.find(params[:project_id])
-      @private_message = PrivateMessage.new(project_id: params[:project_id], recipient_id: project.project_admin.id, subject: "Project Request: #{project.title}")
+      @project = Project.find(params[:project_id])
+      @private_message = PrivateMessage.new(project_id: params[:project_id], recipient_id: @project.project_admin.id, subject: "Project Request: #{@project.title}")
     else
-      @user = User.find_by(id: params[:user])
+      @user = User.find_by(id: params[:user_id])
       @private_message = PrivateMessage.new(recipient_id: @user.id)
     end
   end
@@ -13,6 +13,13 @@ class PrivateMessagesController < ApplicationController
   def create
     if params[:private_message][:conversation_id]
       @private_message = PrivateMessage.new(message_params.merge!(conversation_id: params[:private_message][:conversation_id]))
+      @private_message.save
+      redirect_to conversations_path
+    elsif params[:project_id]
+      project = Project.find(params[:project_id])
+      current_user.projects << project
+      conversation = Conversation.create 
+      @private_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation.id, project_id: project.id))
       @private_message.save
       redirect_to conversations_path
     else

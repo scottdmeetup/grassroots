@@ -17,5 +17,5 @@
 					.form-group
 						%label.control-label.col-sm-3 Body:
 						= f.text_area :body, cols: 6, rows: 6, class: "form-control"
-						= f.hidden_field :project_id
+						= hidden_field_tag 'project_id', @project.id if @project
 						= f.submit "Create", class: "btn btn-lg btn-primary"

@@ -14,7 +14,6 @@ class User < ActiveRecord::Base
   end
 
   def user_conversations
-    
     collection = self.received_messages.select(:conversation_id).distinct
     all_conversations = collection.map do |member|
       convo_id = member.conversation_id

@@ -24,4 +24,9 @@ class Conversation < ActiveRecord::Base
     message = self.private_messages.last
     message_body = message.body
   end
+
+  def join_request
+    message = self.private_messages.first
+    message.project_id if message.project_id
+  end
 end
