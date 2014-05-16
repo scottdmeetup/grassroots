@@ -27,6 +27,6 @@ class Conversation < ActiveRecord::Base
 
   def join_request
     message = self.private_messages.first
-    message.project_id if message.project_id
+    message.project_id.present? if message.project_id
   end
 end
