@@ -6,10 +6,11 @@
       %span.glyphicon.glyphicon-user.volunteer-glyph
       %div.volunteer-plus
         %span.glyphicon.glyphicon-plus.volunteer-plus-glyph 
-          %span.volunteer-number 2
-    %h3.project-org-name
+          %span.volunteer-number
+            = "#{project.users.count - 1}" 
+    %h4.project-org-name
       = link_to project.organization.name, organization_path(project.organization.id)
-    %h4 
+    %h5 
       = project.title
     %p 
       = project.description
