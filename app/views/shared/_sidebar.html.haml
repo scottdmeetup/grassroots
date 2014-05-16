@@ -1,19 +1,20 @@
-%link{:href => "/Users/robertjewell/sites/grassroots/app/assets/stylesheets", :rel => "stylesheet"}  
-.container
-  .row.row-custom
-    .col-lg-12
-      %nav.navbar.navbar-default#sidebar-custom{:role => "navigation"}
-        / Brand and toggle get grouped for better mobile display
-        / <a class="navbar-brand" href="#">Brand</a>
-        / Collect the nav links, forms, and other content for toggling
-        %nav
-          #bs-example-navbar-collapse-1.collapse.navbar-collapse
-            %ul.nav.nav-tabs.nav-stacked
-              %li
-                = link_to "Community", "#" if current_user
-              %li
-                = link_to "People", users_path if current_user
-              %li
-                = link_to "Services", "#" if current_user
-              %li
-                = link_to "Projects", projects_path if current_user
+- if current_user
+  %link{:href => "/Users/robertjewell/sites/grassroots/app/assets/stylesheets", :rel => "stylesheet"}  
+  .container
+    .row.row-custom
+      .col-lg-12
+        %nav.navbar.navbar-default#sidebar-custom{:role => "navigation"}
+          / Brand and toggle get grouped for better mobile display
+          / <a class="navbar-brand" href="#">Brand</a>
+          / Collect the nav links, forms, and other content for toggling
+          %nav
+            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+              %ul.nav.nav-tabs.nav-stacked
+                %li
+                  = link_to "Community", "#" if current_user
+                %li
+                  = link_to "People", users_path if current_user
+                %li
+                  = link_to "Services", "#" if current_user
+                %li
+                  = link_to "Projects", projects_path if current_user

@@ -1,37 +1,36 @@
-
-  .container-wrapper
-    .row
-      .col-lg-2.col-sm-12
-        %a.thumbnail.img-org{href: ""}
-          %img{alt: "", "data-src" => "holder.js/100%x180"}/
-      .col-lg-10.col-sm-12
-        - @messages.private_messages.each do |message|
-          %h1 
-            = link_to "#{message.sender.first_name} #{message.sender.last_name}", user_path(message.sender.id)
-          .row
-            .col-lg-3.col-md-3
-              %h4.org-head
-                %strong
-                  = message.subject
-          %h2 Body
-          .container
-            .container-wrapper
-              .row
-                %p 
-                  = message.body
+.container-wrapper
+  .row
+    .col-lg-2.col-sm-12
+      %a.thumbnail.img-org{href: ""}
+        %img{alt: "", "data-src" => "holder.js/100%x180"}/
+    .col-lg-10.col-sm-12
+      - @messages.private_messages.each do |message|
+        %h1 
+          = link_to "#{message.sender.first_name} #{message.sender.last_name}", user_path(message.sender.id)
+        .row
+          .col-lg-3.col-md-3
+            %h4.org-head
+              %strong
+                = message.subject
+        %h2 Body
+        .container
+          .container-wrapper
+            .row
+              %p 
+                = message.body
 
 %section.register.container
-  .row
-    .col-sm-6.col-sm-offset-1
-      = form_for [@private_message], url: private_messages_path do |f|
-        %fieldset
-          .form-group
-            %label.control-label.col-sm-3 Subject:
-            = f.text_field :subject, class: "form-control"
-          .form-group
-            %label.control-label.col-sm-3 Body:
-            = f.text_area :body, cols: 6, rows: 6, class: "form-control"
-            = f.hidden_field :sender_id, :value => current_user.id
-            = f.hidden_field :recipient_id, :value => @message.sender_id
-            = f.hidden_field :conversation_id, :value => @message.conversation_id
-            = f.submit "Create", class: "btn btn-lg btn-primary"
+.row
+  .col-sm-6.col-sm-offset-1
+    = form_for [@private_message], url: private_messages_path do |f|
+      %fieldset
+        .form-group
+          %label.control-label.col-sm-3 Subject:
+          = f.text_field :subject, class: "form-control"
+        .form-group
+          %label.control-label.col-sm-3 Body:
+          = f.text_area :body, cols: 6, rows: 6, class: "form-control"
+          = f.hidden_field :sender_id, :value => current_user.id
+          = f.hidden_field :recipient_id, :value => @message.sender_id
+          = f.hidden_field :conversation_id, :value => @message.conversation_id
+          = f.submit "Create", class: "btn btn-lg btn-primary"

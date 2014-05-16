@@ -2,4 +2,6 @@
 	.jumbotron
 		%h1 Hello, World.
 		%p
-			%a.btn.btn-primary.btn-lg{href: "#", role: "button"} Learn more »
+			= link_to "Sign In", sign_in_path unless current_user
+		%p
+			= link_to "Register", new_user_path unless current_user

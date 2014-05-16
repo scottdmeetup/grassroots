@@ -10,16 +10,16 @@
       / <a class="navbar-brand" href="#">Brand</a>
     / Collect the nav links, forms, and other content for toggling
     %nav
-      #bs-example-navbar-collapse-1.collapse.navbar-collapse
-        %div#search-bar
-          %form.navbar-form.navbar-left{:role => "search"}
-            .form-group
-              %input.form-control{:placeholder => "Search", :type => "text"}
-            %button.btn.btn-default{:type => "submit"} Submit
-        %ul.nav.nav-tabs#account-tabs
-          %li
-            = link_to "Inbox", conversations_path if current_user          
-          - if current_user
+      - if current_user
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          %div#search-bar
+            %form.navbar-form.navbar-left{:role => "search"}
+              .form-group
+                %input.form-control{:placeholder => "Search", :type => "text"}
+              %button.btn.btn-default{:type => "submit"} Submit
+          %ul.nav.nav-tabs#account-tabs
+            %li
+              = link_to "Inbox", conversations_path if current_user          
             %li.dropdown
               %a(href="#" id="dlabel" role="button" data-toggle="dropdown" class="dropdown-toggle" data-target="#")
                 = "Welcome, #{current_user.first_name}"
@@ -28,12 +28,8 @@
                 %li
                   %a(href="#") Account
                   %a(href="#") Plan and Billing
-                  = link_to "Profile", user_path(current_user.id)
+                  = link_to "Profile", user_path(current_user.id) if current_user
                   = link_to "Organization", organization_path(current_user.organization.id) if current_user.organization
                   = link_to "Log out", log_out_path
-          %li
-            = link_to "Register", new_user_path unless current_user
-          %li
-            = link_to "Sign in", sign_in_path unless current_user
       / /.navbar-collapse
-  %body
+%body
