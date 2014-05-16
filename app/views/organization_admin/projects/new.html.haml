@@ -1,6 +1,6 @@
-%section#form.register.container
+%section#form.register
 	.row.row-custom
-		.col-lg-9.col-project-form
+		.col-lg-10.col-project-form
 			= form_for [:organization_admin, @project], html: {class: 'form-horizontal'} do |f|
 				%h1 Create a Project
 				%fieldset
@@ -32,7 +32,7 @@
 						= f.hidden_field :organization_id
 					.form-group	
 						= f.submit "Create", class: "btn btn-lg btn-primary pull-right"
-		.col-lg-3
+		.col-lg-2
 			%p#form-tip <strong>Tip</strong>: The dreams of yesterday are the hopes of today and <a href="#">the reality of tomorrow</a>.
 				
 

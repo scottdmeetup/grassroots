@@ -1,18 +1,17 @@
-.container
-  .row#inbox-wrapper
-    .col-lg-2.col-lg-offset-1#inbox-tabs
-      %ul.nav.nav-tabs.nav-stacked
-        %li
-          %a{:href => "#"}Messages
-        %li 
-          %a{:href => "#"}Projects
-        %li 
-          %a{:href => "#"}Connections
-        %li 
-          %a{:href => "#"}Sent
-        %li 
-          %a{:href => "#"}Archived
-    .col-lg-9 
-      - if @conversations
-        - @conversations.each do |conversation|
-          = render 'shared/conversation_thumbnail', conversation: conversation
+.row#inbox-wrapper
+  .col-lg-2.col-lg-offset-1#inbox-tabs
+    %ul.nav.nav-tabs.nav-stacked
+      %li
+        %a{:href => "#"}Messages
+      %li 
+        %a{:href => "#"}Projects
+      %li 
+        %a{:href => "#"}Connections
+      %li 
+        %a{:href => "#"}Sent
+      %li 
+        %a{:href => "#"}Archived
+  .col-lg-9 
+    - if @conversations
+      - @conversations.each do |conversation|
+        = render 'shared/conversation_thumbnail', conversation: conversation
