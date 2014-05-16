@@ -2,12 +2,13 @@
   .thumbnail.thumbnail-project
     = link_to image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk", :class => "thumb-img-org") , project_path(project.id)
     .caption
-    %div.volunteer-project-requests
-      %span.glyphicon.glyphicon-user.volunteer-glyph
-      %div.volunteer-plus
-        %span.glyphicon.glyphicon-plus.volunteer-plus-glyph 
-          %span.volunteer-number
-            = "#{project.users.count - 1}" 
+    - if project.users.count > 1
+      %div.volunteer-project-requests
+        %span.glyphicon.glyphicon-user.volunteer-glyph
+        %div.volunteer-plus
+          %span.glyphicon.glyphicon-plus.volunteer-plus-glyph 
+            %span.volunteer-number
+              = "#{project.users.count - 1}"
     %h4.project-org-name
       = link_to project.organization.name, organization_path(project.organization.id)
     %h5 
