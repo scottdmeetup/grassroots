@@ -21,6 +21,7 @@ class ConversationsController < ApplicationController
     end  
     project.users.clear
     project.users << [current_user, volunteer]
+    project.update_attributes(state: "in production")
     redirect_to conversation_path(conversation.id)
     flash[:success] = "Please write to the volunteer to let the volunteer know that you have accepted his/her participation on your project"
   end

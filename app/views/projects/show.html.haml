@@ -4,7 +4,8 @@
       .col-lg-12
         .row
           .col-lg-6
-            %h4 Status: Open
+            %h4
+              = "Status: #{@project.state}"
             %h1 
               = @project.title
             %h4.org-head
@@ -20,7 +21,11 @@
     .row
       .col-lg-4.col-lg-offset-8
         .form-group
-          %btn.btn.btn-primary.btn-lg.btn-project{:type => "button"} Request to Join
+          %btn
+          - if @project.state == "open"
+            = link_to "Request to Join", new_private_message_path(project_id: @project.id), class: "btn btn-primary btn-lg btn-project"
+          - elsif @project.state == "in production"
+            = link_to "Project Complete", "#", class: "btn btn-primary btn-lg btn-project"
 .container
   .row.row-custom
     .col-lg-6
@@ -49,23 +54,27 @@
         %a.thumbnail.img-staff.pull-left{href: ""}
           %img{alt: "", "data-src" => "holder.js/100%x180"}/
       .col-lg-8
-        %h1 Volunteer Requests
+        %h1
+          = @project.state == "open " ? "Volunteer Requests" : "Project Volunteer"
         - @project.users.each do |user|
-          .col-lg-3.col-sm-4
-            .thumbnail.thumbnail-staff
-              %img.img-responsive.img-staff{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-              .caption
-                %h4
-                  = link_to "#{user.first_name} #{user.last_name}", user_path(user.id)
-                  .btn-group
-                    %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
-                      Accept
-                      %span.caret
-                    %ul.dropdown-menu{role: "menu"}
-                      %li
-                        = link_to "Reply (before accepting)", conversations_path
-                      %li
-                        %a{href: "#"} Ignore Request
-                      %li.divider
-                      %li
-                        %a{href: "#"} Accept
+          - if user.organization != @project.organization
+            .col-lg-3.col-sm-4
+              .thumbnail.thumbnail-staff
+                %img.img-responsive.img-staff{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+                .caption
+                  %h4
+                    = link_to "#{user.first_name} #{user.last_name}", user_path(user.id)
+                    - if @project.project_admin == current_user
+                      - if @project.state == "open"
+                        .btn-group
+                          %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
+                            Accept
+                            %span.caret
+                          %ul.dropdown-menu{role: "menu"}
+                            %li
+                              = link_to "Reply (before accepting)", conversations_path
+                            %li
+                              %a{href: "#"} Ignore Request
+                            %li.divider
+                            %li
+                              %a{href: "#"} Accept

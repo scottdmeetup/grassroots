@@ -121,7 +121,7 @@ describe ConversationsController do
     let(:elena) { Fabricate(:user, first_name: "Cat") }
     let(:dan) { Fabricate(:user, first_name: "Dan")}
     let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
-    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
+    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
     let(:conversation1) { Fabricate(:conversation) }
     let(:conversation2) { Fabricate(:conversation) }
     let(:conversation3) { Fabricate(:conversation) }
@@ -160,6 +160,12 @@ describe ConversationsController do
       expect(message1.reload.project_id).to eq(nil)
       expect(message2.reload.project_id).to eq(nil)
       expect(message3.reload.project_id).to eq(nil)
+    end
+
+    it "sets the project's state from open to in production" do
+      post :accept, conversation_id: conversation1.id
+
+      expect(word_press.reload.state).to eq("in production")
     end
   end
 end
