@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
 
   def project_admin
     organization.organization_administrator
+    User.find(organization.organization_administrator.id)
   end
 
   def open

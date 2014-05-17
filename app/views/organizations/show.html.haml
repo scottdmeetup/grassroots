@@ -37,11 +37,11 @@
 .row
   %ul.nav.nav-tabs
     %li
-      %a{:href => "#"} Completed
+      %a{:href => "#"} Open
     %li
-      %a{:href => "#"} Expired
+      %a{:href => "#"} In Production
     %li
-      %a{:href => "#"} Incomplete
+      %a{:href => "#"} Complete
   - @organization.projects.each do |project|
     = render 'shared/project_thumbnail', project: project
              

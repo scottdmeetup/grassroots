@@ -34,19 +34,38 @@
 .container#project-details-org
   .container-wrapper 
     .row 
-      .col-lg-7
-        %h1 Organization Name
+      .col-lg-2
+        %h2
+          = link_to @project.organization.name, organization_path(@project.organization.id)
         %a.thumbnail.img-org#img-org-project.pull-left{href: ""}
           %img{alt: "", "data-src" => "holder.js/100%x180"}/
         %h4#project-details-cause
           %strong 
             = "Cause: #{@project.causes}"
-        %h4#project-details-cause
+        %h5#project-details-cause
           %strong 
-            Project Admin
+            Project Administrator:
+            = link_to "#{@project.project_admin.first_name} #{@project.project_admin.last_name}", user_path(@project.project_admin.id)
         %a.thumbnail.img-staff.pull-left{href: ""}
           %img{alt: "", "data-src" => "holder.js/100%x180"}/
-      .col-lg-5
+      .col-lg-8
         %h1 Volunteer Requests
-  
-  
+        - @project.users.each do |user|
+          .col-lg-3.col-sm-4
+            .thumbnail.thumbnail-staff
+              %img.img-responsive.img-staff{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+              .caption
+                %h4
+                  = link_to "#{user.first_name} #{user.last_name}", user_path(user.id)
+                  .btn-group
+                    %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
+                      Accept
+                      %span.caret
+                    %ul.dropdown-menu{role: "menu"}
+                      %li
+                        = link_to "Reply (before accepting)", conversations_path
+                      %li
+                        %a{href: "#"} Ignore Request
+                      %li.divider
+                      %li
+                        %a{href: "#"} Accept

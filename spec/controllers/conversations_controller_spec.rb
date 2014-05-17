@@ -67,7 +67,6 @@ describe ConversationsController do
     end
 
     context "when replying to a message" do
-
       it "sets the @private_message to new" do
         conversation1 = Fabricate(:conversation)
         message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
@@ -115,14 +114,52 @@ describe ConversationsController do
       ##when a join request is accepted, all other join requests are rejected
     end
   end
+
+  describe "POST accept" do
+    let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
+    let(:bob) { Fabricate(:user, first_name: "Bob") }
+    let(:elena) { Fabricate(:user, first_name: "Cat") }
+    let(:dan) { Fabricate(:user, first_name: "Dan")}
+    let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
+    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
+    let(:conversation1) { Fabricate(:conversation) }
+    let(:conversation2) { Fabricate(:conversation) }
+    let(:conversation3) { Fabricate(:conversation) }
+    let(:message1) { Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id) }
+    let(:message2) { Fabricate(:private_message, recipient_id: alice.id, sender_id: elena.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id) }
+    let(:message3) { Fabricate(:private_message, recipient_id: alice.id, sender_id: dan.id, conversation_id: conversation3.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id) }
+    
+    before do
+      conversation1.private_messages << message1
+      conversation2.private_messages << message2
+      conversation3.private_messages << message3
+      word_press.users << alice
+      word_press.users << bob
+      word_press.users << elena
+      word_press.users << dan
+    end
+
+    it "redirects the current user to the conversation so that the user can reply to the freelancer" do
+      post :accept, conversation_id: conversation1.id
+      expect(response).to redirect_to conversation_path(conversation1.id)
+    end
+
+    it "unassociates all unaccepted users who have sent a project request" do
+      post :accept, conversation_id: conversation1.id
+      expect(word_press.reload.users).not_to eq([alice, bob, elena, dan])
+    end
+
+    it "associates only the sender and the current user of the conversation with the project" do
+      post :accept, conversation_id: conversation1.id
+      expect(word_press.reload.users).to eq([alice, bob])
+    end
+
+    it "sets all the private messages' project ids to nil" do
+      post :accept, conversation_id: conversation1.id
+
+      expect(message1.reload.project_id).to eq(nil)
+      expect(message2.reload.project_id).to eq(nil)
+      expect(message3.reload.project_id).to eq(nil)
+    end
+  end
 end
-
-#let(:bob_message2) {Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I think you would fit in well. Let's talk.")}
-    #let(:bob_message3) {Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "OK great. when can I reach out to you?")}
-    #let(:bob_message4) {Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'll call you. What's your number?.")}
-
-    #let(:conversation2) {Fabricate(:conversation)}
-    #let(:cat_message1) {Fabricate(:private_message, recipient_id: alice.id, sender_id: cat.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")}
-    #let(:cat_message2) {Fabricate(:private_message, recipient_id: cat.id, sender_id: alice.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I think you would fit in well. Let's talk.")}
-    #let(:cat_message3) {Fabricate(:private_message, recipient_id: alice.id, sender_id: cat.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "OK great. when can I reach out to you?")}
-    #let(:cat_message4) {Fabricate(:private_message, recipient_id: cat.id, sender_id: alice.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'll call you. What's your number?.")}

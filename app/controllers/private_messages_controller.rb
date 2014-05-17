@@ -12,21 +12,11 @@ class PrivateMessagesController < ApplicationController
 
   def create
     if params[:private_message][:conversation_id]
-      @private_message = PrivateMessage.new(message_params.merge!(conversation_id: params[:private_message][:conversation_id]))
-      @private_message.save
-      redirect_to conversations_path
+      handles_replies
     elsif params[:project_id]
-      project = Project.find(params[:project_id])
-      current_user.projects << project
-      conversation = Conversation.create 
-      @private_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation.id, project_id: project.id))
-      @private_message.save
-      redirect_to conversations_path
+      handles_project_request
     else
-      conversation = Conversation.create 
-      @private_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation.id))
-      @private_message.save
-      redirect_to conversations_path
+      handles_first_private_message
     end
   end
 
@@ -37,5 +27,27 @@ class PrivateMessagesController < ApplicationController
 private
   def message_params
     params.require(:private_message).permit(:subject, :sender_id, :recipient_id, :body)
+  end
+
+  def handles_replies
+    @private_message = PrivateMessage.new(message_params.merge!(conversation_id: params[:private_message][:conversation_id]))
+    @private_message.save
+    redirect_to conversations_path
+  end
+
+  def handles_project_request
+    project = Project.find(params[:project_id])
+    current_user.projects << project
+    conversation = Conversation.create 
+    @private_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation.id, project_id: project.id))
+    @private_message.save
+    redirect_to conversations_path
+  end
+
+  def handles_first_private_message
+    conversation = Conversation.create 
+    @private_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation.id))
+    @private_message.save
+    redirect_to conversations_path
   end
 end

@@ -23,4 +23,4 @@
             %a{href: "#"} Ignore Request
           %li.divider
           %li
-            %a{href: "#"} Accept
+            = link_to "Accept", accept_path(conversation_id: conversation.id)
