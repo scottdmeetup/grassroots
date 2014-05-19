@@ -65,12 +65,27 @@ describe Conversation do
       alice = Fabricate(:user, first_name: "Alice", last_name: "Smith")
       bob = Fabricate(:user, first_name: "Bob", last_name: "Smith")
       huggey_bear = Fabricate(:organization, user_id: alice.id)
-      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id)
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open")
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id, project_id: word_press.id)
       bob.projects << word_press
       alice.projects << word_press
 
       expect(convo.join_request).to eq(true)
+    end
+  end
+
+  describe "#project_complete_request" do
+    it "returns true if a private message seeks to complete a project" do
+      convo = Conversation.create
+      alice = Fabricate(:user, first_name: "Alice", last_name: "Smith")
+      bob = Fabricate(:user, first_name: "Bob", last_name: "Smith")
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "pending approval")
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Project complete", body: "this project is done", conversation_id: convo.id, project_id: word_press.id)
+      bob.projects << word_press
+      alice.projects << word_press
+
+      expect(convo.project_complete_request).to eq(true)
     end
   end
 end

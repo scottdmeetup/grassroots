@@ -19,7 +19,6 @@ describe ConversationsController do
       conversation1 = Fabricate(:conversation)
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "OK great. when can you start?") 
-      #message3 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'll call you. What's your number?.") 
       get :index
 
       expect(alice.user_conversations).to match_array([conversation1])
@@ -118,7 +117,7 @@ describe ConversationsController do
   describe "POST accept" do
     let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
     let(:bob) { Fabricate(:user, first_name: "Bob") }
-    let(:elena) { Fabricate(:user, first_name: "Cat") }
+    let(:elena) { Fabricate(:user, first_name: "Elena") }
     let(:dan) { Fabricate(:user, first_name: "Dan")}
     let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
     let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
@@ -166,6 +165,37 @@ describe ConversationsController do
       post :accept, conversation_id: conversation1.id
 
       expect(word_press.reload.state).to eq("in production")
+    end
+  end
+
+  describe "POST completed" do
+    let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
+    let(:bob) { Fabricate(:user, first_name: "Bob") }
+    let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
+    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "in production") }
+    let(:conversation1) { Fabricate(:conversation) }
+    let(:message1) { Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Project Completed: word press website", body: "I finished this project", project_id: word_press.id) }
+
+    before do
+      conversation1.private_messages << message1
+      word_press.users << bob
+    end
+
+    it "redirects the current user to the conversation so that the user can reply to the freelancer" do
+      post :completed, conversation_id: conversation1.id
+
+      expect(response).to redirect_to conversation_path(conversation1.id)
+    end
+    it "sets the project's state from in production to completed" do
+      post :completed, conversation_id: conversation1.id
+
+      expect(word_press.reload.state).to eq("completed")
+    end
+
+    it "flashes a message about accepting a completed project" do
+      post :completed, conversation_id: conversation1.id
+
+      expect(flash[:success]).to eq("Please write to the volunteer to let the volunteer know that the project is complete")
     end
   end
 end

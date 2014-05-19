@@ -1,35 +1,32 @@
-.container
-  .container-wrapper
-    .row#profile-details-row
-      .col-lg-2.col-sm-12
-        %a.thumbnail.img-org{href: ""}
-          %img{alt: "", "data-src" => "holder.js/100%x180"}/
-      .col-lg-10.col-sm-12
-        %h1 
-          = "#{@user.first_name} #{@user.last_name}"
-        .row
-          .col-lg-4.col-md-3
-            %h4.org-head
-              %strong 
-                - if @user.organization
-                  = "#{@user.position} at"
-                  = link_to "#{@user.organization_name}", organization_path(@user.organization.id)
-            %h4.org-head
-              %strong 
-                = "Skills: #{@user.skills}" 
-            %h4.org-head 
-              %strong 
-                = "Interests: #{@user.interests}"
-            %btn
-              = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block'
+.row#profile-details-row
+  .col-lg-2.col-sm-12
+    %a.thumbnail.img-org{href: ""}
+      %img{alt: "", "data-src" => "holder.js/100%x180"}/
+  .col-lg-10.col-sm-12
+    %h1 
+      = "#{@user.first_name} #{@user.last_name}"
+    .row
+      .col-lg-4.col-md-3
+        %h4.org-head
+          %strong 
+            - if @user.organization
+              = "#{@user.position} at"
+              = link_to "#{@user.organization_name}", organization_path(@user.organization.id)
+        %h4.org-head
+          %strong 
+            = "Skills: #{@user.skills}" 
+        %h4.org-head 
+          %strong 
+            = "Interests: #{@user.interests}"
+        %btn
+          = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block'
           
-.container
-  .row.row-custom
-    .col-lg-6
-      %h2 Projects
-    .col-lg-6
-      - if @user.organization_administrator && current_user == @user
-        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
+.row.row-custom
+  .col-lg-6
+    %h2 Projects
+  .col-lg-6
+    - if @user.organization_administrator && current_user == @user
+      = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
 
 
 .row
@@ -39,7 +36,9 @@
     %li
       %a{:href => "#"} In Production
     %li
-      %a{:href => "#"} Complete
+      %a{:href => "#"} Completed
+    %li
+      %a{:href => "#"} Unfinished
   - @user.projects.each do |project|
     = render 'shared/project_thumbnail', project: project     
 

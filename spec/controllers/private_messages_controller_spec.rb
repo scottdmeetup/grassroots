@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe PrivateMessagesController do
-  let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
+  let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", last_name: "Smith") }
   let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
-  let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
+  let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
   
   describe "GET new" do
 
@@ -33,34 +33,56 @@ describe PrivateMessagesController do
     end
     
     context "when sending a join request" do
-      it "renders the new template for creating a private message" do
-        get :new, project_id: word_press.id
 
+      before do
+        get :new, project_id: word_press.id
+      end
+
+      it "renders the new template for creating a private message" do
         expect(response).to render_template(:new)
       end
     
       it "sets @private_message" do
-        get :new, project_id: word_press.id
-
         expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
       end
 
       it "sets the project id in the initialized @private_message" do
-        get :new, project_id: word_press.id
-
         expect(assigns(:private_message).project_id).to eq(1)
       end
       
       it "sets the recipient value in the initialized @private_message" do
-        get :new, project_id: word_press.id
-
         expect(assigns(:private_message).recipient).to eq(alice)
       end
-      
+  
       it "sets the subject line with the value of the project title with Project Request: in the initialized @private_message" do
-        get :new, project_id: word_press.id
-
         expect(assigns(:private_message).subject).to eq("Project Request: word press website")
+      end
+    end
+
+    context "when completing a project" do
+      let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "in production") }
+
+      before do
+        get :new, project_id: word_press.id
+      end
+
+      it "renders the new template for creating a private message" do
+        expect(response).to render_template(:new)
+      end
+
+      it "sets @private_message" do
+        expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
+      end
+
+      it "sets the project id in the initialized @private_message" do
+        expect(assigns(:private_message).project_id).to eq(1)
+      end
+      
+      it "sets the recipient value in the initialized @private_message" do
+        expect(assigns(:private_message).recipient).to eq(alice)
+      end
+      it "sets the subject line with the value of the project title with Project Completed: in the initialized @private_message" do
+        expect(assigns(:private_message).subject).to eq("Project Completed: word press website")
       end
     end
   end
@@ -140,6 +162,51 @@ describe PrivateMessagesController do
 
           expect(bob.projects).to eq([word_press])
         end
+
+        it "sets the private message variable with the project id" do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(PrivateMessage.first.project_id).to eq(word_press.id)
+        end
+
+        it "flashes a messages confirming delivery" do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(flash[:success]).to eq("Your message has been sent to #{alice.first_name} #{alice.last_name}")
+        end
+
+        it "makes the project's state remain open" do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(word_press.state).to eq("open")
+        end
+      end
+
+      context "when completing a project" do
+        let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "in production") }
+        
+        before do 
+          session[:user_id] = bob.id
+          word_press.users << [bob, alice]
+        end
+
+        it "sets the private message with the project id" do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(PrivateMessage.first.project_id).to eq(word_press.id)
+        end
+
+        it "does not add the current user to the project a second time" do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(word_press.users).to eq([bob, alice])
+        end
+
+        it "flashes a message confirming delivery" do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(flash[:success]).to eq("Your message has been sent to #{alice.first_name} #{alice.last_name}")
+        end
       end
     end
 
@@ -177,34 +244,4 @@ describe PrivateMessagesController do
       end
     end
   end
-
-=begin
-  describe "GET outgoing_messages" do
-    let(:bob) { Fabricate(:user) }
-    let(:message1) { Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id) }
-    let(:message2) { Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "Did you get my message?", project_id: word_press.id) }
-    let(:message3) { Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'm just writing to you again", project_id: word_press.id) }
-
-
-    before do
-      alice.update_columns(organization_id: huggey_bear.id)
-      session[:user_id] = bob.id
-    end
-
-    it "shows the current user's sent messages sent messages" do
-      get :outgoing_messages
-      expect(bob.sent_messages).to eq([message1, message2, message3])
-    end
-
-    it "sets the @messages to the current user's sent messages" do
-      get :outgoing_messages
-      expect(assigns(:messages)).to eq(bob.sent_messages)
-    end
-
-    it "renders the sent messages template" do
-      get :outgoing_messages
-      expect(response).to render_template(:outgoing_messages)
-    end
-  end
-=end
 end

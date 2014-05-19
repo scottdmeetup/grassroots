@@ -18,4 +18,5 @@ Grassroots::Application.routes.draw do
 
   resources :conversations, only: [:show, :index]
   get 'accept', to: 'conversations#accept', as: 'accept'
+  get 'completed', to: 'conversations#completed', as: 'completed'
 end

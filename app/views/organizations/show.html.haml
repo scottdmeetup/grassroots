@@ -41,7 +41,9 @@
     %li
       %a{:href => "#"} In Production
     %li
-      %a{:href => "#"} Complete
+      %a{:href => "#"} Completed
+    %li
+      %a{:href => "#"} Unfinished
   - @organization.projects.each do |project|
     = render 'shared/project_thumbnail', project: project
              

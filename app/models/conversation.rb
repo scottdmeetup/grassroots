@@ -26,7 +26,19 @@ class Conversation < ActiveRecord::Base
   end
 
   def join_request
+    
     message = self.private_messages.first
-    message.project_id.present? if message.project_id
+    project = Project.find_by(id: message.project_id)
+    if project
+      project.state == "open"
+    end
+  end
+
+  def project_complete_request
+    message = self.private_messages.first
+    project = Project.find_by(id: message.project_id)
+    if project
+      project.state == "pending approval"
+    end
   end
 end
