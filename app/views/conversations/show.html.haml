@@ -1,36 +1,47 @@
-.container-wrapper
-  .row
-    .col-lg-2.col-sm-12
-      %a.thumbnail.img-org{href: ""}
-        %img{alt: "", "data-src" => "holder.js/100%x180"}/
-    .col-lg-10.col-sm-12
-      - @messages.private_messages.each do |message|
-        %h1 
-          = link_to "#{message.sender.first_name} #{message.sender.last_name}", user_path(message.sender.id)
-        .row
-          .col-lg-3.col-md-3
-            %h4.org-head
-              %strong
-                = message.subject
-        %h2 Body
-        .container
-          .container-wrapper
-            .row
-              %p 
-                = message.body
+.row#conversation-thread-wrapper
+  .col-lg-2#inbox-tabs
+    %ul.nav.nav-tabs.nav-stacked
+      %li
+        %a{:href => "#"}Messages
+      %li 
+        %a{:href => "#"}Projects
+      %li 
+        %a{:href => "#"}Connections
+      %li 
+        %a{:href => "#"}Sent
+      %li 
+        %a{:href => "#"}Archived 
+  .col-lg-9
+    .col-lg-2#convo-img-wrapper
+      %img#conversation-header-img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+    .col-lg-7#convo-subject-details
+      %h4
+        %strong Project Request: JaBroni Drive
+      %h4 Alice Smith 
+      %p May 20, 2014 6:48 PM
+    
+    .row
+      .col-lg-12.convo-msg-wrapper
+        - @messages.private_messages.each do |message|
+          %p 
+            %span On May 21, 2014 7:33 PM, 
+            = link_to "#{message.sender.first_name} #{message.sender.last_name}", user_path(message.sender.id)
+            %span Wrote:
+          %p.conversation-message-body 
+            = message.body
 
-%section.register.container
-.row
-  .col-sm-6.col-sm-offset-1
-    = form_for [@private_message], url: private_messages_path do |f|
-      %fieldset
-        .form-group
-          %label.control-label.col-sm-3 Subject:
-          = f.text_field :subject, class: "form-control"
-        .form-group
-          %label.control-label.col-sm-3 Body:
-          = f.text_area :body, cols: 6, rows: 6, class: "form-control"
-          = f.hidden_field :sender_id, :value => current_user.id
-          = f.hidden_field :recipient_id, :value => @message.sender_id
-          = f.hidden_field :conversation_id, :value => @message.conversation_id
-          = f.submit "Create", class: "btn btn-lg btn-primary"
+    %section.register
+      .col-lg-12
+        = form_for [@private_message], url: private_messages_path do |f|
+          %fieldset#convo-form-fieldset
+            .form-group
+              %label.control-label.col-sm-3 Subject:
+              = f.text_field :subject, class: "form-control"
+            .form-group
+              %label.control-label.col-sm-3 Body:
+              = f.text_area :body, cols: 6, rows: 6, class: "form-control"
+              = f.hidden_field :sender_id, :value => current_user.id
+              = f.hidden_field :recipient_id, :value => @message.sender_id
+              = f.hidden_field :conversation_id, :value => @message.conversation_id
+            .form-group 
+              = f.submit "Send", class: "btn btn-lg btn-primary pull-right"
