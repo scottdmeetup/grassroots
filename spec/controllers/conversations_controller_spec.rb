@@ -153,10 +153,10 @@ describe ConversationsController do
       expect(word_press.reload.users).to eq([alice, bob])
     end
 
-    it "sets all the private messages' project ids to nil" do
+    it "sets all the private messages' project ids to nil except the one associated with the accepted project" do
       post :accept, conversation_id: conversation1.id
 
-      expect(message1.reload.project_id).to eq(nil)
+      expect(message1.reload.project_id).to eq(1)
       expect(message2.reload.project_id).to eq(nil)
       expect(message3.reload.project_id).to eq(nil)
     end
@@ -196,6 +196,50 @@ describe ConversationsController do
       post :completed, conversation_id: conversation1.id
 
       expect(flash[:success]).to eq("Please write to the volunteer to let the volunteer know that the project is complete")
+    end
+  end
+
+  describe "POST drop" do
+    let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
+    let(:bob) { Fabricate(:user, first_name: "Bob") }
+    let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
+    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
+    let(:conversation1) { Fabricate(:conversation) }
+    
+    
+    let(:message1) { Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id) }
+    
+    before do
+      conversation1.private_messages << message1
+      word_press.users << alice
+      word_press.users << bob
+    end
+
+    it "redirects the current user to the thread of the conversation after dissacotiating" do
+      word_press.update_columns(state: "in production")
+      post :drop, conversation_id: conversation1.id
+
+      expect(response).to redirect_to(conversation_path(conversation1.id))
+    end
+
+    it "disassociates the freelancer from the project" do
+      word_press.update_columns(state: "in production")
+      post :drop, conversation_id: conversation1.id
+
+      expect(bob.projects).to eq([])
+    end
+
+    it "moves the project from in production to open" do
+      word_press.update_columns(state: "in production")
+      post :drop, conversation_id: conversation1.id
+
+      expect(word_press.reload.state).to eq("open")
+    end
+    it "automated message within the same message thread stating that the other user has dropped the project" do
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "you are accepted", project_id: word_press.id)
+      post :drop, conversation_id: conversation1.id
+
+      expect(conversation1.private_messages.count).to eq(3)
     end
   end
 end

@@ -17,6 +17,7 @@ Grassroots::Application.routes.draw do
   get 'outgoing_messages', to: 'private_messages#outgoing_messages', as: 'outgoing_messages'
 
   resources :conversations, only: [:show, :index]
-  get 'accept', to: 'conversations#accept', as: 'accept'
-  get 'completed', to: 'conversations#completed', as: 'completed'
+  get 'accept', to: 'conversations#accept'
+  get 'completed', to: 'conversations#completed'
+  get 'drop', to: 'conversations#drop'
 end

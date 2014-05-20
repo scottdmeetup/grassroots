@@ -19,7 +19,7 @@
           %strong 
             = "Interests: #{@user.interests}"
         %btn
-          = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block'
+          = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block' unless current_user
           
 .row.row-custom
   .col-lg-6

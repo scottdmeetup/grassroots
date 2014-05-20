@@ -88,4 +88,52 @@ describe Conversation do
       expect(convo.project_complete_request).to eq(true)
     end
   end
+
+  describe "#opportunity_drop_project" do
+    it "returns true if a private message is part of a project in production" do
+      convo = Conversation.create
+      alice = Fabricate(:user, first_name: "Alice", last_name: "Smith")
+      bob = Fabricate(:user, first_name: "Bob", last_name: "Smith")
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open")
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id, project_id: word_press.id)
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Project let me join your project", body: "your request has been accepted", conversation_id: convo.id, project_id: word_press.id)
+      word_press.update_attributes(state: "in production")
+      bob.projects << word_press
+      alice.projects << word_press
+
+      expect(convo.opportunity_drop_project).to eq(true)
+    end
+
+    it "true if the project has changed from open to in production" do
+      convo = Conversation.create
+      alice = Fabricate(:user, first_name: "Alice", last_name: "Smith")
+      bob = Fabricate(:user, first_name: "Bob", last_name: "Smith")
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open")
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id, project_id: word_press.id)
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Project let me join your project", body: "your request has been accepted", conversation_id: convo.id, project_id: word_press.id)
+      word_press.update_columns(state: "in production")
+      bob.projects << word_press
+      alice.projects << word_press
+
+      expect(convo.opportunity_drop_project).to eq(true)
+    end
+=begin
+    it "returns false if the, in production, state of project is at more than 5 days old" do
+      convo = Conversation.create
+      alice = Fabricate(:user, first_name: "Alice", last_name: "Smith")
+      bob = Fabricate(:user, first_name: "Bob", last_name: "Smith")
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open", created_at: 10.days.ago)
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id, project_id: word_press.id)
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Project let me join your project", body: "your request has been accepted", conversation_id: convo.id, project_id: word_press.id)
+      word_press.update_attributes!(state: "in production", updated_at: 6.days.ago)
+      bob.projects << word_press
+      alice.projects << word_press
+
+      expect(convo.reload.opportunity_drop_project).to eq(false)
+    end
+=end
+  end
 end
