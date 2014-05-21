@@ -16,19 +16,19 @@
       %img#conversation-header-img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
     .col-lg-7#convo-subject-details
       %h4
-        %strong= @messages.first.subject
-      - if @messages.first.sender == current_user
-        %h4= @messsages.first.recipient
+        %strong= @messages.private_messages.first.subject
+      - if @messages.private_messages.first.sender_id == current_user.id
+        %h4= @messsages.private_messages.first.recipient
       - else
-        %h4= @messsages.first.sender
-      %p= @messages.first.created_at
+        %h4= "#{@message.sender.first_name} #{@message.sender.last_name}"
+      %p= @messages.private_messages.first.created_at
     
     .row
       .col-lg-12.convo-msg-wrapper
         - @messages.private_messages.each do |message|
           %p 
             %span On May 21, 2014 7:33 PM, 
-            = "#{message.sender.first_name} #{message.sender.last_name}", user_path(message.sender.id) if message.sender
+            = "#{message.sender.first_name} #{message.sender.last_name}" if message.sender
             %span Wrote:
           %p.conversation-message-body 
             = message.body
@@ -37,9 +37,6 @@
       .col-lg-12
         = form_for [@private_message], url: private_messages_path do |f|
           %fieldset#convo-form-fieldset
-            .form-group
-              %label.control-label.col-sm-3 Subject:
-              = f.text_field :subject, class: "form-control"
             .form-group
               %label.control-label.col-sm-3 Body:
               = f.text_area :body, cols: 6, rows: 6, class: "form-control"
