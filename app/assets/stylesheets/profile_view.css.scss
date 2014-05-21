@@ -16,11 +16,15 @@ height: 150px;
 
 	.thumbnail .thumbnail-project {
 	margin-top: 31px;
-	height: 11em;
+	height: 11em;	
 }
 .thumbnail-project {
+	height: 23.5em;
 	padding: 4px 10px;
 }
+	.thumbnail-project > p {
+		height: 28px;
+	}
 	.thumb-img-org {
 		width: 150px;
 		margin-bottom: 10px;
