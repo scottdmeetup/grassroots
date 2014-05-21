@@ -2,17 +2,21 @@ class Conversation < ActiveRecord::Base
   has_many :private_messages, -> {order('created_at ASC')}
 
   def sender_user_name_of_recent_message
-    message = self.private_messages.last
+    message = self.private_messages.last 
     user = message.sender_id
     name = User.find_by(id: user)
-    "#{name.first_name} #{name.last_name}"
+    if name
+      "#{name.first_name} #{name.last_name}"
+    end
   end
 
   def the_id_of_sender
     message = self.private_messages.last
     user = message.sender_id
     name = User.find_by(id: user)
-    name.id
+    if name
+      name.id
+    end
   end
 
   def private_message_subject

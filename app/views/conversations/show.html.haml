@@ -18,7 +18,7 @@
       %h4
         %strong= @messages.private_messages.first.subject
       - if @messages.private_messages.first.sender_id == current_user.id
-        %h4= @messsages.private_messages.first.recipient
+        %h4= "#{@message.recipient.first_name}" 
       - else
         %h4= "#{@message.sender.first_name} #{@message.sender.last_name}"
       %p= @messages.private_messages.first.created_at

@@ -44,7 +44,7 @@ class ConversationsController < ApplicationController
     project.users.clear
     current_user.organization_administrator ? project.users << current_user : project.users << project.project_admin
     project.update_columns(state: "open")
-    conversation.private_messages << PrivateMessage.create(subject: "#{message.sender.first_name} #{message.sender.last_name} has been dropped on this project", body: "This is an automated message." )
+    conversation.private_messages << PrivateMessage.create(subject: message.subject, body: "#{message.sender.first_name} #{message.sender.last_name} has been dropped on this project. This is an automated message." )
     redirect_to conversation_path(conversation.id)
     current_user.organization_administrator ? flash[:success] = "You have dropped this volunteer. Please write to the volunteer to let him/her know." : flash[:success] = "You have dropped this project. Please write to the project administrator to let him/her know." 
   end
