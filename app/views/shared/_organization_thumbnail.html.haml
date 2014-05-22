@@ -1,0 +1,7 @@
+.col-lg-3.col-sm-3
+  .thumbnail.thumbnail-staff
+    %img.img-responsive.img-staff{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+    .caption
+      %h5
+        = link_to "#{organization.name}", organization_path(organization.id)
+      %h5

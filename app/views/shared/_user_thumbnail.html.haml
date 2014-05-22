@@ -2,7 +2,13 @@
   .thumbnail.thumbnail-staff
     %img.img-responsive.img-staff{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
     .caption
-      %h4
+      %h5
         = link_to "#{user.first_name} #{user.last_name}", user_path(user.id)
+      %h5
+        = link_to "#{user.organization.name}", organization_path(user.organization.id) if user.organization
+      %h5
+        = "Organization's Administrator" if user.organization_administrator
+        = "Freelancer" if user.volunteer
+        = "#{user.position}" if user.organization_staff
         %btn
           = link_to "Message",new_private_message_path(user_id: user.id), class: 'btn btn-primary btn-block'

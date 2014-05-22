@@ -46,8 +46,8 @@ describe ProjectsController do
     it "shows the projects with one or more submitted skill sets" do
       word_press = Fabricate(:project, title: "WordPress Site", skills: "web development")
       logo = Fabricate(:project, title: "Logo Redesign", skills: "graphic design")
-
       get :search, skills: [word_press.skills, logo.skills]
+      
       expect(assigns(:results)).to eq([word_press, logo])
     end
   end

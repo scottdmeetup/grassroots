@@ -9,7 +9,7 @@ Grassroots::Application.routes.draw do
   end
 
   resources :users, only: [:show, :new, :create, :index]
-  resources :organizations, only: [:show]
+  resources :organizations, only: [:show, :index]
   resources :projects, only: [:index, :show]
   get 'join', to: 'projects#join', as: 'join'
   get 'search', to: 'projects#search', as: 'search'

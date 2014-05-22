@@ -4,5 +4,5 @@
       %input.form-control{:placeholder => "Search", :type => "text"}
     %button.btn.btn-default{:type => "submit"} Submit
 .row
-  - @users.each do |user|
-    = render "shared/user_thumbnail", user: user
+  - @organizations.each do |organization|
+    = render "shared/organization_thumbnail", organization: organization
