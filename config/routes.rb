@@ -12,6 +12,7 @@ Grassroots::Application.routes.draw do
   resources :organizations, only: [:show]
   resources :projects, only: [:index, :show]
   get 'join', to: 'projects#join', as: 'join'
+  get 'search', to: 'projects#search', as: 'search'
 
   resources :private_messages, only: [:new, :create]
   get 'outgoing_messages', to: 'private_messages#outgoing_messages', as: 'outgoing_messages'

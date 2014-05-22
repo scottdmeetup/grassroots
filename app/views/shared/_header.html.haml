@@ -12,11 +12,6 @@
     %nav
       - if current_user
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
-          %div#search-bar
-            %form.navbar-form.navbar-left{:role => "search"}
-              .form-group
-                %input.form-control{:placeholder => "Search", :type => "text"}
-              %button.btn.btn-default{:type => "submit"} Submit
           %ul.nav.nav-tabs#account-tabs
             %li
               = link_to "Inbox", conversations_path if current_user          

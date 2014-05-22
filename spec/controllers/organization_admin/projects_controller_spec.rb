@@ -83,6 +83,17 @@ describe OrganizationAdmin::ProjectsController do
         word_press = Project.first
         expect(word_press.skills).to eq("Web Development")
       end
+
+      it "creates a project associated with the organization's cause" do
+        huggey_bears = Fabricate(:organization, cause: "animals")
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        session[:user_id] = alice.id
+        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
+
+        word_press = Project.first
+        expect(word_press.causes).to eq("animals")
+      end
+
       it "sets the project's state to open" do
         huggey_bears = Fabricate(:organization)
         alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)

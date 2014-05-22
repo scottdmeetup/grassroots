@@ -89,5 +89,60 @@ describe User do
       expect(bob.organization_name).to eq(org.name)
     end
   end
+
+  describe "#open_projects" do
+    it "returns the users projects that are open" do
+      bob = Fabricate(:user, first_name: "Bob")
+      word_press = Fabricate(:project, state: "open")
+      logo = Fabricate(:project, state: "in production")
+      bob.projects << [word_press, logo]
+
+      expect(bob.open_projects).to eq([word_press])
+    end
+  end
+
+  describe "#in_production_projects" do
+    it "returns the users projects that are in production" do
+      bob = Fabricate(:user, first_name: "Bob")
+      word_press = Fabricate(:project, state: "open")
+      logo = Fabricate(:project, state: "in production")
+      bob.projects << [word_press, logo]
+
+      expect(bob.in_production_projects).to eq([logo])
+    end
+  end
+
+  describe "#pending_approval_projects" do
+    it "returns the users projects that are pending approval" do
+      bob = Fabricate(:user, first_name: "Bob")
+      word_press = Fabricate(:project, state: "open")
+      logo = Fabricate(:project, state: "pending approval")
+      bob.projects << [word_press, logo]
+
+      expect(bob.pending_approval_projects).to eq([logo])
+    end
+  end
+
+  describe "#completed_projects" do
+    it "returns the users projects that are completed" do
+      bob = Fabricate(:user, first_name: "Bob")
+      word_press = Fabricate(:project, state: "open")
+      logo = Fabricate(:project, state: "completed")
+      bob.projects << [word_press, logo]
+
+      expect(bob.completed_projects).to eq([logo])
+    end
+  end
+
+  describe "#unfinished_projects" do
+    it "returns the users projects that are unfinished" do
+      bob = Fabricate(:user, first_name: "Bob")
+      word_press = Fabricate(:project, state: "open")
+      logo = Fabricate(:project, state: "unfinished")
+      bob.projects << [word_press, logo]
+
+      expect(bob.unfinished_projects).to eq([logo])
+    end
+  end
 end
   

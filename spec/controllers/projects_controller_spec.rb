@@ -24,6 +24,34 @@ describe ProjectsController do
      it "shows all freenlancers thumbnails"
   end
 
+  describe "GET search" do
+    it "redirects to the results page" do
+      get :search
+      expect(response).to render_template(:search)
+    end
+    it "shows only the projects within a certain skill set" do
+      word_press = Fabricate(:project, title: "WordPress Site", skills: "web development")
+      get :search, skills: word_press.skills
+
+      expect(assigns(:results)).to eq([word_press])
+    end
+    it "shows the projects under a certain cause" do
+      huggey_bear = Fabricate(:organization, cause: "animals")
+      word_press = Fabricate(:project, title: "WordPress Site", skills: "web development", causes: "animals", organization_id: huggey_bear.id)
+      get :search, causes: "animals"
+
+      expect(assigns(:results)).to eq([word_press])
+    end
+
+    it "shows the projects with one or more submitted skill sets" do
+      word_press = Fabricate(:project, title: "WordPress Site", skills: "web development")
+      logo = Fabricate(:project, title: "Logo Redesign", skills: "graphic design")
+
+      get :search, skills: [word_press.skills, logo.skills]
+      expect(assigns(:results)).to eq([word_press, logo])
+    end
+  end
+
 
   describe "GET accept" do
     it "changes the projects state from pending to in production"

@@ -62,13 +62,13 @@ global_giving.update_columns(user_id: 3)
 
 Project.destroy_all
 word_press = Project.create(title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
-  skills: "WordPress", causes: "Animal Rights", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
+  skills: "web development", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
 pretty_logo = Project.create(title: "Elegant Logo", description: "I want a logo that reflects the strenght of the human spirit!", 
-  skills: "Graphic Design", causes: "Human Rights", deadline: Date.today + 1.month, user_id: 2, organization_id: 2, estimated_hours: 32, state: "open")
+  skills: "graphic design", causes: "human rights", deadline: Date.today + 1.month, user_id: 2, organization_id: 2, estimated_hours: 32, state: "open")
 social_media = Project.create(title: "Twitter Help", description: "I need someone to push out 10 tweets a day for me", 
-  skills: "Social Media", causes: "Social Good", deadline: Date.today + 1.month, user_id: 3, organization_id: 3, estimated_hours: 11, state: "open")
+  skills: "social media", causes: "social", deadline: Date.today + 1.month, user_id: 3, organization_id: 3, estimated_hours: 11, state: "open")
 fundraising = Project.create(title: "Fundraising Help", description: "I need help fundraising my organization", 
-  skills: "Fundraising", causes: "Animal Rights", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
+  skills: "fundraising", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
 alice.projects << word_press
 bob.projects << pretty_logo
 catherine.projects << social_media

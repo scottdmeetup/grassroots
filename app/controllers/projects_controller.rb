@@ -9,6 +9,12 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
+  def search
+    filter = {skills: params[:skills]} if params[:skills]
+    filter = {causes: params[:causes]}  if params[:causes]
+    @results = Project.where(filter).to_a 
+  end
+
 private
 
   def project_params

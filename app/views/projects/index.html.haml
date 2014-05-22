@@ -1,3 +1,32 @@
-.row#project-index-wrapper 
-  - @projects.each do |project|
-    = render 'shared/project_thumbnail', project: project
+%div#search-bar
+  %form.navbar-form.navbar-left{:role => "search"}
+    .form-group
+      %input.form-control{:placeholder => "Search", :type => "text"}
+    %button.btn.btn-default{:type => "submit"} Submit
+.row
+  .div.pull-left
+    = form_tag '/search', method: 'get' do
+      %h3 Skill Set
+      %h5 (Choose only one)
+      %p Graphic Design
+      %input{:name => 'skills[]', :type => "checkbox", :value => "graphic design"}
+      %p Web Development
+      %input{:name => 'skills[]', :type => "checkbox", :value => "web development"}
+      %p Accounting
+      %input{:name => 'skills[]', :type => "checkbox", :value => "accounting"}
+      %p Fundraising
+      %input{:name => 'skills[]', :type => "checkbox", :value => "fundraising"}
+      %p Business Planning
+      %input{:name => 'skills[]', :type => "checkbox", :value => "business planning"}
+      %h3 Cause
+      %p Animal
+      %input{:name => 'causes[]', :type => "checkbox", :value => "animals"}
+      %p Human Rights
+      %input{:name => 'causes[]', :type => "checkbox", :value => "human rights"}
+      %p Social Good
+      %input{:name => 'causes[]', :type => "checkbox", :value => "social"}
+      %br
+      = submit_tag "Search"
+    #project-index-wrapper
+      - @projects.each do |project|
+        = render 'shared/project_thumbnail', project: project
