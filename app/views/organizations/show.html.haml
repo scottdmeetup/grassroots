@@ -3,87 +3,135 @@
     %a.thumbnail.img-org{href: ""}
       %img{alt: "", "data-src" => "holder.js/100%x180"}/
   .col-lg-8#org-info
-    %h1 
+    %h2 
       = @organization.name
     .row
-      .col-lg-3
-        %h4.org-head
-          %strong
-            = @organization.ruling_year
-        %h4.org-head 
+      .col-lg-4#org-header-info
+        %h5.org-head 
           %strong 
-            = @organization.street1
-            = @organization.street2
-            = @organization.city
-            = @organization.state_id
-            = @organization.zip
-        %h4.org-head 
-          %strong Budget: $22,000,000.00
-        %h4.org-head 
+            = "#{@organization.city}"
+        %h5.org-head 
           %strong 
-            = "Cause: #{@organization.ntee_major_category_id}"
-      .col-lg-6.col-lg-offset-1
-        %p 
-          = @organization.mission_statement
-
-.container-wrapper 
-  .row.row-custom
-    .col-lg-6
-      %h2 Projects
-    .col-lg-6
-      %btn
-        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
-
-.row
-  %ul.nav.nav-tabs
-    %li
-      %a{:href => "#"} Open
-    %li
-      %a{:href => "#"} In Production
-    %li
-      %a{:href => "#"} Completed
-    %li
-      %a{:href => "#"} Unfinished
-  - @organization.projects.each do |project|
-    = render 'shared/project_thumbnail', project: project
-             
-
-.row.row-custom
+            = "#{@organization.cause}"
   .col-lg-12
-    %h2 Staff
+    %ul.nav.nav-tabs#myTab
+      %li.active
+        %a{:href => "#activity", 'data-toggle' => "tab"} Activity
+      %li
+        %a{:href => "#overview", 'data-toggle' => "tab"} Overview
+      
+.tab-content
+  .tab-pane.active#activity
+    .container-wrapper 
+      .row.row-custom
+        .col-lg-6
+          %h2 Projects
+        .col-lg-6
+          %btn
+            = link_to "Create a Project", new_organization_admin_project_path(organization_id: @organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
+
+    .row
+      %ul.nav.nav-tabs
+        %li
+          %a{:href => "#"} Open
+        %li
+          %a{:href => "#"} In Production
+        %li
+          %a{:href => "#"} Completed
+        %li
+          %a{:href => "#"} Unfinished
+      - @organization.projects.each do |project|
+        = render 'shared/project_thumbnail', project: project
+                 
+
     
 
-.container-wrapper 
-  .row#staff-wrapper
-    - @organization.users.each do |user|
-      = render 'shared/user_thumbnail', user: user
+    .row.row-custom
+      .col-lg-12
+        %h2 Amnesty International's Updates
 
-.row.row-custom
-  .col-lg-12
-    %h2 Amnesty International's Updates
+    .row
+      .col-lg-12
+        .row.row-custom.row-wrapper
+          %div.newsfeed-wrapper
+            .col-lg-2.col-lg-offset-1
+              %img.img-staff-newsfeed{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+            .col-lg-6
+              %div.newsfeed-content-wrapper
+                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
+            .col-lg-3
+          .row.row-custom.row-wrapper
+          %div.newsfeed-wrapper
+            .col-lg-2.col-lg-offset-1
+              %div.newsfeed-vote-wrapper
+                %dl.vote-wrapper
+                  %dt.profile-newsfeed-number 3
+                  %dd Votes
+                %dl.comment-wrapper
+                  %dt.profile-newsfeed-number 10 
+                  %dd Comments
+            .col-lg-6
+              %div.newsfeed-content-wrapper
+                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
+            .col-lg-3
 
-.row
-  .col-lg-12
-    .row.row-custom.row-wrapper
-      %div.newsfeed-wrapper
-        .col-lg-2.col-lg-offset-1
-          %img.img-staff-newsfeed{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-        .col-lg-6
-          %div.newsfeed-content-wrapper
-            %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-        .col-lg-3
-      .row.row-custom.row-wrapper
-      %div.newsfeed-wrapper
-        .col-lg-2.col-lg-offset-1
-          %div.newsfeed-vote-wrapper
-            %dl.vote-wrapper
-              %dt.profile-newsfeed-number 3
-              %dd Votes
-            %dl.comment-wrapper
-              %dt.profile-newsfeed-number 10 
-              %dd Comments
-        .col-lg-6
-          %div.newsfeed-content-wrapper
-            %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-        .col-lg-3
-      
+  .tab-pane#overview
+    .row.row-custom
+      .col-lg-12
+        %h2 Organization Information
+
+    .row#org-data-wrapper 
+      .col-lg-12
+        .col-lg-8
+          %dl 
+            %dt Mission
+            %dd
+              = @organization.mission_statement
+          %dl 
+            %dt Goals 
+            %dd NASA is not about the ‘Adventure of Human Space Exploration’…We won’t be doing it just to get out there in space – we’ll be doing it because the things we learn out there will be making life better for a lot of people who won’t be able to go.
+
+          .row
+            .col-lg-8#org-data-pts
+              %div.pull-left.org-data EIN Number:
+              %div 22-2222222
+              %div.pull-left.org-data Organization Budget:
+              %div $22,000,000.00
+              %div.pull-left.org-data Organization Size:
+              %div 1-10
+              %div.pull-left.org-data Founding Year:
+              %div 
+                = @organization.ruling_year
+          .row
+            .col-lg-8
+              %dl#org-address-line
+                %dt Physical Address
+                %dd
+                  = @organization.street1
+                  = "#{@organization.street2}"
+                  %br
+                  = "#{@organization.city},"
+                  = @organization.state_id
+                  = @organization.zip
+              %div.pull-left.org-data Contact Number:
+              %div (555) 555-5555
+              %div.pull-left.org-data Contact Email:
+              %div benjamin@grassroots.org
+
+    .row.row-custom
+      .col-lg-12
+        %h2 Staff
+        
+
+    .container-wrapper 
+      .row#staff-wrapper
+        - @organization.users.each do |user|
+          = render 'shared/user_thumbnail', user: user
+
+    .row.row-custom
+      .col-lg-12
+        %h2 Board
+        
+
+    .container-wrapper 
+      .row#staff-wrapper

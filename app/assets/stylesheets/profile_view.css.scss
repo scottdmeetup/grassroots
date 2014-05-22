@@ -1,9 +1,17 @@
 #profile-details-row {
 	padding: 28px 0 10px;
 }
-	#org-info {
-		margin-top: -26px;
+	#org-info,
+	#user-info {
+		margin-top: 15px;
+		margin-left: -5%;
 	}
+			#org-header-info > .org-head, 
+			#user-header-info > .org-head {
+				float: left;
+				margin-top: 0px;
+				margin-right: 15px;
+			}
 
 		.img-org {
 width: 150px;
