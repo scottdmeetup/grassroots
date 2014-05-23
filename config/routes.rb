@@ -8,7 +8,7 @@ Grassroots::Application.routes.draw do
     resources :projects, only: [:new, :create]
   end
 
-  resources :users, only: [:show, :new, :create, :index]
+  resources :users, except: [:destroy]
   resources :organizations, only: [:show, :index]
   resources :projects, only: [:index, :show]
   get 'join', to: 'projects#join', as: 'join'

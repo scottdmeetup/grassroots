@@ -8,7 +8,7 @@
     .row
       .col-lg-4.col-md-3
         %h4.org-head
-          %strong 
+          %strong
             - if @user.organization
               = "#{@user.position} at"
               = link_to "#{@user.organization_name}", organization_path(@user.organization.id)
@@ -20,6 +20,8 @@
             = "Interests: #{@user.interests}"
         %btn
           = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block' unless current_user
+        %p
+          = link_to "Edit Profile", edit_user_path(current_user)
 .container-wrapper           
   .row.row-custom
     .col-lg-6

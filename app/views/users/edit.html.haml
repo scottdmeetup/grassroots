@@ -1,0 +1,25 @@
+%section.container
+	.row
+		.col-sm-10.col-sm-offset-1
+			= form_for(@user) do |f|
+				%header
+					%h1 Edit Profile
+				%fieldset
+					= f.label :first_name
+					= f.text_field :first_name
+					= f.label :last_name
+					= f.text_field :last_name
+					= f.label :email
+					= f.text_field :email
+					= f.label :position
+					= f.text_field :position
+					= f.label :skills
+					= f.text_field :skills
+					= f.label :interests
+					= f.text_field :interests
+					= f.label :bio
+					= f.text_area :bio, cols: 4, rows: 4, class: "form-control"
+				.field
+					= f.label :organization_name_box
+					= f.text_field :organization_name_box, data: {autocomplete_source: Organization.order(:name).map(&:name)}
+					= f.submit "Update", class: "btn btn-success"

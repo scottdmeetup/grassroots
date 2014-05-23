@@ -8,6 +8,14 @@ class User < ActiveRecord::Base
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
   has_many :conversations
 
+  def organization_name_box
+    organization.try(:name)
+  end
+
+  def organization_name_box=(name)
+    self.organization = Organization.find_by_name(name) if name.present?
+  end
+
   def private_messages
     messages = self.sent_messages + self.received_messages
     messages.sort!

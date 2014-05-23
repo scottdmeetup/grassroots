@@ -10,5 +10,12 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //= require jquery
+//= require jquery_ujs
+//= require jquery.ui.all
 //= require bootstrap
 
+jQuery(function() {
+  return $('#user_organization_name_box').autocomplete({
+    source: $('#user_organization_name_box').data('autocomplete-source')
+  });
+});

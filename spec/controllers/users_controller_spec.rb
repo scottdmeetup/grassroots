@@ -36,9 +36,7 @@ describe UsersController do
       it "notifies the user that an approval notification has been sent"
   end
 
-  describe "PATCH/PUT edit" do
-    ## Do a lot of the specs from the GET show belong here?
-  end
+  
   describe "GET new" do
     it "renders the new template for unauthenticated users" do
       get :new
@@ -57,5 +55,42 @@ describe UsersController do
       expect(User.count).to eq(1)
     end
     it "redirects the user to its profile page"
+  end
+
+  describe "GET edit" do
+    it "renders a form for the current user's profile" do
+      alice = Fabricate(:user)
+      get :edit, id: alice.id
+
+      expect(response).to render_template(:edit)
+    end
+    
+    it "sets the @user" do
+      alice = Fabricate(:user)
+      get :edit, id: alice.id
+
+      expect(assigns(:user)).to be_a User
+    end
+  end
+
+  describe "PATCH update" do
+    it "redirects to the user's profile page" do
+      alice = Fabricate(:user)
+      patch :update, id: alice.id, user: {email: "test@example.com"} 
+
+      expect(response).to redirect_to(user_path(alice.id))
+    end
+    it "updates the user's information" do
+      alice = Fabricate(:user)
+      patch :update, id: alice.id, user: {last_name: "Adams"} 
+
+      expect(alice.reload.last_name).to eq("Adams")
+    end
+    it "flashes a notice that the user updated his/her profile" do
+      alice = Fabricate(:user)
+      patch :update, id: alice.id, user: {last_name: "Adams"} 
+      
+      expect(flash[:notice]).to eq("You have updated your profile successfully.")
+    end
   end
 end
