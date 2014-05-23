@@ -1,35 +1,43 @@
 .row#profile-details-row
-  .col-lg-2.col-sm-12
+  .col-lg-3.col-sm-12
     %a.thumbnail.img-org{href: ""}
       %img{alt: "", "data-src" => "holder.js/100%x180"}/
-  .col-lg-10.col-sm-12
-    %h1 
+  .col-lg-8.col-sm-12#user-info
+    %h2 
       = "#{@user.first_name} #{@user.last_name}"
     .row
-      .col-lg-4.col-md-3
-        %h4.org-head
-          %strong
+      .col-lg-4.col-md-3#user-header-info
+        %h5.org-head
+          %strong 
             - if @user.organization
               = "#{@user.position} at"
               = link_to "#{@user.organization_name}", organization_path(@user.organization.id)
-        %h4.org-head
+        %h5.org-head 
           %strong 
-            = "Skills: #{@user.skills}" 
-        %h4.org-head 
+            = "#{@user.city}"
+        %h5.org-head
           %strong 
-            = "Interests: #{@user.interests}"
+            = "#{@user.skills}"
         %btn
           = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block' unless current_user
         %p
           = link_to "Edit Profile", edit_user_path(current_user)
-.container-wrapper           
-  .row.row-custom
-    .col-lg-6
-      %h2 Projects
-    .col-lg-6
-      - if @user.organization_administrator && current_user == @user
-        = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
+  .col-lg-12
+    %ul.nav.nav-tabs#myTab
+      %li.active
+        %a{:href => "#activity", 'data-toggle' => "tab"} Activity
+      %li
+        %a{:href => "#about", 'data-toggle' => "tab"} About
 
+.tab-content
+  .tab-pane.active#activity        
+    .container-wrapper           
+      .row.row-custom
+        .col-lg-6
+          %h2 Projects
+        .col-lg-6
+          - if @user.organization_administrator && current_user == @user
+            = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
 
 .row
   %ul.nav.nav-tabs
@@ -63,34 +71,56 @@
   - elsif params[:tab] == 'unfinished'
     - @user.unfinished_projects.each do |project|  
       = render 'shared/project_thumbnail', project: project
+      
+    .row.row-custom
+      .col-lg-12
+        %h2 Bob Smith's Updates
+    .row
+      .col-lg-12
+        .row.row-custom.row-wrapper
+          %div.newsfeed-wrapper
+            .col-lg-2.col-lg-offset-1
+              %img.img-staff-newsfeed{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+            .col-lg-6
+              %div.newsfeed-content-wrapper
+                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
+            .col-lg-3
+          .row.row-custom.row-wrapper
+          %div.newsfeed-wrapper
+            .col-lg-2.col-lg-offset-1
+              %div.newsfeed-vote-wrapper
+                %dl.vote-wrapper
+                  %dt.profile-newsfeed-number 3
+                  %dd Votes
+                %dl.comment-wrapper
+                  %dt.profile-newsfeed-number 10 
+                  %dd Comments
+            .col-lg-6
+              %div.newsfeed-content-wrapper
+                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
+            .col-lg-3
 
-.row.row-custom
-  .col-lg-12
-    %h2 Bob Smith's Updates
-    
+  .tab-pane#about
 
-.row
-  .col-lg-12
-    .row.row-custom.row-wrapper
-      %div.newsfeed-wrapper
-        .col-lg-2.col-lg-offset-1
-          %img.img-staff-newsfeed{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-        .col-lg-6
-          %div.newsfeed-content-wrapper
-            %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-        .col-lg-3
-      .row.row-custom.row-wrapper
-      %div.newsfeed-wrapper
-        .col-lg-2.col-lg-offset-1
-          %div.newsfeed-vote-wrapper
-            %dl.vote-wrapper
-              %dt.profile-newsfeed-number 3
-              %dd Votes
-            %dl.comment-wrapper
-              %dt.profile-newsfeed-number 10 
-              %dd Comments
-        .col-lg-6
-          %div.newsfeed-content-wrapper
-            %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-        .col-lg-3
+    .row.row-custom
+      .col-lg-12
+        %h2 About Me
+
+    .row#org-data-wrapper 
+      .col-lg-12
+        .col-lg-8
+          %dl 
+            %dt Bio
+            %dd Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.
+          
+          %dl 
+            %dt 
+              What I do for 
+              = "#{@user.organization_name}"
+            %dd Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.
+
+          %dl 
+            %dt Contact Me for: 
+            %dd Never in all their history have men been able truly to conceive of the world as one.
+
       
