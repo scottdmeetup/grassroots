@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe OrganizationsController do
+describe OrganizationsController, :type => :controller do
   describe "GET show" do
     it "renders the organization show template" do
       amnesty = Fabricate(:organization)

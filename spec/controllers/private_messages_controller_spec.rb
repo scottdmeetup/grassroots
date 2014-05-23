@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PrivateMessagesController do
+describe PrivateMessagesController, :type => :controller do
   let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", last_name: "Smith") }
   let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
   let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }

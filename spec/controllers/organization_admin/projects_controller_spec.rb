@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe OrganizationAdmin::ProjectsController do
+describe OrganizationAdmin::ProjectsController, :type => :controller do
   describe "GET new" do
     it "renders the new template for creating a project" do
       alice = Fabricate(:user, organization_administrator: true)

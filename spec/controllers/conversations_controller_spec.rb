@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ConversationsController do
+describe ConversationsController, :type => :controller do
     let(:alice) { Fabricate(:user, first_name: "Alice") }
     let(:bob) { Fabricate(:user, first_name: "Bob") }
     let(:cat) { Fabricate(:user, first_name: "Cat") }

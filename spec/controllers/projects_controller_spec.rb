@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ProjectsController do
+describe ProjectsController, :type => :controller do
   describe "GET index" do
     it "shows all of the projects on Grassroots" do
       word_press = Fabricate(:project, title: "WordPress Site")

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SessionsController do
+describe SessionsController, :type => :controller do
   describe 'GET new' do
     it "renders the new template for unauthenticated users" do
       get :new

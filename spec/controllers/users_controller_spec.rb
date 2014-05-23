@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UsersController do
+describe UsersController, :type => :controller do
   describe "GET index" do
     it "renders the index template" do
       get :index
@@ -74,23 +74,28 @@ describe UsersController do
   end
 
   describe "PATCH update" do
-    it "redirects to the user's profile page" do
-      alice = Fabricate(:user)
-      patch :update, id: alice.id, user: {email: "test@example.com"} 
+    context "when the user is affiliated with an organization" do
+      it "redirects to the user's profile page" do
+        huggey_bear = Fabricate(:organization)
+        alice = Fabricate(:user)
+        patch :update, id: alice.id, user: {email: "test@example.com", organization_name_box: huggey_bear.name} 
 
-      expect(response).to redirect_to(user_path(alice.id))
-    end
-    it "updates the user's information" do
-      alice = Fabricate(:user)
-      patch :update, id: alice.id, user: {last_name: "Adams"} 
+        expect(response).to redirect_to(user_path(alice.id))
+      end
+      it "updates the user's information" do
+        huggey_bear = Fabricate(:organization)
+        alice = Fabricate(:user)
+        patch :update, id: alice.id, user: {last_name: "Adams", organization_name_box: huggey_bear.name} 
 
-      expect(alice.reload.last_name).to eq("Adams")
-    end
-    it "flashes a notice that the user updated his/her profile" do
-      alice = Fabricate(:user)
-      patch :update, id: alice.id, user: {last_name: "Adams"} 
-      
-      expect(flash[:notice]).to eq("You have updated your profile successfully.")
+        expect(alice.reload.last_name).to eq("Adams")
+      end
+      it "flashes a notice that the user updated his/her profile" do
+        huggey_bear = Fabricate(:organization)
+        alice = Fabricate(:user)
+        patch :update, id: alice.id, user: {email: "test@example.com", organization_name_box: huggey_bear.name} 
+        
+        expect(flash[:notice]).to eq("You have updated your profile successfully.")
+      end
     end
   end
 end
