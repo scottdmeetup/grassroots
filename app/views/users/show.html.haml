@@ -20,7 +20,7 @@
             = "#{@user.skills}"
         %btn
           = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block' unless current_user
-        %p
+        %p.pull-right
           = link_to "Edit Profile", edit_user_path(current_user)
   .col-lg-12
     %ul.nav.nav-tabs#myTab
@@ -30,7 +30,7 @@
         %a{:href => "#about", 'data-toggle' => "tab"} About
 
 .tab-content
-  .tab-pane.active#activity        
+  .tab-pane.active#activity
     .container-wrapper           
       .row.row-custom
         .col-lg-6
@@ -39,38 +39,38 @@
           - if @user.organization_administrator && current_user == @user
             = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
 
-.row
-  %ul.nav.nav-tabs
-    %li{:class => ('active' if params[:tab].nil?)}
-      = link_to "Open #{@user.open_projects.count}", user_path(@user)
-    
-    %li{:class => ('active' if params[:tab] == 'in production')}
-      = link_to "In Production #{@user.in_production_projects.count}", user_path(@user, tab: 'in production') 
-  
-    %li{:class => ('active' if params[:tab] == 'pending approval')}
-      = link_to "Completion Request #{@user.pending_approval_projects.count}", user_path(@user, tab: 'pending approval')
-  
-    %li{:class => ('active' if params[:tab] == 'completed')}
-      = link_to "Completed #{@user.completed_projects.count}", user_path(@user, tab: 'completed')
-  
-    %li{:class => ('active' if params[:tab] == 'unfinished')}
-      = link_to "Unfinished #{@user.unfinished_projects.count}", user_path(@user, tab: 'unfinished')
+    .row
+      %ul.nav.nav-tabs
+        %li{:class => ('active' if params[:tab].nil?)}
+          = link_to "Open #{@user.open_projects.count}", user_path(@user)
+        
+        %li{:class => ('active' if params[:tab] == 'in production')}
+          = link_to "In Production #{@user.in_production_projects.count}", user_path(@user, tab: 'in production') 
+      
+        %li{:class => ('active' if params[:tab] == 'pending approval')}
+          = link_to "Completion Request #{@user.pending_approval_projects.count}", user_path(@user, tab: 'pending approval')
+      
+        %li{:class => ('active' if params[:tab] == 'completed')}
+          = link_to "Completed #{@user.completed_projects.count}", user_path(@user, tab: 'completed')
+      
+        %li{:class => ('active' if params[:tab] == 'unfinished')}
+          = link_to "Unfinished #{@user.unfinished_projects.count}", user_path(@user, tab: 'unfinished')
 
-  - if params[:tab].nil?
-    - @user.open_projects.each do |project|
-      = render 'shared/project_thumbnail', project: project
-  - elsif params[:tab] == 'in production'
-    - @user.in_production_projects.each do |project|
-      = render 'shared/project_thumbnail', project: project
-  - elsif params[:tab] == 'pending approval'
-    - @user.pending_approval_projects.each do |project|
-      = render 'shared/project_thumbnail', project: project
-  - elsif params[:tab] == 'completed'
-    - @user.completed_projects.each do |project|
-      = render 'shared/project_thumbnail', project: project
-  - elsif params[:tab] == 'unfinished'
-    - @user.unfinished_projects.each do |project|  
-      = render 'shared/project_thumbnail', project: project
+      - if params[:tab].nil?
+        - @user.open_projects.each do |project|
+          = render 'shared/project_thumbnail', project: project
+      - elsif params[:tab] == 'in production'
+        - @user.in_production_projects.each do |project|
+          = render 'shared/project_thumbnail', project: project
+      - elsif params[:tab] == 'pending approval'
+        - @user.pending_approval_projects.each do |project|
+          = render 'shared/project_thumbnail', project: project
+      - elsif params[:tab] == 'completed'
+        - @user.completed_projects.each do |project|
+          = render 'shared/project_thumbnail', project: project
+      - elsif params[:tab] == 'unfinished'
+        - @user.unfinished_projects.each do |project|  
+          = render 'shared/project_thumbnail', project: project
       
     .row.row-custom
       .col-lg-12
