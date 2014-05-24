@@ -17,6 +17,10 @@
 					= f.text_field :skills
 					= f.label :interests
 					= f.text_field :interests
+					= f.label :contact_me_for
+					= f.text_area :contact_reason, cols: 4, rows: 1, class: "form-control"
+					= f.label :role_at_organization
+					= f.text_area :organization_role, cols: 4, rows: 2, class: "form-control"
 					= f.label :bio
 					= f.text_area :bio, cols: 4, rows: 4, class: "form-control"
 				.field

@@ -22,7 +22,7 @@ private
 
   def organization_params
     params.require(:organization).permit(:name, :date_of_incorporation, 
-      :ein, :street1, :street2, :city, :state_id, :zip, :cause, 
+      :ein, :street1, :street2, :city, :state_abbreviation, :zip, :cause, 
       :contact_number, :contact_email, :mission_statement, :goal, :user_id)
   end
 

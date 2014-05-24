@@ -9,4 +9,9 @@
 					= f.password_field :password
 					= f.text_field :first_name, label: "First Name"
 					= f.text_field :last_name, label: "Last Name"
+					= f.form_group :user_type, label: {text: "User Type"} do
+						%p Are you a Nonprofit?
+						= f.radio_button :user_group, "nonprofit"
+						%p Are you a Volunteer?
+						= f.radio_button :user_group, "volunteer"
 					= f.submit "Create", class: "btn btn-success"

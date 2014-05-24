@@ -50,11 +50,23 @@ describe UsersController, :type => :controller do
   end
 
   describe "POST create" do
-    it "creates the user" do
-      post :create, user: {first_name: "Alice", last_name: "Smith", password: "password", email: "alice@example.com"}
-      expect(User.count).to eq(1)
+    context "with valid data" do
+      it "creates the user" do
+        post :create, user: {first_name: "Alice", last_name: "Smith", password: "password", email: "alice@example.com"}
+        expect(User.count).to eq(1)
+      end
+      it "redirects the user to its profile page" do
+        post :create, user: {first_name: "Alice", last_name: "Smith", password: "password", email: "alice@example.com"}
+        user = User.first
+        expect(response).to redirect_to(user_path(user.id))
+      end
+
+      it "sets the user with either a volunteer or nonprofit type" do
+        post :create, user: {first_name: "Alice", last_name: "Smith", password: "password", email: "alice@example.com", user_group: "volunteer"}
+        user = User.first
+        expect(user.user_group).to eq("volunteer")
+      end
     end
-    it "redirects the user to its profile page"
   end
 
   describe "GET edit" do
@@ -111,6 +123,9 @@ describe UsersController, :type => :controller do
 
         expect(alice.reload.email).to eq("test@example.com")
       end
+    end
+
+    context "when the user is a freelancer" do
     end
   end
 

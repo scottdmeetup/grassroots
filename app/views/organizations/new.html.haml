@@ -3,7 +3,7 @@
 		.col-sm-10.col-sm-offset-1
 			= form_for(@organization) do |f|
 				%header
-					%h1 Edit Profile
+					%h1 Create your organization
 				%fieldset
 					= f.label :name
 					= f.text_field :name
@@ -15,8 +15,8 @@
 					= f.text_field :street2
 					= f.label :city
 					= f.text_field :city
-					= f.label :state_abbreviation
-					= f.text_field :state_id
+					= f.label :us_state
+					= f.select :state_abbreviation, options_for_select(us_states), include_blank: true
 					= f.label :zip
 					= f.text_field :zip
 					= f.label :cause

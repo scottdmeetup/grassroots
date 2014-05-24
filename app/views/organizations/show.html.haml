@@ -28,7 +28,7 @@
           %h2 Projects
         .col-lg-6
           %btn
-            = link_to "Create a Project", new_organization_admin_project_path(organization_id: @organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
+            = link_to "Create a Project", new_organization_admin_project_path(organization_id: @organization.id), class: "btn btn-primary btn-lg pull-right btn-project" if current_user.organization_administrator
 
     .row
       %ul.nav.nav-tabs
@@ -115,10 +115,9 @@
               %div.pull-left.org-data Organization Budget:
               %div= @organization.budget
               %div.pull-left.org-data Organization Size:
-              %div @organization.users.count
+              %div= @organization.users.count
               %div.pull-left.org-data Founding Year:
-              %div 
-                = @organization.ruling_year
+              %div= @organization.ruling_year
           .row
             .col-lg-8
               %dl#org-address-line
@@ -128,7 +127,7 @@
                   = "#{@organization.street2}"
                   %br
                   = "#{@organization.city},"
-                  = @organization.state_id
+                  = @organization.state_abbreviation
                   = @organization.zip
               %div.pull-left.org-data Contact Number:
               %div= @organization.contact_number
