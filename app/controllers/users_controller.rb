@@ -35,6 +35,13 @@ class UsersController < ApplicationController
     end
   end
 
+  def remove
+    user = User.find(params[:id])
+    organization = Organization.find(user.organization_id)
+    user.update_columns(organization_id: nil)
+    redirect_to organization_path(organization.id)
+  end
+
 private
 
   def user_params

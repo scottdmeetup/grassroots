@@ -9,6 +9,7 @@ Grassroots::Application.routes.draw do
   end
 
   resources :users, except: [:destroy]
+  delete 'remove', to: 'users#remove'
   resources :organizations, only: [:show, :index]
   resources :projects, only: [:index, :show]
   get 'join', to: 'projects#join', as: 'join'

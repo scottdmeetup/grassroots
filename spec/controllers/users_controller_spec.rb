@@ -97,5 +97,24 @@ describe UsersController, :type => :controller do
         expect(flash[:notice]).to eq("You have updated your profile successfully.")
       end
     end
+    context "when the user's organization is not present" do
+    end
+  end
+
+  describe "DELETE remove" do
+    it "redirects to the organization's profile page" do
+      huggey_bear = Fabricate(:organization)
+      alice = Fabricate(:user, organization_id: huggey_bear.id)
+
+      delete :remove, id: alice.id
+      expect(response).to redirect_to organization_path(huggey_bear.id)
+    end
+    it "unassociates the staff member selected from the organization" do
+      huggey_bear = Fabricate(:organization)
+      alice = Fabricate(:user, organization_id: huggey_bear.id)
+
+      delete :remove, id: alice.id
+      expect(alice.reload.organization_id).to be_nil
+    end
   end
 end
