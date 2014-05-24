@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140523144007) do
+ActiveRecord::Schema.define(version: 20140524145921) do
 
   create_table "conversations", force: true do |t|
     t.datetime "created_at"
@@ -34,6 +34,11 @@ ActiveRecord::Schema.define(version: 20140523144007) do
     t.string   "funding_method"
     t.integer  "user_id"
     t.string   "cause"
+    t.string   "state_abbreviation"
+    t.text     "goal"
+    t.string   "contact_number"
+    t.string   "contact_email"
+    t.string   "budget"
   end
 
   create_table "private_messages", force: true do |t|

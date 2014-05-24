@@ -98,6 +98,19 @@ describe UsersController, :type => :controller do
       end
     end
     context "when the user's organization is not present" do
+      it "redirects the user to a form to create the organization" do
+        alice = Fabricate(:user)
+        patch :update, id: alice.id, user: {email: "test@example.com", organization_name_box: "The Red Cross", bio: "my life kicks ass"} 
+
+        expect(response).to redirect_to(new_organization_path)
+      end
+
+      it "still updates the user's attributes" do
+        alice = Fabricate(:user)
+        patch :update, id: alice.id, user: {email: "test@example.com", organization_name_box: "The Red Cross", bio: "my life kicks ass"} 
+
+        expect(alice.reload.email).to eq("test@example.com")
+      end
     end
   end
 

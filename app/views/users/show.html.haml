@@ -22,8 +22,11 @@
           = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block' unless current_user
         %p.pull-right
           = link_to "Edit Profile", edit_user_path(current_user)
-        %p.pull-right
-          = link_to 'Remove Staff', remove_path(id: @user.id), :method => :delete, :confirm=>'Are you sure?' if current_user.id == @user.organization.user_id
+
+        - if @user.organization  
+          - if current_user.id == @user.organization.user_id
+            %p.pull-right
+              = link_to 'Remove Staff', remove_path(id: @user.id), :method => :delete, :confirm=>'Are you sure?'
   .col-lg-12
     %ul.nav.nav-tabs#myTab
       %li.active
@@ -113,13 +116,13 @@
         .col-lg-8
           %dl 
             %dt Bio
-            %dd Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.
-          
-          %dl 
-            %dt 
-              What I do for 
-              = "#{@user.organization_name}"
-            %dd Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.
+            %dd= @user.bio
+          - if @user.organization
+            %dl 
+              %dt 
+                What I do for 
+                = "#{@user.organization_name}"
+              %dd Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.
 
           %dl 
             %dt Contact Me for: 

@@ -2,16 +2,22 @@ Organization.destroy_all
 huggey_bears = Organization.create(name: "Huggey Bear Land", cause: "Animal Rights", ruling_year: 1998, 
   mission_statement: "We want to give everyone a huggey bear in their sad times", guidestar_membership: nil, 
   ein: "192512653-6", street1: "2998 Hansen Heights", street2: nil, city: "New York", 
-  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil)
+  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
+  budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
+  goal: "We want 1 out of every 5 Americans to have a huggey bear.")
 
 amnesty_international = Organization.create(name: "Amnesty International", cause: "Human Rights", ruling_year: 1912,
   mission_statement: "We want to see human rights spread across the globe -- chyea.", guidestar_membership: nil, 
   ein: "987931299-1", street1: "3293 Dunnit Hill", street2: nil, city: "New York", 
-  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil)
+  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
+  budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
+  goal: "Every year we want at least one thousand human rights activists released from prisons around the world.")
 global_giving = Organization.create(name: "Global Giving", cause: "Social Good", ruling_year: 2000, 
   mission_statement: "We make it rain on Nonprofits, erreday", guidestar_membership: nil, 
   ein: "222222222-2", street1: "2222 Rick Ross", street2: nil, city: "DC", 
-  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil)
+  state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
+  budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
+  goal: "We want each of our nonprofit partners to raise at least $ 5,000.00 from our platform a year.")
 
 User.destroy_all
 alice = User.create(organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 

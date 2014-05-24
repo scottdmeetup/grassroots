@@ -106,16 +106,16 @@
               = @organization.mission_statement
           %dl 
             %dt Goals 
-            %dd NASA is not about the ‘Adventure of Human Space Exploration’…We won’t be doing it just to get out there in space – we’ll be doing it because the things we learn out there will be making life better for a lot of people who won’t be able to go.
-
+            %dd 
+              = @organization.goal
           .row
             .col-lg-8#org-data-pts
               %div.pull-left.org-data EIN Number:
-              %div 22-2222222
+              %div= @organization.ein
               %div.pull-left.org-data Organization Budget:
-              %div $22,000,000.00
+              %div= @organization.budget
               %div.pull-left.org-data Organization Size:
-              %div 1-10
+              %div @organization.users.count
               %div.pull-left.org-data Founding Year:
               %div 
                 = @organization.ruling_year
@@ -131,9 +131,9 @@
                   = @organization.state_id
                   = @organization.zip
               %div.pull-left.org-data Contact Number:
-              %div (555) 555-5555
+              %div= @organization.contact_number
               %div.pull-left.org-data Contact Email:
-              %div benjamin@grassroots.org
+              %div= @organization.contact_email
 
     .row.row-custom
       .col-lg-12

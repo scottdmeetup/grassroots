@@ -25,8 +25,10 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     organization = Organization.find_by(name: params[:user][:organization_name_box])
-
-    if @user.update_columns(user_params.merge!(organization_id: organization.id))
+    if organization.nil?
+      @user.update_columns(user_params)
+      redirect_to new_organization_path
+    elsif @user.update_columns(user_params.merge!(organization_id: organization.id))
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
     else
@@ -45,7 +47,8 @@ class UsersController < ApplicationController
 private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :organization_id, :bio, :skills, :interests, :position)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, 
+      :organization_id, :bio, :skills, :interests, :position)
   end
 
 end
