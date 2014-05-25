@@ -22,18 +22,6 @@ describe UsersController, :type => :controller do
       get :show, id: alice
       expect(response).to render_template(:show)
     end
-    it "shows the user's associated projects"
-    context "when the user's type is defined"
-      it "motivates the user to fill out their profile"
-    context "when the user's type is undefined"
-      it "alerts the user to identify itself as either, freelancer or staff of an organization"
-    context "when the staff member's organization is not a present"
-      it "asks the user to create a profile for his/her organization"
-    context "when the staff member's organization is present"
-      it "autopopulates the field"
-      it "asks the user if he/she would like to request to join the organization"
-      it "sends a staff approval notification to the administrator"
-      it "notifies the user that an approval notification has been sent"
   end
 
   

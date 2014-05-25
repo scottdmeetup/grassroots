@@ -12,9 +12,12 @@ Grassroots::Application.routes.draw do
   resources :users, except: [:destroy]
   delete 'remove', to: 'users#remove'
   resources :organizations, only: [:show, :index, :new, :create]
-  resources :projects, only: [:index, :show]
+  resources :projects, only: [:index, :show] do
+    collection do
+      get 'search', to: 'projects#search', as: 'search'
+    end
+  end
   get 'join', to: 'projects#join', as: 'join'
-  get 'search', to: 'projects#search', as: 'search'
 
   resources :private_messages, only: [:new, :create]
   get 'outgoing_messages', to: 'private_messages#outgoing_messages', as: 'outgoing_messages'

@@ -30,8 +30,6 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
       get :new, organization_id: huggey_bears.id
       expect(assigns(:project).project_admin).to eq(alice)
     end
-    context "when a project type is selected"
-      it "shows a link to desk.com with documentat that is associated with that project type"
   end
 
   describe "POST create" do
@@ -103,13 +101,6 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
         word_press = Project.first
         expect(word_press.state).to eq("open")
       end
-      it "emails the user with documentation on engaging volunteers"
-    context "when project fits the skill set of a freelancer"
-      it "creates a notification for this type of freelancer"
-    context "when project does not fit the skill set of a freelancer"
-      it "does not create notification for this type of freelancer"
-    context "with invalid inputs"
-      it "alerts the user to retry the project form"
     end
   end
 end

@@ -104,13 +104,6 @@ describe ConversationsController, :type => :controller do
 
         expect(assigns(:private_message).conversation).to eq(conversation1)
       end
-      
-      it "shows the conversation between the sender and the recipient"
-      context "when its a join request" 
-        it "shows a an option to accept the join request"
-        it "shows an option to reject the join request"
-        it "shows an option to reply to the private message"
-      ##when a join request is accepted, all other join requests are rejected
     end
   end
 

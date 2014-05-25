@@ -5,24 +5,26 @@ describe OrganizationsController, :type => :controller do
     it "renders the organization show template" do
       amnesty = Fabricate(:organization)
       get :show, id: amnesty
+
       expect(response).to render_template(:show)
     end
     it "shows the organization's profile" do
       amnesty = Fabricate(:organization)
       get :show, id: amnesty.id
-      expect(assigns(:organization)).to eq(amnesty)
 
+      expect(assigns(:organization)).to eq(amnesty)
     end
-    it "shows the projects associated with an organization"
   end
 
   describe "GET new" do
     it "renders template new" do
       get :new
+      
       expect(response).to render_template(:new)
     end
     it "sets the @organization" do
       get :new
+
       expect(assigns(:organization)).to be_an_instance_of(Organization)
     end
   end
@@ -30,6 +32,7 @@ describe OrganizationsController, :type => :controller do
   describe "GET index" do
     it "renders the organization show template" do
       get :index
+
       expect(response).to render_template(:index)
     end
 
@@ -38,6 +41,7 @@ describe OrganizationsController, :type => :controller do
       global = Fabricate(:organization)
       huggey_bears = Fabricate(:organization)
       get :index
+
       expect(assigns(:organizations)).to eq([amnesty, global, huggey_bears])
     end
   end
