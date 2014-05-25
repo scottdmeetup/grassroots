@@ -19,11 +19,13 @@
 					= f.text_field :interests
 					= f.label :contact_me_for
 					= f.text_area :contact_reason, cols: 4, rows: 1, class: "form-control"
-					= f.label :role_at_organization
-					= f.text_area :organization_role, cols: 4, rows: 2, class: "form-control"
+					- if @user.user_group == "nonprofit"
+						= f.label :role_at_organization
+						= f.text_area :organization_role, cols: 4, rows: 2, class: "form-control"
 					= f.label :bio
 					= f.text_area :bio, cols: 4, rows: 4, class: "form-control"
 				.field
-					= f.label :organization_name_box
-					= f.text_field :organization_name_box, data: {autocomplete_source: Organization.order(:name).map(&:name)}
-					= f.submit "Update", class: "btn btn-success"
+					- if @user.user_group == "nonprofit"
+						= f.label :organization_affiliation
+						= f.text_field :organization_name_box, data: {autocomplete_source: Organization.order(:name).map(&:name)}
+					= f.submit "Update", :confirm=>'Is all the information accurate and its spelling correct?',class: "btn btn-success"

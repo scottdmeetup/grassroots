@@ -6,6 +6,7 @@ Grassroots::Application.routes.draw do
 
   namespace :organization_admin do
     resources :projects, only: [:new, :create]
+    resources :organizations, only: [:edit, :update]
   end
 
   resources :users, except: [:destroy]

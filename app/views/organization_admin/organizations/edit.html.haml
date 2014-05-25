@@ -1,0 +1,32 @@
+%section.container
+	.row
+		.col-sm-10.col-sm-offset-1
+			= form_for(@organization, url: organization_admin_organization_path(@organization.id)) do |f|
+				%header
+					%h1 Edit your organization
+				%fieldset
+					= f.label :name
+					= f.text_field :name
+					= f.label :ein
+					= f.text_field :ein
+					= f.label :street
+					= f.text_field :street1
+					= f.label :street
+					= f.text_field :street2
+					= f.label :city
+					= f.text_field :city
+					= f.label :us_state
+					= f.select :state_abbreviation, options_for_select(us_states), include_blank: true
+					= f.label :zip
+					= f.text_field :zip
+					= f.label :cause
+					= f.text_field :cause
+					= f.label :contact_number
+					= f.text_field :contact_number
+					= f.label :contact_email
+					= f.text_field :contact_email
+					= f.label :mission_statement
+					= f.text_area :mission_statement, cols: 4, rows: 4, class: "form-control"
+					= f.label :goal
+					= f.text_area :goal, cols: 4, rows: 4, class: "form-control"
+					= f.submit "Update", :confirm=>'Is all the information accurate and its spelling correct?', class: "btn btn-success"
