@@ -53,18 +53,15 @@ describe ProjectsController, :type => :controller do
   end
 
 
-  describe "GET accept" do
-    it "changes the projects state from pending to in production"
-    it "makes the project move from the pending tab to the in production tab on the freelancer’s and the organization admin’s dashboard"
-    it "notifies the user waiting for a response that someone accepted the user’s join request"
+  describe "GET search" do
+    it "sets the @results variable by search term when user is authenticated" do
+      project = Fabricate(:project, title: "WordPress")
+
+      get :search, search_term: 'WordPress'
+      expect(assigns(:results)).to match_array([project])
+    end
   end
 
-  describe "GET complete" do
-    it "changes the projects state from in production to completed"
-    it "notifies the other user that this project is completed"
-    it "sends a feedback form to all parties involved"
-    it "moves the project from the tab, in production, to the tab, completed"
-  end
 =begin
   describe "POST join"
     ##I do not know if this should change the project's state 
