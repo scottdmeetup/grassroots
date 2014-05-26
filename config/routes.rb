@@ -5,14 +5,14 @@ Grassroots::Application.routes.draw do
   get 'log_out', to: 'sessions#destroy'
 
   namespace :organization_admin do
-    resources :projects, only: [:new, :create]
+    resources :projects, only: [:new, :create, :edit, :update]
     resources :organizations, only: [:edit, :update]
   end
 
   resources :users, except: [:destroy]
   delete 'remove', to: 'users#remove'
   resources :organizations, only: [:show, :index, :new, :create]
-  resources :projects, only: [:index, :show] do
+  resources :projects, only: [:index, :show, :edit] do
     collection do
       get 'search', to: 'projects#search', as: 'search'
     end

@@ -16,10 +16,20 @@ class OrganizationAdmin::ProjectsController < OrganizationAdminController
     end
   end
 
+  def edit
+    @project = Project.find(params[:id])  
+  end
+
+  def update
+    @project = Project.find(params[:id])
+    @project.update(project_params)
+    flash[:success] = "You updated your project"
+    redirect_to project_path(@project.id)
+  end
+
 private
 
   def project_params
     params.require(:project).permit(:title, :organization_id, :user_id, :description, :skills, :deadline)
   end
-
 end

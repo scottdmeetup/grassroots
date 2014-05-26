@@ -103,4 +103,55 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
       end
     end
   end
+
+  describe "GET edit" do
+    it "renders a form for the current user's profile" do
+      huggey_bears = Fabricate(:organization)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      set_current_user(alice)
+      word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
+      get :edit, id: word_press
+
+      expect(response).to render_template(:edit)
+    end
+    it "sets the @project" do
+      huggey_bears = Fabricate(:organization)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      set_current_user(alice)
+      word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
+      get :edit, id: word_press
+
+      expect(assigns(:project)).to be_a Project
+    end
+  end
+
+  describe "PATCH update" do
+    it "redirects to the project page" do
+      huggey_bears = Fabricate(:organization)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      set_current_user(alice)
+      word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
+      patch :update, id: alice.id, project: {description: "this site needs to be improved"} 
+
+      expect(response).to redirect_to(project_path(word_press.id))
+    end
+    it "updates the project information" do
+      huggey_bears = Fabricate(:organization)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      set_current_user(alice)
+      word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
+      patch :update, id: alice.id, project: {description: "this site needs to be improved"} 
+
+      expect(assigns(:project).description).to eq("this site needs to be improved")
+    end
+    it "flashes a notice that the user updated his/her project" do
+      huggey_bears = Fabricate(:organization)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      set_current_user(alice)
+      word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
+      patch :update, id: alice.id, project: {description: "this site needs to be improved"} 
+
+      expect(flash[:success]).to eq("You updated your project")
+    end
+  end
 end
