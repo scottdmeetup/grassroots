@@ -56,8 +56,8 @@
         %li{:class => ('active' if params[:tab] == 'in production')}
           = link_to "In Production #{@user.in_production_projects.count}", user_path(@user, tab: 'in production') 
       
-        %li{:class => ('active' if params[:tab] == 'pending approval')}
-          = link_to "Completion Request #{@user.pending_approval_projects.count}", user_path(@user, tab: 'pending approval')
+        %li{:class => ('active' if params[:tab] == 'pending completion')}
+          = link_to "Completion Request #{@user.pending_comletion_projects.count}", user_path(@user, tab: 'pending approval')
       
         %li{:class => ('active' if params[:tab] == 'completed')}
           = link_to "Completed #{@user.completed_projects.count}", user_path(@user, tab: 'completed')
@@ -72,7 +72,7 @@
         - @user.in_production_projects.each do |project|
           = render 'shared/project_thumbnail', project: project
       - elsif params[:tab] == 'pending approval'
-        - @user.pending_approval_projects.each do |project|
+        - @user.pending_comletion_projects.each do |project|
           = render 'shared/project_thumbnail', project: project
       - elsif params[:tab] == 'completed'
         - @user.completed_projects.each do |project|

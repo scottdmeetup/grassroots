@@ -36,7 +36,7 @@
             %a{href: "#"} Incompleted
           %li.divider
           %li
-            = link_to "Completed", completed_path(conversation_id: conversation.id)
+            = link_to "Completed", confirm_complete_path(conversation_id: conversation.id)
     - elsif conversation.opportunity_drop_project
       .btn-group
         %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}

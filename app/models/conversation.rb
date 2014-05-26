@@ -32,8 +32,10 @@ class Conversation < ActiveRecord::Base
   def join_request
     message = self.private_messages.first
     project = Project.find_by(id: message.project_id)
-    if project.users.count >= 2
-      project.state == "open"
+    if project
+      if project.users.count >= 2
+        project.state == "open"
+      end
     end
   end
 
@@ -41,7 +43,7 @@ class Conversation < ActiveRecord::Base
     message = self.private_messages.first
     project = Project.find_by(id: message.project_id)
     if project
-      project.state == "pending approval"
+      project.state == "pending completion"
     end
   end
 

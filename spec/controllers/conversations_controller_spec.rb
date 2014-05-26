@@ -161,7 +161,7 @@ describe ConversationsController, :type => :controller do
     end
   end
 
-  describe "POST completed" do
+  describe "GET confirm_complete" do
     let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
     let(:bob) { Fabricate(:user, first_name: "Bob") }
     let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
@@ -175,24 +175,24 @@ describe ConversationsController, :type => :controller do
     end
 
     it "redirects the current user to the conversation so that the user can reply to the freelancer" do
-      post :completed, conversation_id: conversation1.id
+      get :confirm_complete, conversation_id: conversation1.id
 
       expect(response).to redirect_to conversation_path(conversation1.id)
     end
     it "sets the project's state from in production to completed" do
-      post :completed, conversation_id: conversation1.id
+      get :confirm_complete, conversation_id: conversation1.id
 
       expect(word_press.reload.state).to eq("completed")
     end
 
     it "flashes a message about accepting a completed project" do
-      post :completed, conversation_id: conversation1.id
+      get :confirm_complete, conversation_id: conversation1.id
 
       expect(flash[:success]).to eq("Please write to the volunteer to let the volunteer know that the project is complete")
     end
   end
 
-  describe "POST drop" do
+  describe "GET drop" do
     let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
     let(:bob) { Fabricate(:user, first_name: "Bob") }
     let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
@@ -210,27 +210,27 @@ describe ConversationsController, :type => :controller do
 
     it "redirects the current user to the thread of the conversation after dissacotiating" do
       word_press.update_columns(state: "in production")
-      post :drop, conversation_id: conversation1.id
+      get :drop, conversation_id: conversation1.id
 
       expect(response).to redirect_to(conversation_path(conversation1.id))
     end
 
     it "disassociates the freelancer from the project" do
       word_press.update_columns(state: "in production")
-      post :drop, conversation_id: conversation1.id
+      get :drop, conversation_id: conversation1.id
 
       expect(bob.projects).to eq([])
     end
 
     it "moves the project from in production to open" do
       word_press.update_columns(state: "in production")
-      post :drop, conversation_id: conversation1.id
+      get :drop, conversation_id: conversation1.id
 
       expect(word_press.reload.state).to eq("open")
     end
     it "automated message within the same message thread stating that the other user has dropped the project" do
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "you are accepted", project_id: word_press.id)
-      post :drop, conversation_id: conversation1.id
+      get :drop, conversation_id: conversation1.id
 
       expect(conversation1.private_messages.count).to eq(3)
     end

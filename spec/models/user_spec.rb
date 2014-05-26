@@ -112,14 +112,14 @@ describe User do
     end
   end
 
-  describe "#pending_approval_projects" do
-    it "returns the users projects that are pending approval" do
+  describe "#pending_completion_projects" do
+    it "returns the users projects that are pending completion" do
       bob = Fabricate(:user, first_name: "Bob")
       word_press = Fabricate(:project, state: "open")
-      logo = Fabricate(:project, state: "pending approval")
+      logo = Fabricate(:project, state: "pending completion")
       bob.projects << [word_press, logo]
 
-      expect(bob.pending_approval_projects).to eq([logo])
+      expect(bob.pending_completion_projects).to eq([logo])
     end
   end
 

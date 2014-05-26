@@ -58,33 +58,6 @@ describe PrivateMessagesController, :type => :controller do
         expect(assigns(:private_message).subject).to eq("Project Request: word press website")
       end
     end
-
-    context "when completing a project" do
-      let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "in production") }
-
-      before do
-        get :new, project_id: word_press.id
-      end
-
-      it "renders the new template for creating a private message" do
-        expect(response).to render_template(:new)
-      end
-
-      it "sets @private_message" do
-        expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
-      end
-
-      it "sets the project id in the initialized @private_message" do
-        expect(assigns(:private_message).project_id).to eq(1)
-      end
-      
-      it "sets the recipient value in the initialized @private_message" do
-        expect(assigns(:private_message).recipient).to eq(alice)
-      end
-      it "sets the subject line with the value of the project title with Project Completed: in the initialized @private_message" do
-        expect(assigns(:private_message).subject).to eq("Project Completed: word press website")
-      end
-    end
   end
 
   describe "POST create" do
@@ -182,6 +155,34 @@ describe PrivateMessagesController, :type => :controller do
         end
       end
 
+      context "when sending a completed project request" do
+        #let (:message1) {Fabricate(:project, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id)}
+        let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "in production") }
+        
+        before do 
+          session[:user_id] = bob.id
+          word_press.users << [bob, alice]
+        end
+
+        it "moves the projects state to pending completion" do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(Project.first.state).to eq("pending completion")
+        end
+
+        it "redirects the current user to the current user's profile page" do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(response).to redirect_to(user_path(bob.id))
+        end
+
+        it "disassociates the other message that approves the volunteer from the project " do
+          post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
+
+          expect(response).to redirect_to(user_path(bob.id))
+        end
+      end
+=begin
       context "when completing a project" do
         let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "in production") }
         
@@ -208,6 +209,7 @@ describe PrivateMessagesController, :type => :controller do
           expect(flash[:success]).to eq("Your message has been sent to #{alice.first_name} #{alice.last_name}")
         end
       end
+=end
     end
 
     context "when creating reply" do

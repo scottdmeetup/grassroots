@@ -42,8 +42,8 @@ class User < ActiveRecord::Base
     self.projects.select {|member| member.state.include?("in production")}
   end
 
-  def pending_approval_projects
-    self.projects.select {|member| member.state.include?("pending approval")}
+  def pending_completion_projects
+    self.projects.select {|member| member.state.include?("pending completion")}
   end
 
   def completed_projects

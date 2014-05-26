@@ -3,7 +3,7 @@ class PrivateMessagesController < ApplicationController
   def new
     if params[:project_id]
       @project = Project.find(params[:project_id])
-      @project.state == "in production" ? handles_project_completed : handles_join_request
+      @project.state == "in production" ? handles_project_completed_request : handles_join_request
     else
       @user = User.find_by(id: params[:user_id])
       @private_message = PrivateMessage.new(recipient_id: @user.id)
@@ -36,11 +36,9 @@ private
       recipient_id: @project.project_admin.id, subject: "Project Request: #{@project.title}")
   end
 
-  def handles_project_completed
-    @private_message = PrivateMessage.new(project_id: params[:project_id], 
-      recipient_id: @project.project_admin.id, subject: "Project Completed: #{@project.title}")
-    project = Project.find_by(params[:project_id])
-    project.update_attributes(state: "pending acceptance")
+  def handles_project_completed_request
+    PrivateMessage.find_by_project_id(@project.id).update_columns(project_id: nil)
+    @private_message = PrivateMessage.new(project_id: params[:project_id], recipient_id: @project.project_admin.id, subject: "Project Completed: #{@project.title}")
   end
 
   def handles_replies
@@ -64,8 +62,9 @@ private
     project = Project.find(params[:project_id])
     conversation = Conversation.create 
     @private_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation.id, project_id: project.id))
+    project.update(state: "pending completion")
     @private_message.save
-    redirect_to conversations_path
+    redirect_to user_path(current_user)
     flash[:success] = "Your message has been sent to #{@private_message.recipient.first_name} #{@private_message.recipient.last_name}"
   end
 

@@ -28,7 +28,7 @@ class ConversationsController < ApplicationController
     flash[:success] = "Please write to the volunteer to let the volunteer know that you have accepted his/her participation on your project"
   end
 
-  def completed
+  def confirm_complete
     conversation = Conversation.find(params[:conversation_id])
     message = conversation.private_messages.first
     project = Project.find(message.project_id)
