@@ -1,28 +1,38 @@
-.div.pull-right
-  = form_tag '/search', method: 'get' do
-    %h3 Skill Set
-    %h5 (Choose only one)
-    %p Graphic Design
-    %input{:name => 'skills[]', :type => "checkbox", :value => "graphic design"}
-    
-    %p Web Development
-    %input{:name => 'skills[]', :type => "checkbox", :value => "web development"}
-    %p Accounting
-    %input{:name => 'skills[]', :type => "checkbox", :value => "accounting"}
-    %p Fundraising
-    %input{:name => 'skills[]', :type => "checkbox", :value => "fundraising"}
-    %p Business Planning
-    %input{:name => 'skills[]', :type => "checkbox", :value => "business planning"}
-    %h3 Cause
-    %p Animal
-    %input{:name => 'causes[]', :type => "checkbox", :value => "animals"}
-    %p Human Rights
-    %input{:name => 'causes[]', :type => "checkbox", :value => "human rights"}
-    %p Social Good
-    %input{:name => 'causes[]', :type => "checkbox", :value => "social"}
-    %br
-    = submit_tag "Search"
-
-.row#project-index-wrapper 
-  - @results.each do |project|
-    = render 'shared/project_thumbnail', project: project
+.row#project-index-wrapper
+  .col-lg-10
+    - @results.each do |project|
+      = render 'shared/project_thumbnail', project: project
+  .col-lg-2
+    %div#project-search-wrapper 
+      %form.navbar-form.navbar-left{:role => "search"}
+        .form-group
+          %input.form-control{:placeholder => "Search", :type => "text", :id => "project-search-bar"}
+          %button.btn.btn-default{:type => "submit"} Submit
+        = form_tag '/search', method: 'get' do
+          %h3 Skill Set
+          %label 
+            %input{:name => 'skills[]', :type => "checkbox", :value => "graphic design"}
+            Graphic Design
+          %label
+            %input{:name => 'skills[]', :type => "checkbox", :value => "web development"}
+            Web Development
+          %label
+            %input{:name => 'skills[]', :type => "checkbox", :value => "accounting"}
+            Accounting
+          %label 
+            %input{:name => 'skills[]', :type => "checkbox", :value => "fundraising"}
+            Fundraising
+          %label 
+            %input{:name => 'skills[]', :type => "checkbox", :value => "business planning"}
+            Business Planning
+          %h3 Cause
+          %label
+            %input{:name => 'causes[]', :type => "checkbox", :value => "animals"}
+            Animal
+          %label 
+            %input{:name => 'causes[]', :type => "checkbox", :value => "human rights"}
+            Human Rights
+          %label
+            %input{:name => 'causes[]', :type => "checkbox", :value => "social"}
+            Social Good
+          = submit_tag "Search", :id => "project-filter-submit"

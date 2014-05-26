@@ -36,7 +36,7 @@
           = link_to "Open #{@organization.open_projects.count}", organization_path(@organization)
         
         %li{:class => ('active' if params[:tab] == 'in production')}
-          = link_to "In Production #{@organization.in_production_projects.count}", organization_path(@organization, tab: 'in production') 
+          = link_to "In Production #{@organization.in_production_projects.count}",  organization_path(@organization, tab: 'in production') 
       
         %li{:class => ('active' if params[:tab] == 'pending approval')}
           = link_to "Completion Request #{@organization.pending_approval_projects.count}", organization_path(@organization, tab: 'pending approval')
@@ -47,21 +47,22 @@
         %li{:class => ('active' if params[:tab] == 'unfinished')}
           = link_to "Unfinished #{@organization.unfinished_projects.count}", organization_path(@organization, tab: 'unfinished')
 
-      - if params[:tab].nil?
-        - @organization.open_projects.each do |project|
-          = render 'shared/project_thumbnail', project: project
-      - elsif params[:tab] == 'in production'
-        - @organization.in_production_projects.each do |project|
-          = render 'shared/project_thumbnail', project: project
-      - elsif params[:tab] == 'pending approval'
-        - @organization.pending_approval_projects.each do |project|
-          = render 'shared/project_thumbnail', project: project
-      - elsif params[:tab] == 'completed'
-        - @organization.completed_projects.each do |project|
-          = render 'shared/project_thumbnail', project: project
-      - elsif params[:tab] == 'unfinished'
-        - @organization.unfinished_projects.each do |project|  
-          = render 'shared/project_thumbnail', project: project
+      .col-lg-10
+        - if params[:tab].nil?
+          - @organization.open_projects.each do |project|
+            = render 'shared/project_thumbnail', project: project
+        - elsif params[:tab] == 'in production'
+          - @organization.in_production_projects.each do |project|
+            = render 'shared/project_thumbnail', project: project
+        - elsif params[:tab] == 'pending approval'
+          - @organization.pending_approval_projects.each do |project|
+            = render 'shared/project_thumbnail', project: project
+        - elsif params[:tab] == 'completed'
+          - @organization.completed_projects.each do |project|
+            = render 'shared/project_thumbnail', project: project
+        - elsif params[:tab] == 'unfinished'
+          - @organization.unfinished_projects.each do |project|  
+            = render 'shared/project_thumbnail', project: project
 
     .row.row-custom
       .col-lg-12

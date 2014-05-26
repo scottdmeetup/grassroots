@@ -1,4 +1,4 @@
-.container#project-details-info
+#project-details-info
   .container-wrapper
     .row
       .col-lg-12
@@ -26,17 +26,17 @@
             = link_to "Request to Join", new_private_message_path(project_id: @project.id), class: "btn btn-primary btn-lg btn-project"
           - elsif @project.state == "in production"
             = link_to "Project Complete", new_private_message_path(project_id: @project.id), class: "btn btn-primary btn-lg btn-project"
-.container
-  .row.row-custom
-    .col-lg-6
-      %h2 Project Description 
-.container#project-desc-wrapper
+
+.row.row-custom
+  .col-lg-6
+    %h2 Project Description 
+#project-desc-wrapper
   .container-wrapper
     .row#project-desc-row
       .col-lg-12
         %p 
           = @project.description
-.container#project-details-org
+#project-details-org
   .container-wrapper 
     .row 
       .col-lg-2
