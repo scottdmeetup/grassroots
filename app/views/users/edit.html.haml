@@ -1,31 +1,44 @@
-%section.container
-	.row
-		.col-sm-10.col-sm-offset-1
-			= form_for(@user) do |f|
-				%header
-					%h1 Edit Profile
-				%fieldset
-					= f.label :first_name
-					= f.text_field :first_name
-					= f.label :last_name
-					= f.text_field :last_name
-					= f.label :email
-					= f.text_field :email
-					= f.label :position
-					= f.text_field :position
-					= f.label :skills
-					= f.text_field :skills
-					= f.label :interests
-					= f.text_field :interests
-					= f.label :contact_me_for
-					= f.text_area :contact_reason, cols: 4, rows: 1, class: "form-control"
-					- if @user.user_group == "nonprofit"
-						= f.label :role_at_organization
-						= f.text_area :organization_role, cols: 4, rows: 2, class: "form-control"
-					= f.label :bio
-					= f.text_area :bio, cols: 4, rows: 4, class: "form-control"
-				.field
-					- if @user.user_group == "nonprofit"
-						= f.label :organization_affiliation
-						= f.text_field :organization_name_box, data: {autocomplete_source: Organization.order(:name).map(&:name)}
-					= f.submit "Update", :confirm=>'Is all the information accurate and its spelling correct?',class: "btn btn-success"
+.row.edit-profile-wrapper
+  .col-lg-12.col-sm-10.col-sm-offset-1
+    = form_for(@user) do |f|
+      %header
+        %h1 Edit Profile
+      .col-lg-5
+        %fieldset
+          .form-group
+            %div.edit-fieldset-wrapper
+              %h3  Personal Information
+              %div.edit-input-wrapper
+                = f.label :first_name
+                = f.text_field :first_name
+              %div.edit-input-wrapper
+                = f.label :last_name
+                = f.text_field :last_name
+              %div.edit-input-wrapper
+                = f.label :email
+                = f.text_field :email
+            %div.edit-fieldset-wrapper
+              %h3 About Your Role
+              %div.edit-input-wrapper
+                = f.label :position
+                = f.text_field :position
+              %div.edit-input-wrapper
+                = f.label :skills
+                = f.text_field :skills
+              %div.edit-input-wrapper
+                = f.label :interests
+                = f.text_field :interests
+              %div.edit-input-wrapper 
+                = f.label :bio
+                = f.text_area :bio, cols: 4, rows: 4, class: "form-control"
+      .col-lg-7
+        .form-group
+          .field#edit-organization-wrapper
+            %h3 Join or Create Your Nonprofit
+            = f.label :organization_name_box
+            = f.text_field :organization_name_box, data: {autocomplete_source: Organization.order(:name).map(&:name)}
+      .col-lg-12  
+        .form-group        
+          .field
+            = f.submit "Update", class: "btn btn-success", id: "edit-submit"
+

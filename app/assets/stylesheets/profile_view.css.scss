@@ -1,75 +1,109 @@
 #profile-details-row {
-	padding: 28px 0 10px;
+  padding: 28px 0 10px;
 }
-	#org-info,
-	#user-info {
-		margin-top: 15px;
-		margin-left: -5%;
-	}
-			#org-header-info > .org-head, 
-			#user-header-info > .org-head {
-				float: left;
-				margin-top: 0px;
-				margin-right: 15px;
-			}
+  #org-info,
+  #user-info {
+    margin-top: 15px;
+    margin-left: -5%;
+  }
+      #org-header-info > .org-head, 
+      #user-header-info > .org-head {
+        float: left;
+        margin-top: 0px;
+        margin-right: 15px;
+      }
 
-		.img-org {
+    .img-org {
 width: 150px;
 height: 150px;
 }
 /* Project Sections */ 
 .project-thumb-wrapper {
-	width: 30%;
+  width: 30%;
 }
 
-	.thumbnail .thumbnail-project {
-	margin-top: 31px;
-	height: 11em;	
+  .thumbnail .thumbnail-project {
+  margin-top: 31px;
+  height: 11em; 
 }
 .thumbnail-project {
-	height: 23.5em;
-	padding: 4px 10px;
+  height: 23.5em;
+  padding: 4px 10px;
 }
-	.thumbnail-project > p {
-		height: 28px;
-	}
-	.thumb-img-org {
-		width: 150px;
-		margin-bottom: 10px;
-		float: left;
-	}
-	.project-skills {
-		float: left;
-		margin-left: 10px;
-	}
-	.volunteer-project-requests {
-		float: right;
-		margin: -14px 0 0 15px;
-	}
-		.volunteer-glyph {
-			font-size: 1.5em;
-			line-height: 2;
-		}
-		.volunteer-plus {
-			float: right;
-			margin-top: -42px;
-		}
-			.volunteer-plus-glyph {
-				font-size: .79em;
-				font-weight: 400;
-			}
-				.volunteer-number {
-					margin-left: -7px;
-					font-weight: 800;
-					font-size: 1.25em;
-				}
-	.project-org-name {
-		clear: both;
-	}
-	dl {
-		float: left;
-	}
-	dl.deadline {
-		float: right;
-	}
+  .thumbnail-project > p {
+    height: 28px;
+  }
+  .thumb-img-org {
+    width: 150px;
+    margin-bottom: 10px;
+    float: left;
+  }
+  .project-skills {
+    float: left;
+    margin-left: 10px;
+  }
+  .volunteer-project-requests {
+    float: right;
+    margin: -14px 0 0 15px;
+  }
+    .volunteer-glyph {
+      font-size: 1.5em;
+      line-height: 2;
+    }
+    .volunteer-plus {
+      float: right;
+      margin-top: -42px;
+    }
+      .volunteer-plus-glyph {
+        font-size: .79em;
+        font-weight: 400;
+      }
+        .volunteer-number {
+          margin-left: -7px;
+          font-weight: 800;
+          font-size: 1.25em;
+        }
+  .project-org-name {
+    clear: both;
+  }
+  dl {
+    float: left;
+  }
+  dl.deadline {
+    float: right;
+  }
 
+/* Edit Profile Section */
+.edit-profile-wrapper {
+  padding-right: 5px;
+}
+            .edit-profile-wrapper input {
+              text-indent: 5px; 
+              width: 200px;
+            }
+        .edit-fieldset-wrapper {
+          
+        }
+          .edit-fieldset-wrapper h3 {
+            padding: 5px 0;
+            border-bottom: 1px solid #E9EAEC;
+          }
+            .edit-input-wrapper {
+              margin-bottom: 5px;
+            }
+              .edit-input-wrapper label {
+                width: 100px;
+              }
+          #edit-organization-wrapper {}
+            #edit-organization-wrapper h3 {
+              padding: 5px 0;
+            }  
+            #edit-organization-wrapper label {
+              width: 180px;
+            }
+            #edit-organization-wrapper input {
+              width: 250px;
+            }            
+            #edit-submit {
+              width: 80px;
+            }
