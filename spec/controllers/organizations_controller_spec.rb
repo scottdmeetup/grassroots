@@ -47,8 +47,8 @@ describe OrganizationsController, :type => :controller do
   end
 
   describe "POST create" do
+    let(:alice) {Fabricate(:user, user_group: "nonprofit")}
     it "redirects to the created organization's page" do
-      alice = Fabricate(:user)
       set_current_user(alice)
       post :create, organization: Fabricate.attributes_for(:organization)
 
@@ -57,7 +57,6 @@ describe OrganizationsController, :type => :controller do
     end
     
     it "creates an organization" do
-      alice = Fabricate(:user)
       set_current_user(alice)
       post :create, organization: Fabricate.attributes_for(:organization)
 
@@ -65,7 +64,6 @@ describe OrganizationsController, :type => :controller do
 
     end
     it "makes the author of the form the administrator of that organization" do
-      alice = Fabricate(:user)
       set_current_user(alice)
       post :create, organization: Fabricate.attributes_for(:organization)
 
@@ -74,7 +72,6 @@ describe OrganizationsController, :type => :controller do
     end
 
     it "associates the organization with the user" do
-      alice = Fabricate(:user)
       set_current_user(alice)
       post :create, organization: Fabricate.attributes_for(:organization)
 

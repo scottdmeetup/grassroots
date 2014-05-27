@@ -9,7 +9,7 @@ describe Organization do
   describe "#organization_administrator" do
     it "should return the administrator of the organization" do
       huggey_bears = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization: huggey_bears)
+      alice = Fabricate(:organization_administrator, organization: huggey_bears, user_group: "nonprofit")
       huggey_bears.organization_administrator = alice
       expect(huggey_bears.organization_administrator).to eq(alice)
     end

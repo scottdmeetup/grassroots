@@ -4,7 +4,7 @@ describe OrganizationAdmin::OrganizationsController, :type => :controller do
   describe "GET edit" do
     it "renders a form for the current user to edit the organization's profile" do
       huggey_bear = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id, user_group: "nonprofit")
       set_current_user(alice)
       get :edit, id: huggey_bear.id
 
@@ -12,7 +12,7 @@ describe OrganizationAdmin::OrganizationsController, :type => :controller do
     end
     it "sets the @organization" do
       huggey_bear = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id, user_group: "nonprofit")
       set_current_user(alice)
       get :edit, id: huggey_bear.id
 
@@ -23,7 +23,7 @@ describe OrganizationAdmin::OrganizationsController, :type => :controller do
   describe "PATCH update" do
     it "redirects to the organization's profile page" do
       huggey_bear = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id, user_group: "nonprofit")
       set_current_user(alice)
       patch :update, id: huggey_bear.id, organization: Fabricate.attributes_for(:organization)
 
@@ -31,7 +31,7 @@ describe OrganizationAdmin::OrganizationsController, :type => :controller do
     end
     it "updates the user's information" do
       huggey_bear = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id, user_group: "nonprofit")
       set_current_user(alice)
       patch :update, id: huggey_bear.id, organization: Fabricate.attributes_for(:organization, goal: "test 123")
 
@@ -40,7 +40,7 @@ describe OrganizationAdmin::OrganizationsController, :type => :controller do
     end
     it "flashes a notice that the user updated his/her profile" do
       huggey_bear = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bear.id, user_group: "nonprofit")
       set_current_user(alice)
       patch :update, id: huggey_bear.id, organization: Fabricate.attributes_for(:organization, goal: "test 123")
 

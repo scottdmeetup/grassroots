@@ -3,19 +3,19 @@ require 'spec_helper'
 describe OrganizationAdmin::ProjectsController, :type => :controller do
   describe "GET new" do
     it "renders the new template for creating a project" do
-      alice = Fabricate(:user, organization_administrator: true)
+      alice = Fabricate(:user, organization_administrator: true, user_group: "nonprofit")
       session[:user_id] = alice.id
       get :new
       expect(response).to render_template(:new)
     end
     it "only renders this page for organization administrators" do
-      bob = Fabricate(:user, organization_administrator: false)
+      bob = Fabricate(:user, organization_administrator: false, user_group: "nonprofit")
       session[:user_id] = bob.id
       get :new
       expect(response).to redirect_to(user_path(bob.id))
     end
     it "sets the @project" do
-      alice = Fabricate(:user, organization_administrator: true)
+      alice = Fabricate(:user, organization_administrator: true, user_group: "nonprofit")
       session[:user_id] = alice.id
       
       get :new
@@ -23,7 +23,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
     end
 
     it "sets the project admin variable" do
-      alice = Fabricate(:organization_administrator)
+      alice = Fabricate(:organization_administrator, user_group: "nonprofit")
       huggey_bears = Fabricate(:organization, user_id: alice.id)
       session[:user_id] = alice.id
       
@@ -36,7 +36,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
     context "with valid inputs" do
       it "creates a project" do
         huggey_bears = Fabricate(:organization, name: "Huggey Bears")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
         huggey_bears.organization_administrator = alice
         session[:user_id] = alice.id
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site")
@@ -44,7 +44,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
       end
       it "redirects to the organization administrator to the view project's show view " do
         huggey_bears = Fabricate(:organization, name: "Huggey Bears")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
         huggey_bears.organization_administrator = alice
         session[:user_id] = alice.id
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site")
@@ -53,7 +53,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
       end
       it "creates a project associated with an organization" do
         huggey_bears = Fabricate(:organization, name: "Huggey Bears")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
         huggey_bears.organization_administrator = alice
 
         session[:user_id] = alice.id
@@ -64,7 +64,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
       end
       it "adds the created project to the current user's dashboard of projects" do
         huggey_bears = Fabricate(:organization, name: "Huggey Bears")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
         huggey_bears.organization_administrator = alice
         session[:user_id] = alice.id
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id)
@@ -74,7 +74,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
       end
       it "creates a project associated with a work-type" do
         huggey_bears = Fabricate(:organization)
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
         session[:user_id] = alice.id
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
 
@@ -84,7 +84,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
 
       it "creates a project associated with the organization's cause" do
         huggey_bears = Fabricate(:organization, cause: "animals")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
         session[:user_id] = alice.id
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
 
@@ -94,7 +94,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
 
       it "sets the project's state to open" do
         huggey_bears = Fabricate(:organization)
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
         session[:user_id] = alice.id
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
 
@@ -107,7 +107,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
   describe "GET edit" do
     it "renders a form for the current user's profile" do
       huggey_bears = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
       set_current_user(alice)
       word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
       get :edit, id: word_press
@@ -116,7 +116,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
     end
     it "sets the @project" do
       huggey_bears = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
       set_current_user(alice)
       word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
       get :edit, id: word_press
@@ -128,7 +128,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
   describe "PATCH update" do
     it "redirects to the project page" do
       huggey_bears = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
       set_current_user(alice)
       word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
       patch :update, id: alice.id, project: {description: "this site needs to be improved"} 
@@ -137,7 +137,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
     end
     it "updates the project information" do
       huggey_bears = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
       set_current_user(alice)
       word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
       patch :update, id: alice.id, project: {description: "this site needs to be improved"} 
@@ -146,7 +146,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
     end
     it "flashes a notice that the user updated his/her project" do
       huggey_bears = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id)
+      alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
       set_current_user(alice)
       word_press = Fabricate(:project, title: "WordPress Site", organization_id: huggey_bears.id)
       patch :update, id: alice.id, project: {description: "this site needs to be improved"} 

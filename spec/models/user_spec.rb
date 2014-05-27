@@ -11,8 +11,8 @@ describe User do
   describe "#private_messages" do
     it "returns all the conversations of the user in an arry" do
       convo = Conversation.create
-      bob = Fabricate(:user, first_name: "Bob")
-      alice = Fabricate(:user, first_name: "Alice")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "nonprofit")
+      alice = Fabricate(:user, first_name: "Alice", user_group: "volunteer")
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id)
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Sounds good. what's your phone number?", conversation_id: convo.id)
       message3 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "my phone number is 123455", conversation_id: convo.id)
@@ -26,8 +26,8 @@ describe User do
   describe "#user_conversations" do
     it "returns a conversation of the user in an arry if there is only one received smessages" do
       convo1 = Conversation.create
-      bob = Fabricate(:user, first_name: "Bob")
-      alice = Fabricate(:user, first_name: "Alice")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "nonprofit")
+      alice = Fabricate(:user, first_name: "Alice", user_group: "volunteer")
       
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)
       
@@ -37,8 +37,8 @@ describe User do
 
     it "does not return a conversation of the user in an arry if there is only one sent smessages" do
       convo1 = Conversation.create
-      bob = Fabricate(:user, first_name: "Bob")
-      alice = Fabricate(:user, first_name: "Alice")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "nonprofit")
+      alice = Fabricate(:user, first_name: "Alice", user_group: "volunteer")
       
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)
       
@@ -51,10 +51,10 @@ describe User do
       convo2 = Conversation.create
       convo3 = Conversation.create
       
-      bob = Fabricate(:user, first_name: "Bob")
-      alice = Fabricate(:user, first_name: "Alice")
-      cat = Fabricate(:user, first_name: "Cat")
-      dan = Fabricate(:user, first_name: "Dan")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+      alice = Fabricate(:user, first_name: "Alice", user_group: "nonprofit")
+      cat = Fabricate(:user, first_name: "Cat", user_group: "volunteer")
+      dan = Fabricate(:user, first_name: "Dan", user_group: "volunteer")
 
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Sounds good. what's your phone number?", conversation_id: convo1.id)
@@ -68,8 +68,8 @@ describe User do
     it "does not return duplicate conversations" do
       convo1 = Conversation.create
 
-      bob = Fabricate(:user, first_name: "Bob")
-      alice = Fabricate(:user, first_name: "Alice")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+      alice = Fabricate(:user, first_name: "Alice", user_group: "nonprofit")
 
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Sounds good. what's your phone number?", conversation_id: convo1.id)
@@ -82,17 +82,17 @@ describe User do
 
   describe "#organization_name" do
     it "returns the name of the organization of the user" do
-      bob = Fabricate(:user, first_name: "Bob")
+      alice = Fabricate(:user, first_name: "Alice", user_group: "nonprofit")
       org = Fabricate(:organization)
-      bob.update(organization_id: 1)
+      alice.update(organization_id: 1)
 
-      expect(bob.organization_name).to eq(org.name)
+      expect(alice.organization_name).to eq(org.name)
     end
   end
 
   describe "#open_projects" do
     it "returns the users projects that are open" do
-      bob = Fabricate(:user, first_name: "Bob")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
       word_press = Fabricate(:project, state: "open")
       logo = Fabricate(:project, state: "in production")
       bob.projects << [word_press, logo]
@@ -103,7 +103,7 @@ describe User do
 
   describe "#in_production_projects" do
     it "returns the users projects that are in production" do
-      bob = Fabricate(:user, first_name: "Bob")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
       word_press = Fabricate(:project, state: "open")
       logo = Fabricate(:project, state: "in production")
       bob.projects << [word_press, logo]
@@ -114,7 +114,7 @@ describe User do
 
   describe "#pending_completion_projects" do
     it "returns the users projects that are pending completion" do
-      bob = Fabricate(:user, first_name: "Bob")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
       word_press = Fabricate(:project, state: "open")
       logo = Fabricate(:project, state: "pending completion")
       bob.projects << [word_press, logo]
@@ -125,7 +125,7 @@ describe User do
 
   describe "#completed_projects" do
     it "returns the users projects that are completed" do
-      bob = Fabricate(:user, first_name: "Bob")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
       word_press = Fabricate(:project, state: "open")
       logo = Fabricate(:project, state: "completed")
       bob.projects << [word_press, logo]
@@ -136,7 +136,7 @@ describe User do
 
   describe "#unfinished_projects" do
     it "returns the users projects that are unfinished" do
-      bob = Fabricate(:user, first_name: "Bob")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
       word_press = Fabricate(:project, state: "open")
       logo = Fabricate(:project, state: "unfinished")
       bob.projects << [word_press, logo]

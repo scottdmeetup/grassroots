@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe PrivateMessagesController, :type => :controller do
-  let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", last_name: "Smith") }
+  let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", last_name: "Smith", user_group: "nonprofit") }
   let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
   let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
   
@@ -11,7 +11,7 @@ describe PrivateMessagesController, :type => :controller do
       alice.update_columns(organization_id: huggey_bear.id)
     end
     context "When only sending a message" do
-      let(:bob) { Fabricate(:user, first_name: "Bob") }
+      let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer") }
 
       it "renders the new template for creating a private message" do
         get :new, user_id: bob.id
@@ -61,8 +61,8 @@ describe PrivateMessagesController, :type => :controller do
   end
 
   describe "POST create" do
-    let(:bob) { Fabricate(:user, first_name: "Bob") }
-    let(:alice) { Fabricate(:user, first_name: "Alice") }
+    let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer") }
+    let(:alice) { Fabricate(:user, first_name: "Alice", user_group: "nonprofit") }
     context "with valid input" do
       context "when writing the just a message to a user" do
         before do

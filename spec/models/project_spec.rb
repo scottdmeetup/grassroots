@@ -8,7 +8,7 @@ describe Project do
 
   describe "#project_admin" do
     it "should return the administrator of the project" do
-      alice = Fabricate(:organization_administrator)
+      alice = Fabricate(:organization_administrator, user_group: "nonprofit")
       huggey_bears = Fabricate(:organization, user_id: alice.id)
       word_press = Fabricate(:project, organization: huggey_bears)
       expect(word_press.project_admin).to eq(alice)

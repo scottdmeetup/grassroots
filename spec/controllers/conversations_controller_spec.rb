@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe ConversationsController, :type => :controller do
-    let(:alice) { Fabricate(:user, first_name: "Alice") }
-    let(:bob) { Fabricate(:user, first_name: "Bob") }
-    let(:cat) { Fabricate(:user, first_name: "Cat") }
+    let(:alice) { Fabricate(:user, first_name: "Alice", user_group: "nonprofit") }
+    let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer") }
+    let(:cat) { Fabricate(:user, first_name: "Cat", user_group: "volunteer") }
     
     before do
       session[:user_id] = alice.id
@@ -108,10 +108,10 @@ describe ConversationsController, :type => :controller do
   end
 
   describe "POST accept" do
-    let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
-    let(:bob) { Fabricate(:user, first_name: "Bob") }
-    let(:elena) { Fabricate(:user, first_name: "Elena") }
-    let(:dan) { Fabricate(:user, first_name: "Dan")}
+    let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", user_group: "nonprofit") }
+    let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer") }
+    let(:elena) { Fabricate(:user, first_name: "Elena", user_group: "volunteer") }
+    let(:dan) { Fabricate(:user, first_name: "Dan", user_group: "volunteer")}
     let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
     let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
     let(:conversation1) { Fabricate(:conversation) }
@@ -162,8 +162,8 @@ describe ConversationsController, :type => :controller do
   end
 
   describe "GET confirm_complete" do
-    let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
-    let(:bob) { Fabricate(:user, first_name: "Bob") }
+    let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", user_group: "nonprofit") }
+    let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer") }
     let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
     let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "in production") }
     let(:conversation1) { Fabricate(:conversation) }
@@ -193,8 +193,8 @@ describe ConversationsController, :type => :controller do
   end
 
   describe "GET drop" do
-    let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice") }
-    let(:bob) { Fabricate(:user, first_name: "Bob") }
+    let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", user_group: "nonprofit") }
+    let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer") }
     let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
     let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
     let(:conversation1) { Fabricate(:conversation) }

@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
   has_many :conversations
 
+  validates_presence_of :email, :password, :first_name, :last_name, :user_group
+  validates_uniqueness_of :email
+
   def organization_name_box
     organization.try(:name)
   end
