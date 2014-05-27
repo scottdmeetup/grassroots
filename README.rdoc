@@ -3,6 +3,12 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
+If you are collaborating, please fork the repo and send pull requests to the master of, https://github.com/rjewell2200/grassroots
+
+To get the app up and running, please pull from your forked repo's origin and, $ rake db:reset, in terminal -- and you should be a-o-k to go
+
+
+
 Things you may want to cover:
 
 * Ruby version
