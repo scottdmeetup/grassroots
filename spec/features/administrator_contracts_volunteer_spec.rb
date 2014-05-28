@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-feature  "Volunteer successfully joins a project"do
-  scenario "Volunteer requests to join a nonprofit's project and Administrator accepts" do
+feature  "Administrator contracts a volunteer"do
+  scenario "Volunteer applies to join a project and its administrator accepts the volunteer's application to contract him/her" do
     huggey_bear = Fabricate(:organization, name: "Huggey Bear Land", cause: "Animal Rights", ruling_year: 1998, 
       mission_statement: "We want to give everyone a huggey bear in their sad times", guidestar_membership: nil, 
       ein: "192512653-6", street1: "2998 Hansen Heights", street2: nil, city: "New York", 
@@ -25,26 +25,46 @@ feature  "Volunteer successfully joins a project"do
     user_signs_in(bob)
     expect(page).to have_content("You are logged in!")
 
-    visit projects_path
-    expect(page).to have_content("Need WordPress Site")
-    click_on('Join Project')
-    fill_in "private_message[body]", with: "I'd like to join this project"
-    click_on('Create')
-    sign_out   
+    volunteer_joins_project
+    sign_out
 
+    #project_administrator_contracts_volunteer_and_accepts_application
     user_signs_in(alice)
     visit conversations_path
     click_on('Accept')
     fill_in "private_message[body]", with: "I have accepted your participation"
+    click_on('Send')
     visit conversations_path
     expect(page).to have_text("Drop Volunteer")
-    visit organization_path(huggey_bear.id)
+    visit organization_path(alice.organization.id)
     expect(page).to have_text("In Production 1")
     sign_out
 
     user_signs_in(bob)
     expect(page).to have_text("In Production 1")
     visit conversations_path
+    
     expect(page).to have_text("Drop Project")
+
+  end
+  
+  def volunteer_joins_project
+    visit projects_path
+    expect(page).to have_content("Need WordPress Site")
+    click_on('Join Project')
+    fill_in "private_message[body]", with: "I'd like to join this project"
+    click_on('Create')   
+  end
+
+  def project_administrator_contracts_volunteer_and_accepts_application(admin)
+    visit conversations_path
+    click_on('Accept')
+    fill_in "private_message[body]", with: "I have accepted your participation"
+    click_on('Send')
+    visit conversations_path
+    expect(page).to have_text("Drop Volunteer")
+    visit organization_path(admin.organization.id)
+    expect(page).to have_text("In Production 1")
+    sign_out
   end
 end

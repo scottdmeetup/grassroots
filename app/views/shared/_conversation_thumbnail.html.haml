@@ -27,7 +27,7 @@
     - elsif conversation.project_complete_request
       .btn-group
         %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
-          Completed
+          Contract Complete
           %span.caret
         %ul.dropdown-menu{role: "menu"}
           %li
@@ -40,10 +40,7 @@
     - elsif conversation.opportunity_drop_project
       .btn-group
         %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
-          - if current_user.organization_administrator
-            Drop Volunteer
-          - else
-            Drop Project
+          Drop Contract
           %span.caret
         %ul.dropdown-menu{role: "menu"}
           %li

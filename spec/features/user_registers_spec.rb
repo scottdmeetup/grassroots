@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'User registers', {js: true} do
+feature 'User registers' do
   scenario "with valid input" do
     visit new_user_path
     fill_in "Email", with: "john@example.com"
