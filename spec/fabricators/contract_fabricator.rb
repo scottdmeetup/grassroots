@@ -1,0 +1,3 @@
+Fabricator(:contract) do
+  
+end

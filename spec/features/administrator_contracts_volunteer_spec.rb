@@ -20,7 +20,6 @@ feature  "Administrator contracts a volunteer"do
       organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
     word_press = Fabricate(:project, title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
       skills: "web development", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
-    alice.projects << word_press
     
     user_signs_in(bob)
     expect(page).to have_content("You are logged in!")
@@ -31,15 +30,15 @@ feature  "Administrator contracts a volunteer"do
     #project_administrator_contracts_volunteer_and_accepts_application
     user_signs_in(alice)
     visit conversations_path
-    click_on('Accept')
+    page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
+    
     fill_in "private_message[body]", with: "I have accepted your participation"
     click_on('Send')
     visit conversations_path
-    expect(page).to have_text("Drop Volunteer")
+    expect(page).to have_text("Drop Contract")
     visit organization_path(alice.organization.id)
     expect(page).to have_text("In Production 1")
     sign_out
-
     user_signs_in(bob)
     expect(page).to have_text("In Production 1")
     visit conversations_path

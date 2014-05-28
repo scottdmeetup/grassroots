@@ -22,7 +22,7 @@
       .col-lg-4.col-lg-offset-8
         .form-group
           %btn
-          - if @project.project_admin == current_user
+          - if @project.administrator == current_user
             = link_to "Edit Project", edit_organization_admin_project_path(@project.id), class: "btn btn-primary btn-lg btn-project"
           - elsif @project.state == "open"
             = link_to "Request to Join", new_private_message_path(project_id: @project.id), class: "btn btn-primary btn-lg btn-project" 
@@ -58,7 +58,7 @@
       .col-lg-8
         %h1
           = @project.state == "open " ? "Volunteer Requests" : "Project Volunteer"
-        - @project.users.each do |user|
+        - @project.applicants.each do |user|
           - if user.organization != @project.organization
             .col-lg-3.col-sm-4
               .thumbnail.thumbnail-staff

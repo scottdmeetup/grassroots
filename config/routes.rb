@@ -7,6 +7,11 @@ Grassroots::Application.routes.draw do
   namespace :organization_admin do
     resources :projects, only: [:new, :create, :edit, :update]
     resources :organizations, only: [:edit, :update]
+    resources :volunteer_applications, only: [:index]
+  end
+
+  namespace :volunteer do
+    resources :volunteer_applications, only: [:index]
   end
 
   resources :users, except: [:destroy]
@@ -19,12 +24,15 @@ Grassroots::Application.routes.draw do
   end
   get 'join', to: 'projects#join', as: 'join'
 
-  resources :private_messages, only: [:new, :create]
+  resources :private_messages, only: [:new, :create] 
   get 'outgoing_messages', to: 'private_messages#outgoing_messages', as: 'outgoing_messages'
+  resources :volunteer_applications, only: [:new, :create]
+  
+  resources :contracts, only: [:create, :update, :new]
+  patch 'dropping_contract', to: 'contracts#dropping_contract', as: 'dropping_contract'
+  patch 'update_contract_work_submitted/:id', to: 'contracts#update_contract_work_submitted', as: 'update_contract_work_submitted'
+  patch 'contract_complete', to: 'contracts#contract_complete', as: 'contract_complete'
+  get 'submit_work_form', to: 'contracts#submit_work_message_form', as: 'submit_work_form'
 
   resources :conversations, only: [:show, :index]
-  get 'accept', to: 'conversations#accept'
-  get 'request_complete', to: 'conversations#request_complete'
-  get 'confirm_complete', to: 'conversations#confirm_complete'
-  get 'drop', to: 'conversations#drop'
 end

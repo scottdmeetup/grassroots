@@ -2,8 +2,11 @@ require 'spec_helper'
 
 describe PrivateMessagesController, :type => :controller do
   let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", last_name: "Smith", user_group: "nonprofit") }
+  let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
   let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
   let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
+  let(:contract) { Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: nil) } 
+  
   
   describe "GET new" do
 
@@ -29,33 +32,6 @@ describe PrivateMessagesController, :type => :controller do
         get :new, user_id: bob.id
 
         expect(assigns(:private_message).project_id).to be_nil
-      end
-    end
-    
-    context "when sending a join request" do
-
-      before do
-        get :new, project_id: word_press.id
-      end
-
-      it "renders the new template for creating a private message" do
-        expect(response).to render_template(:new)
-      end
-    
-      it "sets @private_message" do
-        expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
-      end
-
-      it "sets the project id in the initialized @private_message" do
-        expect(assigns(:private_message).project_id).to eq(1)
-      end
-      
-      it "sets the recipient value in the initialized @private_message" do
-        expect(assigns(:private_message).recipient).to eq(alice)
-      end
-  
-      it "sets the subject line with the value of the project title with Project Request: in the initialized @private_message" do
-        expect(assigns(:private_message).subject).to eq("Project Request: word press website")
       end
     end
   end
@@ -125,10 +101,63 @@ describe PrivateMessagesController, :type => :controller do
         end
       end
 
-      context "when creating a join request" do
+      context "when creating reply" do
+
         before do
-          session[:user_id] = bob.id
+          session[:user_id] = alice.id
         end
+
+        it "adds another message to the database" do
+          message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+          post :create, private_message: {recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Your qualifications look great. What's your phone number?"}
+
+          expect(PrivateMessage.count).to eq(2)
+        end
+
+        it "associates the reply message with the original message's conversation" do
+          convo = Conversation.create
+          message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id)
+          post :create, private_message: {recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Your qualifications look great. What's your phone number?", conversation_id: message1.conversation_id}
+
+          convo = Conversation.first
+          message2 = PrivateMessage.find(2)
+          expect(convo.private_messages).to eq([message1, message2])
+        end
+
+        it "adds a conversation to the original sender's conversation index" do
+          convo = Conversation.create
+          message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id)
+          post :create, private_message: {recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Your qualifications look great. What's your phone number?", conversation_id: message1.conversation_id}
+
+          convo = Conversation.first
+          message2 = PrivateMessage.find(2)
+          expect(bob.user_conversations).to eq([convo])
+        end
+      end
+    end
+  end
+=begin
+          it "sends the application to the project administrator" do
+            post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
+            expect(alice.conversations.first).to eq(Conversation.first)
+          end
+
+          it "associates the project with the applicant" do
+            post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
+            expect(bob.applied_to_projects).to eq([word_press])
+          end
+
+        end
+
+        #it "creates a volunteer application"
+        #it "creates a conversation id with a unique volunteer application foreign key"
+        #it "makes the recipient of the message see a conversation, which has a volunteer_application_id" 
+
+
+        #conversation1 = double(:volunteer_app, id: 1, update_columns: 1)
+        #message1 = double(:volunteer_app, update_columns: conversation1.id, recipient_id: 2)
+        #Conversation.should_receive(:create).and_return(conversation1)
+        #PrivateMessage.should_receive(:create).and_return(message1)
 
         it "associates the user who is sending the message with the project" do
           post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
@@ -153,7 +182,6 @@ describe PrivateMessagesController, :type => :controller do
 
           expect(word_press.state).to eq("open")
         end
-      end
 
       context "when sending a completed project request" do
         #let (:message1) {Fabricate(:project, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id)}
@@ -182,7 +210,7 @@ describe PrivateMessagesController, :type => :controller do
           expect(response).to redirect_to(user_path(bob.id))
         end
       end
-=begin
+
       context "when completing a project" do
         let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "in production") }
         
@@ -210,40 +238,4 @@ describe PrivateMessagesController, :type => :controller do
         end
       end
 =end
-    end
-
-    context "when creating reply" do
-
-      before do
-        session[:user_id] = alice.id
-      end
-
-      it "adds another message to the database" do
-        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
-        post :create, private_message: {recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Your qualifications look great. What's your phone number?"}
-
-        expect(PrivateMessage.count).to eq(2)
-      end
-
-      it "associates the reply message with the original message's conversation" do
-        convo = Conversation.create
-        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id)
-        post :create, private_message: {recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Your qualifications look great. What's your phone number?", conversation_id: message1.conversation_id}
-
-        convo = Conversation.first
-        message2 = PrivateMessage.find(2)
-        expect(convo.private_messages).to eq([message1, message2])
-      end
-
-      it "adds a conversation to the original sender's conversation index" do
-        convo = Conversation.create
-        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id)
-        post :create, private_message: {recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Your qualifications look great. What's your phone number?", conversation_id: message1.conversation_id}
-
-        convo = Conversation.first
-        message2 = PrivateMessage.find(2)
-        expect(bob.user_conversations).to eq([convo])
-      end
-    end
-  end
 end

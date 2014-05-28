@@ -75,10 +75,8 @@ social_media = Project.create(title: "Twitter Help", description: "I need someon
   skills: "social media", causes: "social", deadline: Date.today + 1.month, user_id: 3, organization_id: 3, estimated_hours: 11, state: "open")
 fundraising = Project.create(title: "Fundraising Help", description: "I need help fundraising my organization", 
   skills: "fundraising", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
-alice.projects << word_press
-bob.projects << pretty_logo
-catherine.projects << social_media
-alice.projects << fundraising
 
+Contract.destroy_all
+  
 PrivateMessage.destroy_all
 Conversation.destroy_all
