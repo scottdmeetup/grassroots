@@ -1,4 +1,5 @@
 class ConversationsController < ApplicationController
+  # before_action :find_conversation, :find_message, :find_project, only: [:accept, :completed, :drop]
   def index
     @conversations = current_user.user_conversations
   end
@@ -10,6 +11,13 @@ class ConversationsController < ApplicationController
   end
 
   def accept
+    # update_associations_of_freelancers_with_projects(@message.sender_id)
+
+    # project_messages = PrivateMessage.where(project_id: @project.id).to_a
+    # disassociate_messages_from_the_project(project_messages)
+    # associate_conversations_with_project(project_messages)
+
+    # move_project_status_to_production
     conversation = Conversation.find(params[:conversation_id])
     message = conversation.private_messages.first
     project = Project.find(message.project_id)
@@ -50,4 +58,23 @@ class ConversationsController < ApplicationController
   end
 
 private 
+  def find_conversation
+    @conversation = Conversation.find(params[:conversation_id])
+    
+  end
+
+  def find_message
+    @message = @conversation.private_messages.first
+    
+  end
+
+  def find_project
+    @project = Project.find(@message.project_id)
+  end
+
+  def update_associations_of_freelancers_with_projects(applicant_id)
+    @project.users.clear
+    @project.users << [current_user, freelancer]
+    
+  end
 end

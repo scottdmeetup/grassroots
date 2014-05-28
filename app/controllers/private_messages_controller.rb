@@ -1,9 +1,9 @@
 class PrivateMessagesController < ApplicationController
   before_filter :current_user
   def new
-    if params[:project_id]
+    if project_related_message
       @project = Project.find(params[:project_id])
-      @project.state == "in production" ? handles_project_completed_request : handles_join_request
+      @project.state == "in production" ? handles_project_complete : handles_volunteer_application
     else
       @user = User.find_by(id: params[:user_id])
       @private_message = PrivateMessage.new(recipient_id: @user.id)
@@ -11,9 +11,9 @@ class PrivateMessagesController < ApplicationController
   end
 
   def create
-    if params[:private_message][:conversation_id]
+    if user_creating_a_reply?
       handles_replies
-    elsif params[:project_id]
+    elsif volunteer_creating_an_application?
       project = Project.find(params[:project_id])
       project.state == "open" ? handles_project_request : handles_completed_project_request
     else
@@ -27,16 +27,28 @@ class PrivateMessagesController < ApplicationController
 
 private
 
+  def project_related_message
+    params[:project_id]
+  end
+
+  def user_creating_a_reply?
+    params[:private_message][:conversation_id]
+  end
+
+  def volunteer_creating_an_application?
+    params[:project_id]
+  end
+
   def message_params
     params.require(:private_message).permit(:subject, :sender_id, :recipient_id, :body)
   end
   
-  def handles_join_request
+  def handles_volunteer_application
     @private_message = PrivateMessage.new(project_id: params[:project_id], 
       recipient_id: @project.project_admin.id, subject: "Project Request: #{@project.title}")
   end
 
-  def handles_project_completed_request
+  def handles_project_complete
     PrivateMessage.find_by_project_id(@project.id).update_columns(project_id: nil)
     @private_message = PrivateMessage.new(project_id: params[:project_id], recipient_id: @project.project_admin.id, subject: "Project Completed: #{@project.title}")
   end

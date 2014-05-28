@@ -7,6 +7,7 @@ describe User do
   it { should have_many(:projects).through(:project_users)}
   it { should have_many(:sent_messages)}
   it { should have_many(:received_messages).order("created_at DESC")}
+  it { should have_many(:volunteer_applications)}
 
   describe "#private_messages" do
     it "returns all the conversations of the user in an arry" do

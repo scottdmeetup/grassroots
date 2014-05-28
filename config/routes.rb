@@ -19,7 +19,8 @@ Grassroots::Application.routes.draw do
   end
   get 'join', to: 'projects#join', as: 'join'
 
-  resources :private_messages, only: [:new, :create]
+  resources :private_messages, only: [:new, :create] 
+  resources :volunteer_applications, only: [:new, :create]
   get 'outgoing_messages', to: 'private_messages#outgoing_messages', as: 'outgoing_messages'
 
   resources :conversations, only: [:show, :index]
