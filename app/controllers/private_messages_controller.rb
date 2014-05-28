@@ -11,11 +11,11 @@ class PrivateMessagesController < ApplicationController
   end
 
   def create
-    if params[:private_message][:conversation_id]
+    if when_replying_to_a_message
       handles_replies
-    elsif params[:project_id]
+    elsif when_requesting_to_join_project
       project = Project.find(params[:project_id])
-      project.state == "open" ? handles_project_request : handles_completed_project_request
+      project.state == "open" ? handles_request_to_join_project : handles_completed_project_request
     else
       handles_first_private_message
     end
@@ -26,6 +26,13 @@ class PrivateMessagesController < ApplicationController
   end
 
 private
+  def when_replying_to_a_message
+    params[:private_message][:conversation_id]
+  end
+
+  def when_requesting_to_join_project
+    params[:project_id]
+  end
 
   def message_params
     params.require(:private_message).permit(:subject, :sender_id, :recipient_id, :body)
@@ -48,7 +55,8 @@ private
     flash[:success] = "Your message has been sent to #{@private_message.recipient.first_name} #{@private_message.recipient.last_name}"
   end
 
-  def handles_project_request
+  def handles_request_to_join_project
+    VolunteerApplication.create
     project = Project.find(params[:project_id])
     current_user.projects << project
     conversation = Conversation.create 

@@ -10,6 +10,16 @@ class ConversationsController < ApplicationController
   end
 
   def accept
+=begin
+    update_associations_of_freelancers_with_projects(@message.sender_id)
+    project_messages = PrivateMessage.where(project_id: @project.id).to_a
+    disassociate_messages_from_the_project(project_messages)
+    associate_conversations_with_project(project_messages)
+    move_project_status_to_production
+    
+    flash[:success] = "Please write to the volunteer to let the volunteer know that you have accepted his/her participation on your project"
+    redirect_to conversation_path(conversation.id)
+=end
     conversation = Conversation.find(params[:conversation_id])
     message = conversation.private_messages.first
     project = Project.find(message.project_id)
@@ -26,6 +36,7 @@ class ConversationsController < ApplicationController
     message.update_attributes(project_id: project.id)
     redirect_to conversation_path(conversation.id)
     flash[:success] = "Please write to the volunteer to let the volunteer know that you have accepted his/her participation on your project"
+
   end
 
   def confirm_complete
@@ -50,4 +61,6 @@ class ConversationsController < ApplicationController
   end
 
 private 
+
+
 end

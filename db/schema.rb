@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140524165654) do
+ActiveRecord::Schema.define(version: 20140528003213) do
 
   create_table "conversations", force: true do |t|
     t.datetime "created_at"
@@ -108,6 +108,15 @@ ActiveRecord::Schema.define(version: 20140524165654) do
     t.boolean  "nonprofit"
     t.string   "type"
     t.string   "user_group"
+  end
+
+  create_table "volunteer_applications", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.boolean  "accepted"
+    t.boolean  "rejected"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
