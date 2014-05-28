@@ -3,9 +3,10 @@ require 'spec_helper'
 describe Project do
   it { should belong_to(:organization)}
   it { should have_many(:users)}
-  it { should have_many(:project_users)}
-  it { should have_many(:users).through(:project_users)}
+  #it { should have_many(:project_users)}
+  #it { should have_many(:users).through(:project_users)}
   it { should have_many(:volunteer_applications)}
+  it { should have_many(:users).through(:volunteer_applications)}
 
   describe "#project_admin" do
     it "should return the administrator of the project" do

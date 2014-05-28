@@ -31,15 +31,15 @@ feature  "Administrator contracts a volunteer"do
     #project_administrator_contracts_volunteer_and_accepts_application
     user_signs_in(alice)
     visit conversations_path
-    click_on('Accept')
+    page.find(:xpath, "//a[@href='/accept?conversation_id=#{Conversation.first.id}']").click
+    #click_on('Accept')
     fill_in "private_message[body]", with: "I have accepted your participation"
     click_on('Send')
     visit conversations_path
-    expect(page).to have_text("Drop Volunteer")
+    expect(page).to have_text("Drop Contract")
     visit organization_path(alice.organization.id)
     expect(page).to have_text("In Production 1")
     sign_out
-
     user_signs_in(bob)
     expect(page).to have_text("In Production 1")
     visit conversations_path

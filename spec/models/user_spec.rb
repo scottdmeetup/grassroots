@@ -3,11 +3,12 @@ require 'spec_helper'
 describe User do
   it { should belong_to(:organization)}
   it { should belong_to(:project)}
-  it { should have_many(:project_users)}
-  it { should have_many(:projects).through(:project_users)}
+  #it { should have_many(:project_users)}
+  #it { should have_many(:projects).through(:project_users)}
   it { should have_many(:sent_messages)}
   it { should have_many(:received_messages).order("created_at DESC")}
   it { should have_many(:volunteer_applications)}
+  it { should have_many(:projects).through(:volunteer_applications)}
 
   describe "#private_messages" do
     it "returns all the conversations of the user in an arry" do
@@ -145,5 +146,42 @@ describe User do
       expect(bob.unfinished_projects).to eq([logo])
     end
   end
+
+  describe "#open_project_applications" do
+    it "returns the users projects to which he/she has applied only if accepted and rejectes are nil" do
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+      alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
+      cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")
+      
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      amnesty = Fabricate(:organization, user_id: cat.id)
+      
+      logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id, state: "open") 
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      accounting = Fabricate(:project, title: "accounting", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      grant_writing = Fabricate(:project, title: "grant writing job", user_id: cat.id, organization_id: amnesty.id, state: "open") 
+      
+      application1 = Fabricate(:volunteer_application, user_id: bob.id, project_id: word_press.id)
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id)
+      
+      application2 = Fabricate(:volunteer_application, user_id: bob.id, project_id: logo.id)
+      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id) 
+      message2 = Fabricate(:private_message, recipient_id: cat.id, sender_id: bob.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)
+      
+      application3 = Fabricate(:volunteer_application, user_id: bob.id, project_id: accounting.id, rejected: true)
+      conversation3 = Fabricate(:conversation, volunteer_application_id: application3.id) 
+      message3 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation3.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: accounting.id)
+
+      application4 = Fabricate(:volunteer_application, user_id: bob.id, project_id: grant_writing.id, accepted: true)
+      conversation4 = Fabricate(:conversation, volunteer_application_id: application4.id) 
+      message4 = Fabricate(:private_message, recipient_id: cat.id, sender_id: bob.id, conversation_id: conversation4.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: grant_writing.id)
+
+      
+
+      expect(bob.open_project_applications).to eq([word_press, logo])
+    end
+  end
+
 end
   

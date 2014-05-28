@@ -8,9 +8,18 @@ class User < ActiveRecord::Base
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
   has_many :conversations
   has_many :volunteer_applications
+  has_many :projects, through: :volunteer_applications
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
+
+  def open_project_applications
+    collection_project_ids = volunteer_applications.where(accepted: nil, rejected: nil).select(:project_id).distinct
+    all_open_applications = collection_project_ids.map do |member|
+      proj_id = member.project_id
+      Project.find_by(id: proj_id)
+    end
+  end  
 
   def organization_name_box
     organization.try(:name)

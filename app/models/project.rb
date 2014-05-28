@@ -3,6 +3,7 @@ class Project < ActiveRecord::Base
   has_many :project_users
   has_many :users, through: :project_users
   has_many :volunteer_applications
+  has_many :users, through: :volunteer_applications
 
   def project_admin
     organization.organization_administrator
