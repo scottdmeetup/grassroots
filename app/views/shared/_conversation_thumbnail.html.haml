@@ -23,7 +23,7 @@
             %a{href: "#"} Ignore Request
           %li.divider
           %li
-            = link_to "Accept", accept_path(conversation_id: conversation.id)
+            = link_to "Accept", contracts_path(volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id)
     - elsif conversation.project_complete_request
       .btn-group
         %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
