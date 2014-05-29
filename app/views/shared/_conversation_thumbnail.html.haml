@@ -11,7 +11,7 @@
         = link_to conversation.private_messages.first.subject, conversation_path(conversation.id)
     %p 
       = conversation.private_message_body
-    - if conversation.join_request
+    - if conversation.volunteer_application_id
       .btn-group
         %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
           Volunteer Application

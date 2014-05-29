@@ -32,7 +32,7 @@ feature  "Administrator contracts a volunteer"do
     user_signs_in(alice)
     visit conversations_path
     page.find(:xpath, "//a[@href='/accept?conversation_id=#{Conversation.first.id}']").click
-    #click_on('Accept')
+    save_and_open_page
     
     fill_in "private_message[body]", with: "I have accepted your participation"
     click_on('Send')

@@ -196,6 +196,12 @@ describe PrivateMessagesController, :type => :controller do
             post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
             expect(Conversation.first.volunteer_application_id).to eq(1)
           end
+
+          it "associates the conversation with the volunteer" do
+            post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
+            expect(bob.conversations.first).to eq(Conversation.first)
+          end
+
           it "sends the application to the project administrator" do
             post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
             expect(alice.conversations.first).to eq(Conversation.first)
@@ -205,6 +211,7 @@ describe PrivateMessagesController, :type => :controller do
             post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
             expect(bob.applied_to_projects).to eq([word_press])
           end
+
         end
       end
         #it "creates a volunteer application"

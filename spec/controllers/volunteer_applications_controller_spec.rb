@@ -2,6 +2,27 @@ require 'spec_helper'
 
 describe VolunteerApplicationsController, :type => :controller do
 
+
+=begin
+  describe "POST create" do
+    let(:huggey_bear) {Fabricate(:organization)}
+    let(:alice) {Fabricate(:organization_administrator, user_group: "nonprofit")}
+    let(:bob) {Fabricate(:user, user_group: "volunteer")}
+    let(:word_press) {Fabricate(:project)}
+    
+    before do
+      set_current_user(alice)
+      huggey_bear.update_columns(user_id: alice.id)
+    end
+
+    it "renders the conversation show view" do
+      post :create
+      expect(response).to redirect_to
+    end
+    it "creates a contract"
+
+  end
+
   let(:huggey_bear) {Fabricate(:organization)}
   let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
   let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
@@ -87,7 +108,7 @@ describe VolunteerApplicationsController, :type => :controller do
       expect(alice.administrators_open_applications).to eq([application1, application2])
     end
   end
-
+=end
 
 =begin
   describe "GET new" do
