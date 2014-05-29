@@ -33,6 +33,7 @@ feature  "Administrator contracts a volunteer"do
     visit conversations_path
     page.find(:xpath, "//a[@href='/accept?conversation_id=#{Conversation.first.id}']").click
     #click_on('Accept')
+    
     fill_in "private_message[body]", with: "I have accepted your participation"
     click_on('Send')
     visit conversations_path

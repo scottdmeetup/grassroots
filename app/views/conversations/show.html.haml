@@ -16,16 +16,16 @@
       %img#conversation-header-img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
     .col-lg-7#convo-subject-details
       %h4
-        %strong= @messages.private_messages.first.subject
-      - if @messages.private_messages.first.sender_id == current_user.id
-        %h4= "#{@message.recipient.first_name}" 
+        %strong= @conversation.private_messages.first.subject
+      - if @conversation.private_messages.first.sender_id == current_user.id
+        %h4= "#{@first_message.recipient.first_name}" 
       - else
-        %h4= "#{@message.sender.first_name} #{@message.sender.last_name}"
-      %p= @messages.private_messages.first.created_at
+        %h4= "#{@first_message.sender.first_name} #{@first_message.sender.last_name}"
+      %p= @conversation.private_messages.first.created_at
     
     .row
       .col-lg-12.convo-msg-wrapper
-        - @messages.private_messages.each do |message|
+        - @conversation.private_messages.each do |message|
           %p 
             %span On May 21, 2014 7:33 PM, 
             = "#{message.sender.first_name} #{message.sender.last_name}" if message.sender
@@ -35,14 +35,14 @@
 
     %section.register
       .col-lg-12
-        = form_for [@private_message], url: private_messages_path do |f|
+        = form_for [@reply], url: private_messages_path do |f|
           %fieldset#convo-form-fieldset
             .form-group
               %label.control-label.col-sm-3 Body:
               = f.text_area :body, cols: 6, rows: 6, class: "form-control"
               = f.hidden_field :sender_id, :value => current_user.id
-              = f.hidden_field :recipient_id, :value => @message.sender_id
-              = f.hidden_field :conversation_id, :value => @message.conversation_id
-              = f.hidden_field :subject, :value => @message.subject
+              = f.hidden_field :recipient_id, :value => @first_message.sender_id
+              = f.hidden_field :conversation_id, :value => @first_message.conversation_id
+              = f.hidden_field :subject, :value => @first_message.subject
             .form-group 
               = f.submit "Send", class: "btn btn-lg btn-primary pull-right"

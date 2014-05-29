@@ -5,9 +5,9 @@ class ConversationsController < ApplicationController
   end
 
   def show
-    @messages = Conversation.find_by(id: params[:id]) 
-    @message = PrivateMessage.find_by(conversation_id: @messages.id)
-    @private_message = PrivateMessage.new(subject: @message.subject, recipient_id: @message.sender.id, sender_id: current_user.id, conversation_id: @message.conversation_id)
+    @conversation = Conversation.find(params[:id]) 
+    @first_message = @conversation.private_messages.first
+    @reply = PrivateMessage.new(subject: @first_message.subject, recipient_id: @first_message.sender.id, sender_id: current_user.id, conversation_id: @first_message.conversation_id)
   end
 
   def accept
