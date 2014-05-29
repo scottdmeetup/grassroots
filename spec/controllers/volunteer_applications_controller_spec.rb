@@ -36,7 +36,7 @@ describe VolunteerApplicationsController, :type => :controller do
       #cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "volunteer")
 
       #huggey_bear = Fabricate(:organization, user_id: alice.id)
-      
+      set_current_user(bob)
       logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
       word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
 
@@ -49,7 +49,7 @@ describe VolunteerApplicationsController, :type => :controller do
       message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)
 
       get :index
-      expect(assigns(:volunteer_applications)).to match_array([application1, application2])
+      expect(assigns(:open_volunteer_applications)).to match_array([application1, application2])
     end
 
     it "shows a volunteer all his/her applications" do
@@ -68,10 +68,12 @@ describe VolunteerApplicationsController, :type => :controller do
       expect(bob.volunteers_open_applications).to eq([application1, application2])
     end
     it "shows a project administrator all his/her received applications" do
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
       logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
       word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
-      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      huggey_bear.update_attributes(user_id: alice.id)
       alice.update_attributes(organization_id: huggey_bear.id)
+      set_current_user(alice)
 
       application1 = VolunteerApplication.create(user_id: bob.id, project_id: word_press.id)
       conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
