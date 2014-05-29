@@ -1,6 +1,93 @@
 require 'spec_helper'
 
 describe VolunteerApplicationsController, :type => :controller do
+
+  let(:huggey_bear) {Fabricate(:organization)}
+  let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+  let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+  let(:cat) {Fabricate(:user, first_name: "Cat", user_group: "volunteer")}
+  #let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open")}
+  #let(:logo) {Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: amnesty.id, state: "open") }
+  
+  #let(:application1) {Fabricate(:volunteer_application, user_id: bob.id, project_id: word_press.id)}
+  #let(:conversation1) {Fabricate(:conversation, volunteer_application_id: application1.id) }
+  #let(:message1) {Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id)}
+  
+  #let(:application2) {Fabricate(:volunteer_application, user_id: cat.id, project_id: logo.id)}
+  #let(:conversation2) {Fabricate(:conversation, volunteer_application_id: application2.id)} 
+  #let(:message2) {Fabricate(:private_message, recipient_id: cat.id, sender_id: bob.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)}
+
+  #amnesty = Fabricate(:organization, user_id: cat.id)
+  
+  before do
+    set_current_user(bob)
+    huggey_bear.update_columns(user_id: alice.id)
+  end
+
+  describe "GET index" do
+    it "renders the index template" do
+      get :index
+      expect(response).to render_template(:index)
+    end
+
+    it "assigns the @volunteer_applications" do
+      #alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
+      
+      #cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "volunteer")
+
+      #huggey_bear = Fabricate(:organization, user_id: alice.id)
+      
+      logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+
+      application1 = VolunteerApplication.create(user_id: bob.id, project_id: word_press.id)
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id)
+          
+      application2 = VolunteerApplication.create(user_id: bob.id, project_id: logo.id)
+      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id) 
+      message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)
+
+      get :index
+      expect(assigns(:volunteer_applications)).to match_array([application1, application2])
+    end
+
+    it "shows a volunteer all his/her applications" do
+      logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+
+      application1 = VolunteerApplication.create(user_id: bob.id, project_id: word_press.id)
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id)
+          
+      application2 = VolunteerApplication.create(user_id: bob.id, project_id: logo.id)
+      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id) 
+      message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)
+
+      get :index
+      expect(bob.volunteers_open_applications).to eq([application1, application2])
+    end
+    it "shows a project administrator all his/her received applications" do
+      logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      alice.update_attributes(organization_id: huggey_bear.id)
+
+      application1 = VolunteerApplication.create(user_id: bob.id, project_id: word_press.id)
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id)
+          
+      application2 = VolunteerApplication.create(user_id: cat.id, project_id: logo.id)
+      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id) 
+      message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: cat.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)
+
+      get :index
+      expect(alice.administrators_open_applications).to eq([application1, application2])
+    end
+  end
+
+
+=begin
   describe "GET new" do
     let(:huggey_bear) {Fabricate(:organization)}
     let(:alice) {Fabricate(:organization_administrator, user_group: "nonprofit")}
@@ -25,58 +112,7 @@ describe VolunteerApplicationsController, :type => :controller do
       expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
     end
   end
-  describe "POST create" do
-    let(:huggey_bear) {Fabricate(:organization)}
-    let(:alice) {Fabricate(:organization_administrator, user_group: "nonprofit")}
-    let(:bob) {Fabricate(:user, user_group: "volunteer")}
-    let(:word_press) {Fabricate(:project)}
-    
-    before do
-      set_current_user(bob)
-      huggey_bear.update_columns(user_id: alice.id)
-    end
-
-    context "with valid input" do
-      it "renders the current user's inbox" do
-
-        post :create, project_id: word_press.id, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"
-        expect(response).to redirect_to(conversations_path)
-      end
-     
-      it "creates a volunteer application" do
-        post :create, project_id: word_press.id, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"
-        expect(VolunteerApplication.count).to eq(1)
-      end
-     
-      it "associates the application with the volunteer" do
-        post :create, project_id: word_press.id, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"
-        expect(VolunteerApplication.first.user).to eq(bob)
-      end
-     
-      it "associates the application with the project" do
-        post :create, project_id: word_press.id, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"
-        expect(VolunteerApplication.first.project).to eq(word_press)
-      end
-      
-      it "associates the application with a conversation" do  
-        post :create, project_id: word_press.id, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"
-        expect(Conversation.first.volunteer_application_id).to eq(1)
-      end
-      it "sends the application to the project administrator" do
-        post :create, project_id: word_press.id, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"
-        expect(alice.conversations.first).to eq(Conversation.first)
-      end
-
-      it "associates the project with the applicant" do
-        post :create, project_id: word_press.id, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"
-        expect(bob.open_project_applications).to eq([word_press])
-      end
-      
-      #it "creates a conversation id with a unique volunteer application foreign key"
-      #it "makes the recipient of the message see a conversation, which has a volunteer_application_id" 
-    end
-  end
-=begin
+  
   describe "GET accept" do
     let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", user_group: "nonprofit") }
     let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer") }
@@ -126,7 +162,4 @@ describe VolunteerApplicationsController, :type => :controller do
   end
 =end
 end
-#conversation1 = double(:volunteer_app, id: 1, update_columns: 1)
-#message1 = double(:volunteer_app, update_columns: conversation1.id, recipient_id: 2)
-#Conversation.should_receive(:create).and_return(conversation1)
-#PrivateMessage.should_receive(:create).and_return(message1)
+

@@ -13,14 +13,6 @@ class User < ActiveRecord::Base
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
 
-  def open_project_applications
-    collection_project_ids = volunteer_applications.where(accepted: nil, rejected: nil).select(:project_id).distinct
-    all_open_applications = collection_project_ids.map do |member|
-      proj_id = member.project_id
-      Project.find_by(id: proj_id)
-    end
-  end  
-
   def organization_name_box
     organization.try(:name)
   end
@@ -66,4 +58,26 @@ class User < ActiveRecord::Base
   def unfinished_projects
     self.projects.select {|member| member.state.include?("unfinished")}
   end
+
+  def projects_of_open_volunteer_applications
+    collection_project_ids = volunteer_applications.where(accepted: nil, rejected: nil).select(:project_id).distinct
+    all_open_applications = collection_project_ids.map do |member|
+      proj_id = member.project_id
+      Project.find(proj_id)
+    end
+    all_open_applications
+  end  
+
+  def volunteers_open_applications
+    volunteer_applications.where(accepted: nil, rejected: nil).to_a
+  end
+
+  def administrators_open_applications
+    collection_project_ids = self.organization.projects.map(&:id)
+    all_volunteer_applications = collection_project_ids.map do |member|
+      VolunteerApplication.find(member)
+    end 
+    all_volunteer_applications
+  end
+
 end

@@ -147,7 +147,7 @@ describe User do
     end
   end
 
-  describe "#open_project_applications" do
+  describe "#projects_of_open_volunteer_applications" do
     it "returns the users projects to which he/she has applied only if accepted and rejectes are nil" do
       bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
       alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
@@ -177,11 +177,52 @@ describe User do
       conversation4 = Fabricate(:conversation, volunteer_application_id: application4.id) 
       message4 = Fabricate(:private_message, recipient_id: cat.id, sender_id: bob.id, conversation_id: conversation4.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: grant_writing.id)
 
-      
-
-      expect(bob.open_project_applications).to eq([word_press, logo])
+      expect(bob.projects_of_open_volunteer_applications).to eq([word_press, logo])
     end
   end
 
+  #describe "open_volunteer_applications"
+  describe "#volunteers_open_applications" do
+    it "returns all open applications for the volunteer" do
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+      alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+
+      logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+
+      application1 = VolunteerApplication.create(user_id: bob.id, project_id: word_press.id)
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id)
+          
+      application2 = VolunteerApplication.create(user_id: bob.id, project_id: logo.id)
+      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id) 
+      message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)
+
+      expect(bob.volunteers_open_applications).to eq([application1, application2])
+    end
+  end
+  describe "#administrators_open_applications" do
+    it "returns all project participation request applications for the administrator" do
+      cat = Fabricate(:user, first_name: "Cat", user_group: "volunteer")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+      alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      alice.update_attributes(organization_id: huggey_bear.id)
+
+      logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+
+      application1 = VolunteerApplication.create(user_id: bob.id, project_id: word_press.id)
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id)
+          
+      application2 = VolunteerApplication.create(user_id: cat.id, project_id: logo.id)
+      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id) 
+      message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: cat.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)
+
+      expect(alice.administrators_open_applications).to eq([application1, application2])
+    end
+  end
 end
   

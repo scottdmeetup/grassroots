@@ -15,7 +15,7 @@ class PrivateMessagesController < ApplicationController
       handles_replies
     elsif volunteer_creating_an_application?
       project = Project.find(params[:project_id])
-      project.state == "open" ? handles_project_request : handles_completed_project_request
+      project.state == "open" ? sends_application_to_project_administrator : handles_completed_project_request
     else
       handles_first_private_message
     end
@@ -60,14 +60,17 @@ private
     flash[:success] = "Your message has been sent to #{@private_message.recipient.first_name} #{@private_message.recipient.last_name}"
   end
 
-  def handles_project_request
-    project = Project.find(params[:project_id])
-    current_user.projects << project
-    conversation = Conversation.create 
-    @private_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation.id, project_id: project.id))
-    @private_message.save
+  def sends_application_to_project_administrator
+    @volunteer_application = VolunteerApplication.create(user_id: current_user.id, project_id: params[:project_id])
+    conversation1_about_volunteer_application = Conversation.create
+    @message = PrivateMessage.create(message_params)
+    @message.update_columns(conversation_id: conversation1_about_volunteer_application.id)
+    project_administrator = User.find(@message.recipient_id)
+    project_administrator.conversations << conversation1_about_volunteer_application
+    conversation1_about_volunteer_application.update_columns(volunteer_application_id: @volunteer_application.id)
+    project = Project.find_by(params[:project_id])
     redirect_to conversations_path
-    flash[:success] = "Your message has been sent to #{@private_message.recipient.first_name} #{@private_message.recipient.last_name}"
+    flash[:success] = "Your message has been sent to #{@message.recipient.first_name} #{@message.recipient.last_name}"
   end
 
   def handles_completed_project_request
