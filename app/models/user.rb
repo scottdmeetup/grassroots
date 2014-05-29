@@ -8,7 +8,17 @@ class User < ActiveRecord::Base
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
   has_many :conversations
   has_many :volunteer_applications
-  has_many :projects, through: :volunteer_applications
+  has_many :sent_applications, through: :volunteer_applications, source: :applicant
+  has_many :volunteer_applications
+  has_many :received_applications, through: :volunteer_applications, source: :administrator
+  #has_many :sent_applications, class_name: 'VolunteerApplications', foreign_key: 'applicant_id'
+  #has_many :sent_applications, through: :volunteer_applications
+  #has_many :volunteer_applications
+  #has_many :projects, through: :volunteer_applications
+  #has_many :received_applications, class_name: 'VolunteerApplications', foreign_key: 'administrator_id'
+  #has_many :received_applications, through: :volunteer_applications
+  #
+  #
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email

@@ -9,11 +9,11 @@ describe OrganizationAdmin::VolunteerApplicationsController, :type => :controlle
     let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open")}
     let(:logo) {Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: amnesty.id, state: "open") }
     
-    let(:application1) {Fabricate(:volunteer_application, user_id: bob.id, project_id: word_press.id)}
+    let(:application1) {Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id)}
     let(:conversation1) {Fabricate(:conversation, volunteer_application_id: application1.id) }
     let(:message1) {Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id)}
     
-    let(:application2) {Fabricate(:volunteer_application, user_id: cat.id, project_id: logo.id)}
+    let(:application2) {Fabricate(:volunteer_application, applicant_id: cat.id, administrator_id: alice.id, project_id: logo.id)}
     let(:conversation2) {Fabricate(:conversation, volunteer_application_id: application2.id)} 
     let(:message2) {Fabricate(:private_message, recipient_id: cat.id, sender_id: bob.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)}
 

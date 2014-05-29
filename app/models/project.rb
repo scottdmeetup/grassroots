@@ -4,6 +4,9 @@ class Project < ActiveRecord::Base
   has_many :users, through: :project_users
   has_many :volunteer_applications
   has_many :users, through: :volunteer_applications
+  has_many :applicants, class_name: 'VolunteerApplications', foreign_key: 'applicant_id'
+  has_many :applicants, through: :volunteer_applications
+
 
   def project_admin
     organization.organization_administrator
