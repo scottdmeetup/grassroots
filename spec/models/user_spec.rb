@@ -7,8 +7,11 @@ describe User do
   #it { should have_many(:projects).through(:project_users)}
   it { should have_many(:sent_messages)}
   it { should have_many(:received_messages).order("created_at DESC")}
+  it { should have_many(:received_applications)}
+  it { should have_many(:sent_applications)}
   it { should have_many(:volunteer_applications)}
   it { should have_many(:projects).through(:volunteer_applications)}
+  #it { should have_many(:projects).through(:volunteer_applications)}
 
   describe "#private_messages" do
     it "returns all the conversations of the user in an arry" do
@@ -222,6 +225,26 @@ describe User do
       message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: cat.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)
 
       expect(alice.administrators_open_applications).to eq([application1, application2])
+    end
+  end
+  describe "#applied_to_projects" do
+    it "returns all of the volunteer's projects to which he has applied to join" do
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+      alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+
+      logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+
+      application1 = VolunteerApplication.create(applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id)
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: word_press.id)
+          
+      application2 = VolunteerApplication.create(applicant_id: bob.id, administrator_id: alice.id, project_id: logo.id)
+      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id) 
+      message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", project_id: logo.id)
+
+      expect(bob.applied_to_projects).to eq([logo, word_press])
     end
   end
 end

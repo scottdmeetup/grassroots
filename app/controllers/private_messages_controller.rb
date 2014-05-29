@@ -61,14 +61,17 @@ private
   end
 
   def sends_application_to_project_administrator
-    @volunteer_application = VolunteerApplication.create(user_id: current_user.id, project_id: params[:project_id])
+    @volunteer_application = VolunteerApplication.create(administrator_id: message_params[:recipient_id], applicant_id: current_user.id, project_id: params[:project_id])
     conversation1_about_volunteer_application = Conversation.create
     @message = PrivateMessage.create(message_params)
     @message.update_columns(conversation_id: conversation1_about_volunteer_application.id)
-    project_administrator = User.find(@message.recipient_id)
-    project_administrator.conversations << conversation1_about_volunteer_application
+    organization_administrator = User.find(@message.recipient_id)
+    organization_administrator.conversations << conversation1_about_volunteer_application
     conversation1_about_volunteer_application.update_columns(volunteer_application_id: @volunteer_application.id)
-    project = Project.find_by(params[:project_id])
+    #project = Project.find_by(id: params[:project_id])
+    #current_user.projects << project
+    
+
     redirect_to conversations_path
     flash[:success] = "Your message has been sent to #{@message.recipient.first_name} #{@message.recipient.last_name}"
   end

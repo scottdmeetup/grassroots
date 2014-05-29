@@ -184,7 +184,7 @@ describe PrivateMessagesController, :type => :controller do
          
           it "associates the application with the volunteer" do
             post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
-            expect(VolunteerApplication.first.user).to eq(bob)
+            expect(VolunteerApplication.first.applicant).to eq(bob)
           end
          
           it "associates the application with the project" do
@@ -203,7 +203,7 @@ describe PrivateMessagesController, :type => :controller do
 
           it "associates the project with the applicant" do
             post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
-            expect(bob.open_project_applications).to eq([word_press])
+            expect(bob.applied_to_projects).to eq([word_press])
           end
         end
       end

@@ -10,6 +10,10 @@ Grassroots::Application.routes.draw do
     resources :volunteer_applications, only: [:index]
   end
 
+  namespace :volunteer do
+    resources :volunteer_applications, only: [:index]
+  end
+
   resources :users, except: [:destroy]
   delete 'remove', to: 'users#remove'
   resources :organizations, only: [:show, :index, :new, :create]

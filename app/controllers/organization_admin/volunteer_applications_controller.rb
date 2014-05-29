@@ -1,7 +1,6 @@
 class OrganizationAdmin::VolunteerApplicationsController < OrganizationAdminController
   def index
-    binding.pry
-    @open_volunteer_applicatinos = current_user.received_applications.to_a
+    @open_applications = current_user.received_applications
     render 'conversations/index'
   end
 end
