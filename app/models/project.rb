@@ -1,12 +1,17 @@
 class Project < ActiveRecord::Base
   belongs_to :organization
-  has_many :project_users
-  has_many :users, through: :project_users
+  #why do I need: 
+  #has_many :volunteer_applications
+  #has_many :users, through: :volunteer_applications
+  #to make my tests to pass for:
+  #it { should have_many(:applicants)}
+  #it { should have_many(:applicants).through(:volunteer_applications)}
+
   has_many :volunteer_applications
   has_many :users, through: :volunteer_applications
-  has_many :applicants, class_name: 'VolunteerApplications', foreign_key: 'applicant_id'
+  has_many :applicants, class_name: 'VolunteerApplication', foreign_key: 'applicant_id'
   has_many :applicants, through: :volunteer_applications
-
+  belongs_to :administrator, class_name: 'Organization', foreign_key: 'user_id'
 
   def project_admin
     organization.organization_administrator

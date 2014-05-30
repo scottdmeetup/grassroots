@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe ContractsController, :type => :controller do
   let(:huggey_bear) {Fabricate(:organization)}
-    let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
-    let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
-    let(:cat) {Fabricate(:user, first_name: "Cat", user_group: "volunteer")}
-    let(:dan) {Fabricate(:user, first_name: "Dan", user_group: "volunteer")}
-    
-    let(:logo) { Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open")  }
-    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
+  let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+  let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+  let(:cat) {Fabricate(:user, first_name: "Cat", user_group: "volunteer")}
+  let(:dan) {Fabricate(:user, first_name: "Dan", user_group: "volunteer")}
+  
+  let(:logo) { Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open")  }
+  let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
 
   describe "POST create" do
 
@@ -104,8 +104,22 @@ describe ContractsController, :type => :controller do
       expect(Contract.first.project_id).to eq(word_press.id)
     end
 
-    it "associated the volunteer with the project"
-    it "moves the project's state into, in production"
+    it "associated the volunteer with the project" do
+      application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id) 
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+      post :create, volunteer_application_id: conversation1.volunteer_application_id, conversation_id: conversation1.id
+
+      expect(bob.projects).to eq([word_press])
+    end
+    it "moves the project's state into, in production" do
+      application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id) 
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+      post :create, volunteer_application_id: conversation1.volunteer_application_id, conversation_id: conversation1.id
+
+      expect(bob.projects_in_production).to eq([word_press])
+    end
   end
 
   describe "DELETE destroy" do
