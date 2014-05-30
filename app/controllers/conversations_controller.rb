@@ -10,7 +10,7 @@ class ConversationsController < ApplicationController
     @first_message = @conversation.private_messages.first
     @reply = PrivateMessage.new(subject: @first_message.subject, recipient_id: @first_message.sender.id, sender_id: current_user.id, conversation_id: @first_message.conversation_id)
   end
-
+=begin
   def accept
     conversation = Conversation.find(params[:conversation_id])
     message = conversation.private_messages.first
@@ -50,6 +50,6 @@ class ConversationsController < ApplicationController
     redirect_to conversation_path(conversation.id)
     current_user.organization_administrator ? flash[:success] = "You have dropped this volunteer. Please write to the volunteer to let him/her know." : flash[:success] = "You have dropped this project. Please write to the project administrator to let him/her know." 
   end
+=end
 
-private 
 end

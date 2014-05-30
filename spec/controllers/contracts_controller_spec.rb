@@ -112,6 +112,16 @@ describe ContractsController, :type => :controller do
 
       expect(bob.projects).to eq([word_press])
     end
+
+    it "associates the project with the volunteer" do
+      application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id) 
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+      post :create, volunteer_application_id: conversation1.volunteer_application_id, conversation_id: conversation1.id
+
+      expect(word_press.volunteers).to eq([bob])
+    end
+
     it "moves the project's state into, in production" do
       application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id) 
       conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
@@ -146,15 +156,39 @@ describe ContractsController, :type => :controller do
       application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id, accepted: true, rejected: false) 
       conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
-      message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I've accepted you to join")
 
       contract1 =  Fabricate(:contract, contractor_id: 1, volunteer_id: 2, active: true, project_id: 1)
       delete :destroy, id: contract1.id, conversation_id: conversation1.id
 
       expect(contract1.reload.dropped_out).to eq(true)
     end
-    it "automates a message to both parties"
-    it "moves the project back to open"
-    it "disassociates the volunteer from the project"
+    it "automates a message to both parties" do
+      application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id, accepted: true, rejected: false) 
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I've accepted you to join")
+
+      contract1 =  Fabricate(:contract, contractor_id: 1, volunteer_id: 2, active: true, project_id: 1)
+      delete :destroy, id: contract1.id, conversation_id: conversation1.id
+
+      expect(conversation1.private_messages.count).to eq(3)
+    end
+    it "moves the project back to open by clearing the project of its volunteers" do
+      application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id, accepted: true, rejected: false) 
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I've accepted you to join")
+
+      contract1 =  Fabricate(:contract, contractor_id: 1, volunteer_id: 2, active: true, project_id: 1)
+      delete :destroy, id: contract1.id, conversation_id: conversation1.id
+
+      expect(word_press.volunteers).to eq([])
+    end
   end
+  describe "PATCH submit_for_review" do
+    it "moves the contracts state to in review and keeps the contract active as well"
+
+  end
+  describe "PATCH update"
 end

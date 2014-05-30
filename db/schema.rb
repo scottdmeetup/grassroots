@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140530123733) do
+ActiveRecord::Schema.define(version: 20140530182013) do
 
   create_table "contracts", force: true do |t|
     t.integer  "contractor_id"
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 20140530123733) do
     t.datetime "updated_at"
     t.integer  "project_id"
     t.boolean  "dropped_out"
+    t.boolean  "complete"
+    t.boolean  "incomplete"
+    t.boolean  "work_submitted"
   end
 
   create_table "conversations", force: true do |t|

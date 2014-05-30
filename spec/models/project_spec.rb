@@ -5,6 +5,8 @@ describe Project do
   it { should have_many(:applicants)}
   it { should have_many(:applicants).through(:volunteer_applications)}
   it { should belong_to(:administrator)}
+  it { should have_many(:volunteers)}
+  it { should have_many(:volunteers).through(:contracts)}
 
 
   describe "#project_admin" do

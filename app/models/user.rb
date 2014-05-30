@@ -50,7 +50,6 @@ class User < ActiveRecord::Base
     end
     in_production.uniq!
     in_production[0]
-    
   end
 =begin
   def open_projects
