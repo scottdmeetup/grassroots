@@ -28,7 +28,7 @@ Grassroots::Application.routes.draw do
   get 'outgoing_messages', to: 'private_messages#outgoing_messages', as: 'outgoing_messages'
   resources :volunteer_applications, only: [:index]
   
-  resources :contracts, only: [:create]
+  resources :contracts, only: [:create, :destroy]
 
   resources :conversations, only: [:show, :index]
   get 'accept', to: 'conversations#accept'
