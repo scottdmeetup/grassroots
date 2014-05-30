@@ -24,4 +24,11 @@ class ContractsController < ApplicationController
     volunteer.contracts << contract 
     redirect_to conversation_path(conversation.id)
   end
+
+  def update
+    conversation = Conversation.find(params[:conversation_id])
+    contract = Contract.find(params[:id])
+    contract.update!(complete: true, active: false, incomplete: false)
+    redirect_to conversation_path(conversation.id)  
+  end
 end

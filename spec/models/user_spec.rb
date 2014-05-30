@@ -104,16 +104,11 @@ describe User do
       
       logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id, state: "open")  
       word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+      accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
 
-      application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id, accepted: true, rejected: false) 
-      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
-      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
       contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id)
-
-      application2 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: cat.id, project_id: logo.id, accepted: true, rejected: false) 
-      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id) 
-      message2 = Fabricate(:private_message, recipient_id: cat.id, sender_id: bob.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
       contract2 =  Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: logo.id)
+      contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
 
       expect(bob.reload.projects_in_production).to eq([logo, word_press])
     end
@@ -139,6 +134,30 @@ describe User do
         contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: accounting.id, work_submitted: false)
 
         expect(bob.submitted_work).to eq([word_press, logo])
+      end
+    end
+
+    describe "#projects_completed" do
+      it "returns all the projects for which the volunteer has completed" do
+        huggey_bear = Fabricate(:organization)
+        amnesty = Fabricate(:organization)
+
+        alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
+        cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")
+        bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+
+        huggey_bear.update_columns(user_id: alice.id)      
+        amnesty.update_columns(user_id: cat.id)
+
+        word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) 
+        logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  
+        accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
+
+        contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
+        contract2 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: false, project_id: logo.id, work_submitted: false, complete: true)
+        contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: accounting.id, work_submitted: false)
+
+        expect(bob.projects_complete).to eq([logo])
       end
     end
   end

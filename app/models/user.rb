@@ -18,11 +18,28 @@ class User < ActiveRecord::Base
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
 
-  def submitted_work
-    contracts_reflecting_work_being_submitted = Contract.where(active: true, work_submitted: true).to_a
-    contracts_reflecting_work_being_submitted.map do |member|
+  def projects_complete
+    contracts_reflecting_completed_work = Contract.where(active: false, complete: true).to_a
+    completed_projects = contracts_reflecting_completed_work.map do |member|
       Project.find(member.project_id)
     end
+    completed_projects.sort
+  end
+
+  def submitted_work
+    contracts_reflecting_work_being_submitted = Contract.where(active: true, work_submitted: true).to_a
+    project_in_review = contracts_reflecting_work_being_submitted.map do |member|
+      Project.find(member.project_id)
+    end
+    project_in_review.sort
+  end
+
+  def projects_in_production
+    contracts_reflecting_work_in_production = Contract.where(active: true, work_submitted: nil).to_a
+    in_production = contracts_reflecting_work_in_production.map do |member|
+      Project.find(member.project_id)
+    end
+    in_production.sort
   end
 
   def organization_name_box
@@ -51,11 +68,6 @@ class User < ActiveRecord::Base
     organization.name
   end
 
-  def projects_in_production
-    in_production = contracts.map do |member|
-      Project.find(member)
-    end
-  end
 =begin
   def open_projects
     self.projects.select {|member| member.state.include?("open")}

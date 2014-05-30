@@ -51,35 +51,29 @@
     .row
       %ul.nav.nav-tabs
         %li{:class => ('active' if params[:tab].nil?)}
-          = link_to "Open #{@user.sent_applications}", user_path(@user)
+          = link_to "Open #{@user.sent_applications.count}", user_path(@user)
         
         %li{:class => ('active' if params[:tab] == 'in production')}
-          = link_to "In Production #{@user.projects_in_production}", user_path(@user, tab: 'in production') 
+          = link_to "In Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production') 
       
         %li{:class => ('active' if params[:tab] == 'pending completion')}
-          = link_to "Completion Request #{@user.pending_completion_projects.count}", user_path(@user, tab: 'pending approval')
+          = link_to "Completion Request #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval')
       
         %li{:class => ('active' if params[:tab] == 'completed')}
-          = link_to "Completed #{@user.completed_projects.count}", user_path(@user, tab: 'completed')
-      
-        %li{:class => ('active' if params[:tab] == 'unfinished')}
-          = link_to "Unfinished #{@user.unfinished_projects.count}", user_path(@user, tab: 'unfinished')
+          = link_to "Completed #{@user.projects_complete.count}", user_path(@user, tab: 'completed')
 
       .col-lg-10
         - if params[:tab].nil?
-          - @user.open_projects.each do |project|
+          - @user.sent_applications.each do |project|
             = render 'shared/project_thumbnail', project: project
         - elsif params[:tab] == 'in production'
-          - @user.in_production_projects.each do |project|
+          - @user.projects_in_production.each do |project|
             = render 'shared/project_thumbnail', project: project
         - elsif params[:tab] == 'pending approval'
-          - @user.pending_approval_projects.each do |project|
+          - @user.submitted_work.each do |project|
             = render 'shared/project_thumbnail', project: project
         - elsif params[:tab] == 'completed'
-          - @user.completed_projects.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'unfinished'
-          - @user.unfinished_projects.each do |project|  
+          - @user.projects_complete.each do |project|
             = render 'shared/project_thumbnail', project: project
 
       

@@ -191,5 +191,35 @@ describe ContractsController, :type => :controller do
     it "moves the contracts state to in review and keeps the contract active as well"
 
   end
-  describe "PATCH update"
+  describe "PATCH update" do
+
+    before do
+      set_current_user(alice)
+      huggey_bear.update_columns(user_id: alice.id)
+      #I have no idea how to refactor the test variables like application1, application2 
+      #etc...into either let statements or before do
+    end
+
+    it "renders the conversation view" do
+      conversation = Fabricate(:conversation) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Project Complete", body: "This project is done")
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")
+      contract =  Fabricate(:contract, contractor_id: 1, volunteer_id: 2, active: true, project_id: 1, work_submitted: true)
+      conversation.update(contract_id: contract.id)
+      patch :update, id: contract.id, conversation_id: conversation.id
+
+      expect(response).to redirect_to(conversation_path(conversation.id))
+    end
+
+    it "makes the contract complete" do
+      conversation = Fabricate(:conversation) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Project Complete", body: "This project is done")
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")
+      contract =  Fabricate(:contract, contractor_id: 1, volunteer_id: 2, active: true, project_id: 1, work_submitted: true)
+      conversation.update(contract_id: contract.id)
+      patch :update, id: contract.id, conversation_id: conversation.id
+
+      expect(contract.reload.complete).to eq(true)
+    end
+  end
 end

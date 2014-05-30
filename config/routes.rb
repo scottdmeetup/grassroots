@@ -28,11 +28,7 @@ Grassroots::Application.routes.draw do
   get 'outgoing_messages', to: 'private_messages#outgoing_messages', as: 'outgoing_messages'
   resources :volunteer_applications, only: [:index]
   
-  resources :contracts, only: [:create, :destroy]
+  resources :contracts, only: [:create, :destroy, :update]
 
   resources :conversations, only: [:show, :index]
-  get 'accept', to: 'conversations#accept'
-  get 'request_complete', to: 'conversations#request_complete'
-  get 'confirm_complete', to: 'conversations#confirm_complete'
-  get 'drop', to: 'conversations#drop'
 end
