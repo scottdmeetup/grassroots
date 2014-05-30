@@ -16,10 +16,12 @@ class ContractsController < ApplicationController
     conversation = Conversation.find(params[:conversation_id])
     first_message = conversation.private_messages.first
     contract = Contract.find(params[:id])
-    contract.update_columns(dropped_out: true)
+    contract.update!(dropped_out: true, active: false)
     conversation.private_messages << PrivateMessage.create(subject: first_message.subject, body: "#{first_message.sender.first_name} #{first_message.sender.last_name} has been dropped on this project. This is an automated message." )
     project = Project.find(contract.project_id)
-    project.volunteers.clear
+    volunteer = User.find(contract.volunteer_id)
+    project.volunteers.delete(volunteer)
+    volunteer.contracts << contract 
     redirect_to conversation_path(conversation.id)
   end
 end

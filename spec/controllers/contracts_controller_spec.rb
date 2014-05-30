@@ -158,6 +158,7 @@ describe ContractsController, :type => :controller do
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I've accepted you to join")
 
+      #contract1 = Contract.create(contractor_id: 1, volunteer_id: 2, active: true, project_id: 1)
       contract1 =  Fabricate(:contract, contractor_id: 1, volunteer_id: 2, active: true, project_id: 1)
       delete :destroy, id: contract1.id, conversation_id: conversation1.id
 

@@ -18,6 +18,13 @@ class User < ActiveRecord::Base
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
 
+  def submitted_work
+    contracts_reflecting_work_being_submitted = Contract.where(active: true, work_submitted: true).to_a
+    contracts_reflecting_work_being_submitted.map do |member|
+      Project.find(member.project_id)
+    end
+  end
+
   def organization_name_box
     organization.try(:name)
   end
@@ -46,10 +53,8 @@ class User < ActiveRecord::Base
 
   def projects_in_production
     in_production = contracts.map do |member|
-      in_production = Project.where(member.project_id).to_a  
+      Project.find(member)
     end
-    in_production.uniq!
-    in_production[0]
   end
 =begin
   def open_projects

@@ -21,16 +21,14 @@ class PrivateMessagesController < ApplicationController
       sends_application_to_project_administrator
     elsif volunteer_submitting_work?
       contract = Contract.find(params[:contract_id])
-      #conversation_about_submitted_work = Conversation.create
-      #@message = PrivateMessage.create(message_params)
-      #@message.update_columns(conversation_id: conversation_about_submitted_work.id)
       contract.update!(work_submitted: true)
-
-      #@organization_administrator = User.find(@message.recipient_id)
-      #@organization_administrator.conversations << conversation1_about_volunteer_application
-      #current_user.conversations << conversation1_about_volunteer_application
-      #conversation1_about_volunteer_application.update_columns(volunteer_application_id: @volunteer_application.id)
-
+      conversation_about_submitted_work = Conversation.create
+      conversation_about_submitted_work.update_columns(contract_id: contract.id)
+      message = PrivateMessage.create(message_params)
+      message.update_columns(conversation_id: conversation_about_submitted_work.id)
+      contractor = User.find(contract.contractor_id)
+      contractor.conversations << conversation_about_submitted_work
+      current_user.conversations << conversation_about_submitted_work
       redirect_to conversations_path
     else
       handles_first_private_message
