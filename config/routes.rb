@@ -26,9 +26,12 @@ Grassroots::Application.routes.draw do
 
   resources :private_messages, only: [:new, :create] 
   get 'outgoing_messages', to: 'private_messages#outgoing_messages', as: 'outgoing_messages'
-  resources :volunteer_applications, only: [:index]
+  resources :volunteer_applications, only: [:new, :create]
   
-  resources :contracts, only: [:create, :destroy, :update]
+  resources :contracts, only: [:create, :update, :new]
+  patch 'dropping_contract', to: 'contracts#dropping_contract', as: 'dropping_contract'
+  patch 'update_contract_work_submitted', to: 'contracts#update_contract_work_submitted', as: 'update_contract_work_submitted'
+  patch 'contract_complete', to: 'contracts#contract_complete', as: 'contract_complete'
 
   resources :conversations, only: [:show, :index]
 end

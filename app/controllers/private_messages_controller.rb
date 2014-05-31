@@ -1,13 +1,10 @@
 class PrivateMessagesController < ApplicationController
   before_filter :current_user
   def new
-    if user_wants_to_submit_application?
-      handles_volunteer_application
-    elsif volunteer_wants_to_submit_work?
+    if volunteer_wants_to_submit_work?
       contract = Contract.find(params[:contract_id])
       @project = Project.find(contract.project_id)
       @private_message = PrivateMessage.new(recipient_id: @project.administrator.id, subject: "Please Review Work: #{@project.title}")
-      
     else
       @user = User.find_by(id: params[:user_id])
       @private_message = PrivateMessage.new(recipient_id: @user.id)

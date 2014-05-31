@@ -5,7 +5,6 @@ class User < ActiveRecord::Base
   
   has_many :sent_messages, class_name: 'PrivateMessage', foreign_key: 'sender_id'
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
-  has_many :conversations
   
   has_many :received_applications, class_name: 'VolunteerApplication', foreign_key: 'administrator_id'
   has_many :projects, through: :volunteer_applications, source: :administrator

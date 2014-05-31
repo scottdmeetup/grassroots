@@ -33,57 +33,6 @@ describe PrivateMessagesController, :type => :controller do
         expect(assigns(:private_message).project_id).to be_nil
       end
     end
-    
-    context "when a submitting a volunteer application" do
-
-      before do
-        get :new, project_id: word_press.id
-      end
-
-      it "renders the new template for creating a volunteer application as a private message" do
-        expect(response).to render_template(:new)
-      end
-    
-      it "sets @private_message" do
-        expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
-      end
-
-      it "sets the project id in the initialized @private_message" do
-        expect(assigns(:private_message).project_id).to eq(1)
-      end
-      
-      it "sets the recipient value in the initialized @private_message" do
-        expect(assigns(:private_message).recipient).to eq(alice)
-      end
-  
-      it "sets the subject line with the value of the project title with Project Request: in the initialized @private_message" do
-        expect(assigns(:private_message).subject).to eq("Project Request: word press website")
-      end
-    end
-    
-    context "when a volunteer submits work for review " do
-
-      before do
-        application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id, accepted: true, rejected: false) 
-        conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
-        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
-        message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I've accepted you to join")
-
-        get :new, contract_id: contract1.id
-      end
-      
-      it "renders the new template for creating a request as a private message for the project administrator to review the volunteer's work" do
-        expect(response).to render_template(:new)
-      end
-
-      it "sets @private_message with project administrator as recipient of message" do
-        expect(assigns(:private_message)).to be_instance_of(PrivateMessage)
-      end
-
-      it "sets the recipient value in the initialized @private_message" do
-        expect(assigns(:private_message).recipient).to eq(alice)
-      end
-    end
   end
 
   describe "POST create" do
@@ -182,51 +131,6 @@ describe PrivateMessagesController, :type => :controller do
           convo = Conversation.first
           message2 = PrivateMessage.find(2)
           expect(bob.user_conversations).to eq([convo])
-        end
-      end
-
-      context "when a volunteer applies to work on a project " do
-
-        #let(:huggey_bear) {Fabricate(:organization)}
-        #let(:alice) {Fabricate(:organization_administrator, user_group: "nonprofit")}
-        #let(:bob) {Fabricate(:user, user_group: "volunteer", first_name: "Bob")}
-        #let(:word_press) {Fabricate(:project, state: "open")}
-        
-        before do
-          set_current_user(bob)
-          huggey_bear.update_columns(user_id: alice.id)
-        end
-
-        context "with valid input" do
-          it "renders the current user's inbox" do
-            post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
-            expect(response).to redirect_to(conversations_path)
-          end
-         
-          it "creates a volunteer application" do
-            post :create, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}, project_id: word_press.id
-            expect(VolunteerApplication.count).to eq(1)
-          end
-         
-          it "associates the application with the volunteer" do
-            post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
-            expect(VolunteerApplication.first.applicant).to eq(bob)
-          end
-         
-          it "associates the application with the project" do
-            post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
-            expect(VolunteerApplication.first.project).to eq(word_press)
-          end
-          
-          it "associates the application with a conversation" do  
-            post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
-            expect(Conversation.first.volunteer_application_id).to eq(1)
-          end
-
-          it "associates the conversation with the volunteer" do
-            post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
-            expect(bob.conversations.first).to eq(Conversation.first)
-          end
         end
       end
 
