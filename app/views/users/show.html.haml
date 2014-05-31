@@ -64,7 +64,7 @@
 
       .col-lg-10
         - if params[:tab].nil?
-          - @user.sent_applications.each do |project|
+          - @user.applied_to_projects.each do |project|
             = render 'shared/project_thumbnail', project: project
         - elsif params[:tab] == 'in production'
           - @user.projects_in_production.each do |project|

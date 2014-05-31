@@ -129,8 +129,8 @@ describe User do
         logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  
         accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
 
-        contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
-        contract2 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: logo.id, work_submitted: true)
+        contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true, incomplete: false)
+        contract2 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: logo.id, work_submitted: true, incomplete: false)
         contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: accounting.id, work_submitted: false)
 
         expect(bob.submitted_work).to eq([word_press, logo])
@@ -158,6 +158,29 @@ describe User do
         contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: accounting.id, work_submitted: false)
 
         expect(bob.projects_complete).to eq([logo])
+      end
+    end
+
+    describe "#applied_to_projects" do
+      it "returns all the projects to which the volunteer applied" do
+        bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+        alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
+        cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")
+        
+        huggey_bear = Fabricate(:organization, user_id: alice.id)
+        amnesty = Fabricate(:organization, user_id: cat.id)
+        
+        word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+        accounting = Fabricate(:project, title: "accounting", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+        logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id, state: "open") 
+        grant_writing = Fabricate(:project, title: "grant writing job", user_id: cat.id, organization_id: amnesty.id, state: "open") 
+        
+        application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id)
+        application2 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: accounting.id, rejected: true)
+        application3 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: cat.id, project_id: logo.id)
+        application4 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: cat.id, project_id: grant_writing.id, accepted: true)
+
+        expect(bob.applied_to_projects).to eq([word_press, logo])
       end
     end
   end

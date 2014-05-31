@@ -152,6 +152,18 @@ describe ContractsController, :type => :controller do
 
       expect(conversation.reload.volunteer_application_id).to eq(nil)
     end
+
+    it "changes the project's state from open to nil" do
+      post :create, volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id
+
+      expect(word_press.reload.state).to eq(nil)
+    end
+
+    it "makes the organization have a project in production" do
+      post :create, volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id
+
+      expect(huggey_bear.reload.in_production_projects).to eq([word_press])
+    end
   end
 
   describe "PATCH update" do

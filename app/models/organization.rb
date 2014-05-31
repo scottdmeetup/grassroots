@@ -8,19 +8,30 @@ class Organization < ActiveRecord::Base
   end
 
   def in_production_projects
-    self.projects.select {|member| member.state.include?("in production")}
+    contracts_in_production = organization_administrator.contracts.where(active: true, work_submitted: nil).to_a
+    contracts_in_production.map do |member|
+      Project.find(member.project_id)
+    end
   end
 
-  def pending_approval_projects
-    self.projects.select {|member| member.state.include?("pending approval")}
+  def projects_with_work_submitted
+    contracts_reflecting_work_submitted = organization_administrator.contracts.where(active: true, work_submitted: true).to_a
+    contracts_reflecting_work_submitted.map do |member|
+      Project.find(member.project_id)
+    end
   end
 
   def completed_projects
-    self.projects.select {|member| member.state.include?("completed")}
+    completed_contracts = organization_administrator.contracts.where(active: false, work_submitted: true, complete: true, incomplete: false).to_a
+    completed_contracts.map do |member|
+      Project.find(member.project_id)
+    end
   end
 
   def unfinished_projects
-    self.projects.select {|member| member.state.include?("unfinished")}
+    unfinished_contracts = organization_administrator.contracts.where(incomplete: true).to_a
+    unfinished_contracts.map do |member|
+      Project.find(member.project_id)
+    end
   end
-
 end

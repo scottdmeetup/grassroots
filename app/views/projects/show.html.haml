@@ -58,7 +58,7 @@
       .col-lg-8
         %h1
           = @project.state == "open " ? "Volunteer Requests" : "Project Volunteer"
-        - @project.users.each do |user|
+        - @project.applicants.each do |user|
           - if user.organization != @project.organization
             .col-lg-3.col-sm-4
               .thumbnail.thumbnail-staff

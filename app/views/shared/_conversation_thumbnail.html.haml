@@ -23,7 +23,7 @@
             %a{href: "#"} Ignore Request
           %li.divider
           %li
-            = link_to "Accept", contracts_path(volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id)
+            = link_to "Accept", contracts_path(volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id), method: :post
     - elsif conversation.project_complete_request
       .btn-group
         %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
@@ -37,7 +37,7 @@
           %li.divider
           %li
             = link_to "Completed", confirm_complete_path(conversation_id: conversation.id)
-    - elsif conversation.opportunity_drop_project
+    - elsif conversation.contract_id
       .btn-group
         %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
           Drop Contract
@@ -48,6 +48,6 @@
           %li.divider
           %li
           - if current_user.organization_administrator
-            = link_to "Drop Volunteer", drop_path(conversation_id: conversation.id)
+            = link_to "Drop Volunteer", dropping_contract_path(id: conversation.contract_id), method: :patch
           - else
-            = link_to "Drop Project", drop_path(conversation_id: conversation.id)
+            = link_to "Drop Project", dropping_contract_path(conversation_id: conversation.id), method: :patch

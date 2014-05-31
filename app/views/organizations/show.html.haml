@@ -41,7 +41,7 @@
           = link_to "In Production #{@organization.in_production_projects.count}",  organization_path(@organization, tab: 'in production') 
       
         %li{:class => ('active' if params[:tab] == 'pending approval')}
-          = link_to "Completion Request #{@organization.pending_approval_projects.count}", organization_path(@organization, tab: 'pending approval')
+          = link_to "Completion Request #{@organization.projects_with_work_submitted.count}", organization_path(@organization, tab: 'pending approval')
       
         %li{:class => ('active' if params[:tab] == 'completed')}
           = link_to "Completed #{@organization.completed_projects.count}", organization_path(@organization, tab: 'completed')

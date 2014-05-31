@@ -31,8 +31,7 @@ feature  "Administrator contracts a volunteer"do
     #project_administrator_contracts_volunteer_and_accepts_application
     user_signs_in(alice)
     visit conversations_path
-    page.find(:xpath, "//a[@href='/accept?conversation_id=#{Conversation.first.id}']").click
-    save_and_open_page
+    page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
     
     fill_in "private_message[body]", with: "I have accepted your participation"
     click_on('Send')

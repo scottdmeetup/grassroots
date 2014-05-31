@@ -67,6 +67,13 @@ class User < ActiveRecord::Base
     organization.name
   end
 
+  def applied_to_projects
+    open_applications = sent_applications.where(rejected: nil, accepted: nil).to_a
+    open_applications.map do |member|
+      Project.find(member.project_id)
+    end
+  end
+
 =begin
   def open_projects
     self.projects.select {|member| member.state.include?("open")}
