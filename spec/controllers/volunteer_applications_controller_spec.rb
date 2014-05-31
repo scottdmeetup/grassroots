@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe VolunteerApplicationsController, :type => :controller do
-
   describe "GET new" do
     let(:alice) { Fabricate(:organization_administrator, organization_id: nil, first_name: "Alice", last_name: "Smith", user_group: "nonprofit") }
     let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
@@ -76,7 +75,10 @@ describe VolunteerApplicationsController, :type => :controller do
 
     it "associates the conversation with the volunteer" do
       post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
-      expect(bob.conversations.first).to eq(Conversation.first)
+      
+      convo = Conversation.first
+      bobs_sent_message = convo.private_messages.first
+      expect(bob.sent_messages.first).to eq(bobs_sent_message)
     end
   end
 

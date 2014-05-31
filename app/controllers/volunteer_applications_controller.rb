@@ -11,8 +11,6 @@ class VolunteerApplicationsController < ApplicationController
     @message = PrivateMessage.create(message_params)
     @message.update_columns(conversation_id: conversation1_about_volunteer_application.id)
     @organization_administrator = User.find(@message.recipient_id)
-    @organization_administrator.conversations << conversation1_about_volunteer_application
-    current_user.conversations << conversation1_about_volunteer_application
     conversation1_about_volunteer_application.update_columns(volunteer_application_id: @volunteer_application.id)
     redirect_to conversations_path
     flash[:success] = "Your message has been sent to #{@message.recipient.first_name} #{@message.recipient.last_name}"
