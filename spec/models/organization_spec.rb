@@ -117,14 +117,17 @@ describe Organization do
       logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id)  
       word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) 
       accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
+      grant_writing = Fabricate(:project, title: "need Grants", user_id: alice.id, organization_id: huggey_bear.id)
+      professional_site = Fabricate(:project, title: "need a site", user_id: alice.id, organization_id: huggey_bear.id)
 
       contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id)
       contract2 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: logo.id)
       contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
+      contract4 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: grant_writing.id, work_submitted: true)
       alice.contracts << [contract1, contract2]
       cat.contracts << [contract3]
 
-      expect(huggey_bear.in_production_projects).to eq([word_press, logo])
+      expect(huggey_bear.in_production_projects).to eq([logo, word_press])
     end
   end
 end

@@ -8,10 +8,20 @@ class Organization < ActiveRecord::Base
   end
 
   def in_production_projects
-    contracts_in_production = organization_administrator.contracts.where(active: true, work_submitted: nil).to_a
-    contracts_in_production.map do |member|
+    org_project_ids = projects.map(&:id)
+    projects_with_contracts_with_nils = org_project_ids.map do |member|
+      Contract.find_by(project_id: member) 
+    end 
+    projects_with_contracts = projects_with_contracts_with_nils.compact
+    active_projects = projects_with_contracts.select { |member| member.active && !member.dropped_out && !member.complete && !member.incomplete && !member.work_submitted}
+    active_projects.map do |member|
       Project.find(member.project_id)
     end
+
+    #contracts_in_production = organization_administrator.contracts.where(active: true, work_submitted: nil).to_a
+    #contracts_in_production.map do |member|
+    #  Project.find(member.project_id)
+    #end
   end
 
   def projects_with_work_submitted

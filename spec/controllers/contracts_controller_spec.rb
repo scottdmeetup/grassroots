@@ -112,10 +112,11 @@ describe ContractsController, :type => :controller do
 
       expect(Contract.first.contractor_id).to eq(alice.id)
     end
+    
     it "makes the the applicant the volunteer of the contract" do
       post :create, volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id
 
-      expect(Contract.first.volunteer_id).to eq(bob.id)
+      expect(Contract.first.reload.volunteer_id).to eq(bob.id)
     end
     it "associated the project with the contract" do
       post :create, volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id
@@ -160,6 +161,8 @@ describe ContractsController, :type => :controller do
     end
 
     it "makes the organization have a project in production" do
+      #set_current_user(alice)
+      #huggey_bear.update_columns(user_id: alice.id)
       post :create, volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id
 
       expect(huggey_bear.reload.in_production_projects).to eq([word_press])

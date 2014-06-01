@@ -15,11 +15,14 @@ class ContractsController < ApplicationController
        member.update_columns(accepted: false, rejected: true)
     end 
     conversation = Conversation.find_by(params[:conversation_id])
-    contract = Contract.create
-    contract.update_columns(active: true, contractor_id: current_user.id, volunteer_id: volunteer_application.applicant_id, project_id: volunteer_application.project_id)
+    contract = Contract.create(active: true, contractor_id: current_user.id, volunteer_id: volunteer_application.applicant_id, project_id: volunteer_application.project_id)
     conversation.update_columns(contract_id: contract.id, volunteer_application_id: nil)
-    contractor = User.find(current_user.id)
-    contractor.contracts << contract
+    
+    #contract.update_columns(active: true, contractor_id: current_user.id, volunteer_id: volunteer_application.applicant_id, project_id: volunteer_application.project_id)
+    #contractor = User.find(current_user.id)
+    #contract.update_columns(volunteer_id: volunteer_application.applicant_id)
+    #contractor.contracts << contract
+
     redirect_to conversation_path(conversation.id)
   end
 
