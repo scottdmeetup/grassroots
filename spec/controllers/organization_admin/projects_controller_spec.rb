@@ -62,7 +62,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
         word_press = Project.first
         expect(word_press.organization).to eq(huggey_bears)
       end
-      it "adds the created project to the current user's dashboard of projects" do
+      it "adds the created project to the organization's dashboard of projects" do
         huggey_bears = Fabricate(:organization, name: "Huggey Bears")
         alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
         huggey_bears.organization_administrator = alice
@@ -70,7 +70,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id)
 
         word_press = Project.first
-        expect(alice.projects).to eq([word_press])
+        expect(huggey_bears.open_projects).to eq([word_press])
       end
       it "creates a project associated with a work-type" do
         huggey_bears = Fabricate(:organization)

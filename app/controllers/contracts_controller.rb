@@ -15,9 +15,9 @@ class ContractsController < ApplicationController
        member.update_columns(accepted: false, rejected: true)
     end 
     conversation = Conversation.find_by(params[:conversation_id])
-    contract = Contract.create(active: true, contractor_id: current_user.id, volunteer_id: volunteer_application.applicant_id, project_id: volunteer_application.project_id)
+    volunteer = User.find(volunteer_application.applicant_id)
+    contract = Contract.create(active: true, contractor_id: current_user.id, volunteer_id: volunteer.id, project_id: volunteer_application.project_id)
     conversation.update_columns(contract_id: contract.id, volunteer_application_id: nil)
-
     redirect_to conversation_path(conversation.id)
   end
 
@@ -27,6 +27,7 @@ class ContractsController < ApplicationController
     contract.update_columns(dropped_out: true, active: false)
     first_message = conversation.private_messages.first
     conversation.private_messages << PrivateMessage.create(subject: first_message.subject, body: "#{first_message.sender.first_name} #{first_message.sender.last_name} has been dropped on this project. This is an automated message." )
+    contract.contract_dropped
     redirect_to conversation_path(conversation.id)
   end
 

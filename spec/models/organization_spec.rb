@@ -60,9 +60,6 @@ describe Organization do
       contract2 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: logo.id, work_submitted: true)
       contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: accounting.id, work_submitted: false)
       
-      alice.contracts << [contract1, contract2]
-      cat.contracts << [contract3]
-
       expect(huggey_bear.projects_with_work_submitted).to eq([word_press, logo])
     end
   end
@@ -84,9 +81,6 @@ describe Organization do
       contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: false, project_id: word_press.id, work_submitted: true, complete: true, incomplete: false)
       contract2 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: false, project_id: logo.id, work_submitted: true, complete: true, incomplete: false)
       contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: accounting.id, work_submitted: false)
-      
-      alice.contracts << [contract1, contract2]
-      cat.contracts << [contract3]
 
       expect(huggey_bear.completed_projects).to eq([word_press, logo])
     end
@@ -110,9 +104,6 @@ describe Organization do
       contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: false, project_id: word_press.id, work_submitted: nil, complete: nil, incomplete: true)
       contract2 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: false, project_id: logo.id, work_submitted: nil, complete: nil, incomplete: true)
       contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: accounting.id, work_submitted: false)
-      
-      alice.contracts << [contract1, contract2]
-      cat.contracts << [contract3]
 
       expect(huggey_bear.unfinished_projects).to eq([word_press, logo])
     end
@@ -139,8 +130,6 @@ describe Organization do
       contract2 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: logo.id)
       contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
       contract4 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: grant_writing.id, work_submitted: true)
-      alice.contracts << [contract1, contract2]
-      cat.contracts << [contract3]
 
       expect(huggey_bear.in_production_projects).to eq([logo, word_press])
     end

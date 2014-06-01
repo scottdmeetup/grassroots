@@ -8,11 +8,17 @@ class User < ActiveRecord::Base
   
   has_many :received_applications, class_name: 'VolunteerApplication', foreign_key: 'administrator_id'
   has_many :projects, through: :volunteer_applications, source: :administrator
+
   has_many :sent_applications, class_name: 'VolunteerApplication', foreign_key: 'applicant_id'
   has_many :projects, through: :volunteer_applications, source: :applicant
   
-  has_many :contracts, class_name: 'Contract', foreign_key: 'volunteer_id'
+  has_many :contracts
   has_many :projects, through: :contracts
+
+  has_many :jobs, class_name: 'Contract', foreign_key: 'volunteer_id'
+  has_many :projects, through: :contracts, source: :volunteer
+  has_many :procurements, class_name: 'Contract', foreign_key: 'contractor_id'
+  has_many :projects, through: :contracts, source: :contractor
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
@@ -36,7 +42,7 @@ class User < ActiveRecord::Base
   def projects_in_production
     contracts_reflecting_work_in_production = Contract.where(volunteer_id: self.id, active: true, work_submitted: nil).to_a
     in_production = contracts_reflecting_work_in_production.map do |member|
-      Project.find(member.project_id)
+      Project.find_by(member.project_id)
     end
     in_production.sort
   end
@@ -73,4 +79,9 @@ class User < ActiveRecord::Base
       Project.find(member.project_id)
     end
   end
+
+  def drop_contract(agreement)
+    agreement.update_columns(volunteer_id: nil, active: nil)
+  end
+
 end

@@ -7,7 +7,6 @@ class OrganizationAdmin::ProjectsController < OrganizationAdminController
     @project = Project.new(project_params)
     if @project.save
       organization = Organization.find_by(params[:id])
-      current_user.projects << @project
       @project.update_columns(state: "open", causes: organization.cause)
       flash[:notice] = "You successfully created a project"
       redirect_to project_path(@project.id)

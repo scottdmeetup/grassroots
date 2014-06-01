@@ -59,66 +59,33 @@ describe Conversation do
     end
   end
 
-  describe "#project_complete_request" do
+  describe "#with_work_submitted" do
     it "returns true if a private message seeks to complete a project" do
       convo = Conversation.create
       bob = Fabricate(:user, first_name: "Bob", last_name: "Smith", user_group: "volunteer")
       alice = Fabricate(:user, first_name: "Alice", last_name: "Smith", user_group: "nonprofit")
       huggey_bear = Fabricate(:organization, user_id: alice.id)
       word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "pending completion")
-      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Project complete", body: "this project is done", conversation_id: convo.id, project_id: word_press.id)
-      bob.projects << word_press
-      alice.projects << word_press
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Project complete", body: "this project is done", conversation_id: convo.id)
+      contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: huggey_bear.id, work_submitted: true)
+      convo.update_columns(contract_id: contract.id)
 
-      expect(convo.project_complete_request).to eq(true)
+      expect(convo.with_work_submitted).to eq(true)
     end
   end
 
-  describe "#opportunity_drop_project" do
-    it "returns true if a private message is part of a project in production" do
+  describe "#with_opportunity_to_drop_job" do
+    it "returns true if the conversation has a contract that is only active" do
       convo = Conversation.create
       bob = Fabricate(:user, first_name: "Bob", last_name: "Smith", user_group: "volunteer")
       alice = Fabricate(:user, first_name: "Alice", last_name: "Smith", user_group: "nonprofit")
       huggey_bear = Fabricate(:organization, user_id: alice.id)
-      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open")
-      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id, project_id: word_press.id)
-      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Project let me join your project", body: "your request has been accepted", conversation_id: convo.id, project_id: word_press.id)
-      word_press.update_attributes(state: "in production")
-      bob.projects << word_press
-      alice.projects << word_press
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "pending completion")
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Project complete", body: "this project is done", conversation_id: convo.id)
+      contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: huggey_bear.id, work_submitted: nil)
+      convo.update_columns(contract_id: contract.id)      
 
-      expect(convo.opportunity_drop_project).to eq(true)
+      expect(convo.with_opportunity_to_drop_job).to eq(true)
     end
-
-    it "true if the project has changed from open to in production" do
-      convo = Conversation.create
-      bob = Fabricate(:user, first_name: "Bob", last_name: "Smith", user_group: "volunteer")
-      alice = Fabricate(:user, first_name: "Alice", last_name: "Smith", user_group: "nonprofit")
-      huggey_bear = Fabricate(:organization, user_id: alice.id)
-      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open")
-      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id, project_id: word_press.id)
-      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Project let me join your project", body: "your request has been accepted", conversation_id: convo.id, project_id: word_press.id)
-      word_press.update_columns(state: "in production")
-      bob.projects << word_press
-      alice.projects << word_press
-
-      expect(convo.opportunity_drop_project).to eq(true)
-    end
-=begin
-    it "returns false if the, in production, state of project is at more than 5 days old" do
-      convo = Conversation.create
-      alice = Fabricate(:user, first_name: "Alice", last_name: "Smith")
-      bob = Fabricate(:user, first_name: "Bob", last_name: "Smith")
-      huggey_bear = Fabricate(:organization, user_id: alice.id)
-      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open", created_at: 10.days.ago)
-      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id, project_id: word_press.id)
-      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Project let me join your project", body: "your request has been accepted", conversation_id: convo.id, project_id: word_press.id)
-      word_press.update_attributes!(state: "in production", updated_at: 6.days.ago)
-      bob.projects << word_press
-      alice.projects << word_press
-
-      expect(convo.reload.opportunity_drop_project).to eq(false)
-    end
-=end
   end
 end

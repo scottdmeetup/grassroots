@@ -24,30 +24,31 @@
           %li.divider
           %li
             = link_to "Accept", contracts_path(volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id), method: :post
-    - elsif conversation.project_complete_request
-      .btn-group
-        %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
-          Contract Complete
-          %span.caret
-        %ul.dropdown-menu{role: "menu"}
-          %li
-            = link_to "Reply (before confirming completion)", conversation_path(conversation.id)
-          %li
-            %a{href: "#"} Incompleted
-          %li.divider
-          %li
-            = link_to "Completed", confirm_complete_path(conversation_id: conversation.id)
-    - elsif conversation.contract_id
-      .btn-group
-        %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
-          Drop Contract
-          %span.caret
-        %ul.dropdown-menu{role: "menu"}
-          %li
-            = link_to "Reply (before deciding)", conversation_path(conversation.id)
-          %li.divider
-          %li
-          - if current_user.organization_administrator
-            = link_to "Drop Volunteer", dropping_contract_path(id: conversation.contract_id), method: :patch
-          - else
-            = link_to "Drop Project", dropping_contract_path(conversation_id: conversation.id), method: :patch
+    - if conversation.contract_id
+      - if conversation.with_work_submitted
+        .btn-group
+          %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
+            Contract Complete
+            %span.caret
+          %ul.dropdown-menu{role: "menu"}
+            %li
+              = link_to "Reply (before confirming completion)", conversation_path(conversation.id)
+            %li
+              %a{href: "#"} Incompleted
+            %li.divider
+            %li
+              = link_to "Completed", confirm_complete_path(conversation_id: conversation.id)
+      - elsif conversation.with_opportunity_to_drop_job
+        .btn-group
+          %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
+            Drop Contract
+            %span.caret
+          %ul.dropdown-menu{role: "menu"}
+            %li
+              = link_to "Reply (before deciding)", conversation_path(conversation.id)
+            %li.divider
+            %li
+            - if current_user.organization_administrator
+              = link_to "Drop Volunteer", dropping_contract_path(id: conversation.contract_id), method: :patch
+            - else
+              = link_to "Drop Project", dropping_contract_path(conversation_id: conversation.id), method: :patch

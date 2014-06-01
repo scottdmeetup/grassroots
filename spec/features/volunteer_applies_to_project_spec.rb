@@ -20,7 +20,6 @@ feature  "Volunteer applies to a project"do
       organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
     word_press = Fabricate(:project, title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
       skills: "web development", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
-    alice.projects << word_press
     
     user_signs_in(bob)
     expect(page).to have_content("You are logged in!")

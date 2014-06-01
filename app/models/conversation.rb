@@ -39,19 +39,13 @@ class Conversation < ActiveRecord::Base
     end
   end
 
-  def project_complete_request
-    message = self.private_messages.first
-    project = Project.find_by(id: message.project_id)
-    if project
-      project.state == "pending completion"
-    end
+  def with_work_submitted
+    contract = Contract.find_by(self.contract_id)
+    contract.active && contract.work_submitted 
   end
 
-  def opportunity_drop_project
-    message = self.private_messages.first
-    project = Project.find_by(id: message.project_id)
-    if project
-      project.state == "in production"
-    end
+  def with_opportunity_to_drop_job
+    contract = Contract.find_by(self.contract_id)
+    contract.active && contract.work_submitted == nil
   end
 end

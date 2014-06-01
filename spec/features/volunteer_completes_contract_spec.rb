@@ -18,17 +18,19 @@ feature "Either volunteer or project administrator ends contract" do
       interests: "Web Development", skills: "ROR", street1: nil, street2: nil, 
       city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
       organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
-    word_press = Fabricate(:project, title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
-      skills: "web development", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
-    alice.projects << word_press
-    bob.projects << word_press
+    word_press = Fabricate(:project, title: "Need WordPress Site", 
+      description: "I want a nice looking WordPress site for my nonprofit", 
+      skills: "web development", causes: "animals", deadline: Date.today + 1.month, 
+      user_id: 1, organization_id: 1, estimated_hours: 22, state: nil)
+    contract = Fabricate(:contract, volunteer_id: bob.id, contractor_id: alice.id, 
+      active: true, work_submitted: nil, project_id: word_press.id)
     conversation = Fabricate(:conversation)
-    conversation1 = Fabricate(:conversation)
-    word_press.update_columns(state: "in production")
-    message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Project Completed: word press website", body: "I finished this project", project_id: word_press.id)
+    message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, 
+      conversation_id: conversation.id, subject: "Project Completed: word press website", 
+      body: "I finished this project", project_id: word_press.id)
 
     user_signs_in(bob)
-    volunteer_requests_to_complete_contracted_work(bob)
+    volunteer_submits_work_for_job_completion(bob)
     sign_out
 
     user_signs_in(alice)
@@ -58,13 +60,11 @@ feature "Either volunteer or project administrator ends contract" do
       organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
     word_press = Fabricate(:project, title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
       skills: "web development", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
-    alice.projects << word_press
-    bob.projects << word_press
     conversation = Fabricate(:conversation)
-    conversation1 = Fabricate(:conversation)
+    
     word_press.update_columns(state: "in production")
-    message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Project Request: word press website", body: "I want to join this project", project_id: word_press.id)
-    message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Project Request: word press website", body: "I approve you to do this work", project_id: word_press.id)
+    message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Project Request: word press website", body: "I want to join this project", project_id: word_press.id)
+    message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Project Request: word press website", body: "I approve you to do this work", project_id: word_press.id)
 
     user_signs_in(bob)
     volunteer_drops_project(bob)
@@ -95,13 +95,10 @@ feature "Either volunteer or project administrator ends contract" do
       organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
     word_press = Fabricate(:project, title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
       skills: "web development", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
-    alice.projects << word_press
-    bob.projects << word_press
     conversation = Fabricate(:conversation)
-    conversation1 = Fabricate(:conversation)
     word_press.update_columns(state: "in production")
-    message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Project Request: word press website", body: "I want to join this project", project_id: word_press.id)
-    message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Project Request: word press website", body: "I approve you to do this work", project_id: word_press.id)
+    message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Project Request: word press website", body: "I want to join this project", project_id: word_press.id)
+    message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Project Request: word press website", body: "I approve you to do this work", project_id: word_press.id)
 
     user_signs_in(alice)
     project_administrator_drops_project(alice)
@@ -145,7 +142,7 @@ feature "Either volunteer or project administrator ends contract" do
     expect(page).to have_content("Unfinished 0")
   end
 
-  def volunteer_requests_to_complete_contracted_work(volunteer)
+  def volunteer_submits_work_for_job_completion(volunteer)
     click_on('In Production')
     click_on('Project Complete')
     fill_in "private_message[body]", with: "This is done"
