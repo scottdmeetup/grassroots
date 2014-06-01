@@ -161,8 +161,6 @@ describe ContractsController, :type => :controller do
     end
 
     it "makes the organization have a project in production" do
-      #set_current_user(alice)
-      #huggey_bear.update_columns(user_id: alice.id)
       post :create, volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id
 
       expect(huggey_bear.reload.in_production_projects).to eq([word_press])

@@ -17,12 +17,27 @@ describe Organization do
 
   describe "#open_projects" do
     it "returns the organization's open projects" do
-      huggey_bears = Fabricate(:organization)
-      word_press = Fabricate(:project, state: "open")
-      logo = Fabricate(:project, state: "completed")
-      huggey_bears.projects << [word_press, logo]
+      huggey_bear = Fabricate(:organization)
+      amnesty = Fabricate(:organization)
+      alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
+      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+      cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")
 
-      expect(huggey_bears.open_projects).to eq([word_press])
+      huggey_bear.update_columns(user_id: alice.id)
+      amnesty.update_columns(user_id: cat.id)
+      
+      logo = Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id)  
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) 
+      accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
+      grant_writing = Fabricate(:project, title: "need Grants", user_id: alice.id, organization_id: huggey_bear.id)
+      professional_site = Fabricate(:project, title: "need a site", user_id: alice.id, organization_id: huggey_bear.id)
+
+      contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id)
+      contract2 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: false, incomplete: true, project_id: logo.id)
+      contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
+      contract4 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: grant_writing.id, work_submitted: true)
+
+      expect(huggey_bear.open_projects).to eq([professional_site])
     end
   end
 
@@ -73,7 +88,7 @@ describe Organization do
       alice.contracts << [contract1, contract2]
       cat.contracts << [contract3]
 
-      expect(huggey_bear.contracts_complete).to eq([word_press, logo])
+      expect(huggey_bear.completed_projects).to eq([word_press, logo])
     end
   end
 

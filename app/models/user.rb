@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email
 
   def projects_complete
-    contracts_reflecting_completed_work = Contract.where(active: false, complete: true).to_a
+    contracts_reflecting_completed_work = Contract.where(volunteer_id: self.id, active: false, complete: true).to_a
     completed_projects = contracts_reflecting_completed_work.map do |member|
       Project.find(member.project_id)
     end
@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   end
 
   def submitted_work
-    contracts_reflecting_work_being_submitted = Contract.where(active: true, work_submitted: true).to_a
+    contracts_reflecting_work_being_submitted = Contract.where(volunteer_id: self.id, active: true, work_submitted: true).to_a
     project_in_review = contracts_reflecting_work_being_submitted.map do |member|
       Project.find(member.project_id)
     end
@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   end
 
   def projects_in_production
-    contracts_reflecting_work_in_production = Contract.where(active: true, work_submitted: nil).to_a
+    contracts_reflecting_work_in_production = Contract.where(volunteer_id: self.id, active: true, work_submitted: nil).to_a
     in_production = contracts_reflecting_work_in_production.map do |member|
       Project.find(member.project_id)
     end
@@ -68,60 +68,9 @@ class User < ActiveRecord::Base
   end
 
   def applied_to_projects
-    open_applications = sent_applications.where(rejected: nil, accepted: nil).to_a
+    open_applications = sent_applications.where(applicant_id: self.id, rejected: nil, accepted: nil).to_a
     open_applications.map do |member|
       Project.find(member.project_id)
     end
   end
-
-=begin
-  def open_projects
-    self.projects.select {|member| member.state.include?("open")}
-  end
-
-  def in_production_projects
-    self.projects.select {|member| member.state.include?("in production")}
-  end
-
-  def pending_completion_projects
-    self.projects.select {|member| member.state.include?("pending completion")}
-  end
-
-  def completed_projects
-    self.projects.select {|member| member.state.include?("completed")}
-  end
-
-  def unfinished_projects
-    self.projects.select {|member| member.state.include?("unfinished")}
-  end
-
-
-  def projects_of_open_volunteer_applications
-    collection_project_ids = volunteer_applications.where(accepted: nil, rejected: nil).select(:project_id).distinct
-    all_open_applications = collection_project_ids.map do |member|
-      proj_id = member.project_id
-      Project.find(proj_id)
-    end
-    all_open_applications
-  end  
-
-  #def volunteers_open_applications
-  #  volunteer_applications.where(accepted: nil, rejected: nil).to_a
-  #end
-
-  def administrators_open_applications
-    collection_project_ids = self.organization.projects.map(&:id)
-    all_volunteer_applications = collection_project_ids.map do |member|
-      VolunteerApplication.find(member)
-    end 
-    all_volunteer_applications
-  end
-
-  def applied_to_projects
-    project_applications = sent_applications.map do |member|
-      project_applications = Project.find(member.project_id)
-    end
-    project_applications.sort!
-  end
-=end
 end

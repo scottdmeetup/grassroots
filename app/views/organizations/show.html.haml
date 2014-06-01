@@ -57,7 +57,7 @@
           - @organization.in_production_projects.each do |project|
             = render 'shared/project_thumbnail', project: project
         - elsif params[:tab] == 'pending approval'
-          - @organization.pending_approval_projects.each do |project|
+          - @organization.projects_with_work_submitted.each do |project|
             = render 'shared/project_thumbnail', project: project
         - elsif params[:tab] == 'completed'
           - @organization.completed_projects.each do |project|
