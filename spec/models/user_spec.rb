@@ -93,41 +93,48 @@ describe User do
   end
 
   describe "#projects_in_production" do
-    it "returns the projects that are in production because of a contract" do
-      huggey_bear = Fabricate(:organization)
-      amnesty = Fabricate(:organization)
-      alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
-      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
-      cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")
+    let(:huggey_bear) {Fabricate(:organization)}
+    let(:amnesty) {Fabricate(:organization)}
+    let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+    let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+    let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
 
+    let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
+    let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
+    #let(:accouting) {Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)}
+
+    before do
       huggey_bear.update_columns(user_id: alice.id)
       amnesty.update_columns(user_id: cat.id)
-      
-      logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id, state: "open")  
-      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
+    end
+
+    it "returns the projects that are in production because of a contract" do    
       accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
 
-      contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id)
-      contract2 =  Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: logo.id)
+      contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: nil)
+      contract2 =  Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: logo.id, work_submitted: nil)
       contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
 
-      expect(bob.reload.projects_in_production).to eq([logo, word_press])
+      expect(bob.projects_in_production).to eq([word_press, logo])
     end
 
     describe "#submitted_work" do
-      it "returns all the projects for which the volunteer has submitted work to the contractor" do
-        huggey_bear = Fabricate(:organization)
-        amnesty = Fabricate(:organization)
+      let(:huggey_bear) {Fabricate(:organization)}
+      let(:amnesty) {Fabricate(:organization)}
+      let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+      let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+      let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
 
-        alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
-        cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")
-        bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+      let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
+      let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
+      #let(:accouting) {Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)}
 
-        huggey_bear.update_columns(user_id: alice.id)      
+      before do
+        huggey_bear.update_columns(user_id: alice.id)
         amnesty.update_columns(user_id: cat.id)
+      end
 
-        word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) 
-        logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  
+      it "returns all the projects for which the volunteer has submitted work to the contractor" do
         accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
 
         contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true, incomplete: false)
@@ -139,19 +146,22 @@ describe User do
     end
 
     describe "#projects_completed" do
-      it "returns all the projects for which the volunteer has completed" do
-        huggey_bear = Fabricate(:organization)
-        amnesty = Fabricate(:organization)
+      let(:huggey_bear) {Fabricate(:organization)}
+      let(:amnesty) {Fabricate(:organization)}
+      let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+      let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+      let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
 
-        alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
-        cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")
-        bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
+      let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
+      let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
+      #let(:accouting) {Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)}
 
-        huggey_bear.update_columns(user_id: alice.id)      
+      before do
+        huggey_bear.update_columns(user_id: alice.id)
         amnesty.update_columns(user_id: cat.id)
+      end
+      it "returns all the projects for which the volunteer has completed" do
 
-        word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) 
-        logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  
         accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
 
         contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
@@ -163,6 +173,21 @@ describe User do
     end
 
     describe "#applied_to_projects" do
+
+      let(:huggey_bear) {Fabricate(:organization)}
+      let(:amnesty) {Fabricate(:organization)}
+      let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+      let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+      let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
+
+      let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
+      let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
+
+      before do
+        huggey_bear.update_columns(user_id: alice.id)
+        amnesty.update_columns(user_id: cat.id)
+      end
+
       it "returns all the projects to which the volunteer applied" do
         bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
         alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
@@ -171,10 +196,8 @@ describe User do
         huggey_bear = Fabricate(:organization, user_id: alice.id)
         amnesty = Fabricate(:organization, user_id: cat.id)
         
-        word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
-        accounting = Fabricate(:project, title: "accounting", user_id: alice.id, organization_id: huggey_bear.id, state: "open") 
-        logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id, state: "open") 
-        grant_writing = Fabricate(:project, title: "grant writing job", user_id: cat.id, organization_id: amnesty.id, state: "open") 
+        accounting = Fabricate(:project, title: "accounting", user_id: alice.id, organization_id: huggey_bear.id) 
+        grant_writing = Fabricate(:project, title: "grant writing job", user_id: cat.id, organization_id: amnesty.id) 
         
         application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id)
         application2 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: accounting.id, rejected: true)
@@ -186,19 +209,22 @@ describe User do
     end
 
     describe "drop_contract(agreement)" do
+        let(:huggey_bear) {Fabricate(:organization)}
+        let(:amnesty) {Fabricate(:organization)}
+        let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+        let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+        let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
+
+        let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
+        let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
+        #let(:accouting) {Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)}
+
+        before do
+          huggey_bear.update_columns(user_id: alice.id)
+          amnesty.update_columns(user_id: cat.id)
+        end
       it "dissassociates the user from the contract when the user wants to drop it" do
-        huggey_bear = Fabricate(:organization)
-        amnesty = Fabricate(:organization)
-
-        alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
-        cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")
-        bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
-
-        huggey_bear.update_columns(user_id: alice.id)      
-        amnesty.update_columns(user_id: cat.id)
-
-        word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) 
-        logo = Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  
+       
         accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
 
         contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)

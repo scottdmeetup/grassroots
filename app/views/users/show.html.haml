@@ -57,7 +57,7 @@
           = link_to "In Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production') 
       
         %li{:class => ('active' if params[:tab] == 'pending completion')}
-          = link_to "Completion Request #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval')
+          = link_to "Submitted Work #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval')
       
         %li{:class => ('active' if params[:tab] == 'completed')}
           = link_to "Completed #{@user.projects_complete.count}", user_path(@user, tab: 'completed')

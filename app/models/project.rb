@@ -50,4 +50,8 @@ class Project < ActiveRecord::Base
       []
     end
   end
+
+  def project_in_production
+    binding.pry
+  end
 end
