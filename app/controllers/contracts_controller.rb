@@ -37,6 +37,7 @@ class ContractsController < ApplicationController
     first_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation_about_submitted_work.id))
     first_message.save
     contract.update_columns(work_submitted: true)
+    binding.pry
     redirect_to conversations_path
   end
 

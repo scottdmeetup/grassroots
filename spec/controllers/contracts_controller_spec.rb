@@ -167,7 +167,7 @@ describe ContractsController, :type => :controller do
     end
   end
 
-  describe "PATCH update" do
+  describe "PATCH dropping_contract" do
     let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
     let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
     let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
@@ -187,42 +187,42 @@ describe ContractsController, :type => :controller do
       alice.update_columns(organization_id: huggey_bear.id)
     end
 
-    context "when retracting (dropping) a contract" do
+    
 
-      it "renders the conversation show view" do
-        conversation.private_messages << [message1, message2]
-        patch :dropping_contract, id: contract.id
+    it "renders the conversation show view" do
+      conversation.private_messages << [message1, message2]
+      patch :dropping_contract, id: contract.id
 
-        expect(response).to redirect_to(conversation_path(conversation.id))
-      end
+      expect(response).to redirect_to(conversation_path(conversation.id))
+    end
 
-      it "sets the status of the contract, dropped_out, to true" do
-        conversation.private_messages << [message1, message2]
-        patch :dropping_contract, id: contract.id
-        
-        expect(contract.reload.dropped_out).to eq(true)
-      end
-
-      it "sets the status of the contract, active, to false" do
-        conversation.private_messages << [message1, message2]
-        patch :dropping_contract, id: contract.id
-        
-        expect(contract.reload.active).to eq(nil)
-      end
-
-      it "automates a message to both parties" do
-        conversation.private_messages << [message1, message2]
-        patch :dropping_contract, id: contract.id
-
-        expect(conversation.private_messages.count).to eq(3)
-      end
-
-      it "clears the project of its volunteers" do
-        conversation.private_messages << [message1, message2]
-        patch :dropping_contract, id: contract.id
+    it "sets the status of the contract, dropped_out, to true" do
+      conversation.private_messages << [message1, message2]
+      patch :dropping_contract, id: contract.id
       
-        expect(word_press.volunteers).to eq([])
-      end
+      expect(contract.reload.dropped_out).to eq(true)
+    end
+
+    it "sets the status of the contract, active, to false" do
+      conversation.private_messages << [message1, message2]
+      patch :dropping_contract, id: contract.id
+      
+      expect(contract.reload.active).to eq(nil)
+    end
+
+    it "automates a message to both parties" do
+      conversation.private_messages << [message1, message2]
+      patch :dropping_contract, id: contract.id
+
+      expect(conversation.private_messages.count).to eq(3)
+    end
+
+    it "clears the project of its volunteers" do
+      conversation.private_messages << [message1, message2]
+      patch :dropping_contract, id: contract.id
+    
+      expect(word_press.volunteers).to eq([])
+    end
 =begin
       it "makes the volunteer still keep a record of the contract and its dropped out status" do
         conversation.private_messages << [message1, message2]
@@ -245,73 +245,106 @@ describe ContractsController, :type => :controller do
         #expect(contract.active).to eq(false)
       end
 =end
-    end
+  end
+
+  describe "PATCH update_contract_work_submitted" do
+    let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+    let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
+    let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+    let(:cat) {Fabricate(:user, first_name: "Cat", user_group: "volunteer")}
+    let(:dan) {Fabricate(:user, first_name: "Dan", user_group: "volunteer")}
+    
+    let(:logo) { Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open")  }
+    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
+
+    let(:contract) { Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id) } 
+    let(:conversation) { Fabricate(:conversation, contract_id: contract.id) }
+    let(:message1) {Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")}
+    let(:message2) {Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")}
     
     before do
       set_current_user(bob)
       alice.update_columns(organization_id: huggey_bear.id)
     end
 
-    context "when submitting work for the contractor to review" do
-      it "renders the current user's inbox" do
-        patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
+   
+    it "renders the current user's inbox" do
+      patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
 
-        expect(response).to redirect_to(conversations_path)
-      end
-
-      it "the contract reflects that the volunteer has submitted work" do
-        patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
-
-        expect(contract.reload.work_submitted).to eq(true)
-      end
-
-      it "makes the volunteer send a message to the administrator" do
-        patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
-        
-        expect(bob.sent_messages.count).to eq(1)
-      end
-
-      it "starts a new conversation with the administrator" do
-        patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
-        
-        expect(alice.user_conversations.count).to eq(1)
-      end
-
-      it "associated the conversation with the contract " do
-        patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
-
-        conversation = Conversation.last
-        expect(conversation.reload.contract_id).to eq(contract.id)
-      end
-
-      it "makes the contract reflect that the volunteer has submitted work" do
-        patch :update_contract_work_submitted, id: contract.id, conversation_id: conversation.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}  
-
-        expect(contract.reload.work_submitted).to eq(true)
-      end
+      expect(response).to redirect_to(conversations_path)
     end
+
+    it "the contract reflects that the volunteer has submitted work" do
+      patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
+
+      expect(contract.reload.work_submitted).to eq(true)
+    end
+
+    it "makes the volunteer send a message to the administrator" do
+      patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
+      
+      expect(bob.sent_messages.count).to eq(1)
+    end
+
+    it "starts a new conversation with the administrator" do
+      patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
+      
+      expect(alice.user_conversations.count).to eq(1)
+    end
+
+    it "associated the conversation with the contract " do
+      patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
+
+      conversation = Conversation.last
+      expect(conversation.reload.contract_id).to eq(contract.id)
+    end
+
+    it "makes the contract reflect that the volunteer has submitted work" do
+      patch :update_contract_work_submitted, id: contract.id, conversation_id: conversation.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}  
+
+      expect(contract.reload.work_submitted).to eq(true)
+    end
+  end
     
-    context "when completing a contract" do
-      it "renders the conversation view" do
-        contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
-        conversation = Fabricate(:conversation, contract_id: contract.id)
-        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
-        message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")
-        patch :contract_complete, id: contract.id
+  describe "PATCH update_contract_work_submitted" do
+    let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+    let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
+    let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+    let(:cat) {Fabricate(:user, first_name: "Cat", user_group: "volunteer")}
+    let(:dan) {Fabricate(:user, first_name: "Dan", user_group: "volunteer")}
+    
+    let(:logo) { Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open")  }
+    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
 
-        expect(response).to redirect_to(conversation_path(conversation.id))
-      end
+    let(:contract) { Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id) } 
+    let(:conversation) { Fabricate(:conversation, contract_id: contract.id) }
+    let(:message1) {Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")}
+    let(:message2) {Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")}
+    
+    before do
+      set_current_user(bob)
+      alice.update_columns(organization_id: huggey_bear.id)
+    end
 
-      it "makes the contract complete" do
-        contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
-        conversation = Fabricate(:conversation, contract_id: contract.id)
-        message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
-        message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")
-        #conversation.update(contract_id: contract.id)
-        patch :contract_complete, id: contract.id
+    it "renders the conversation view" do
+      contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
+      conversation = Fabricate(:conversation, contract_id: contract.id)
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")
+      patch :contract_complete, id: contract.id
 
-        expect(contract.reload.complete).to eq(true)
-      end
+      expect(response).to redirect_to(conversation_path(conversation.id))
+    end
+
+    it "makes the contract complete" do
+      contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
+      conversation = Fabricate(:conversation, contract_id: contract.id)
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")
+      #conversation.update(contract_id: contract.id)
+      patch :contract_complete, id: contract.id
+
+      expect(contract.reload.complete).to eq(true)
     end
   end
 end

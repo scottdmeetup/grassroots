@@ -51,7 +51,15 @@ class Project < ActiveRecord::Base
     end
   end
 
-  def project_in_production
-    binding.pry
+  def in_production?
+    true if self.contracts.where(active: true, work_submitted: nil, project_id: self.id).first
+  end
+
+  def has_submitted_work?
+    true if self.contracts.where(active: true, work_submitted: true, project_id: self.id).first
+  end
+
+  def is_complete?
+    true if self.contracts.where(active: false, work_submitted: true, complete: true, project_id: self.id).first
   end
 end
