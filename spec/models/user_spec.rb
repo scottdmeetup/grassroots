@@ -8,6 +8,37 @@ describe User do
   it { should have_many(:sent_applications)}
   it { should have_many(:jobs)}
   it { should have_many(:procurements)}
+
+  describe "#open_applications" do
+    let(:huggey_bear) {Fabricate(:organization)}
+    let(:amnesty) {Fabricate(:organization)}
+    let(:global) {Fabricate(:organization)}
+    let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+    let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+    let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
+    let(:dan) {Fabricate(:organization_administrator, first_name: "Dan", user_group: "nonprofit")}
+    
+    let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
+    let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id, state: "open")  }
+    let(:accounting) {Fabricate(:project, title: "didn't do my taxes", user_id: dan.id, organization_id: global.id)}
+
+    before do
+      huggey_bear.update_columns(user_id: alice.id)
+      amnesty.update_columns(user_id: cat.id)
+      global.update_columns(user_id: dan.id)
+    end
+    it "shows the projects that the volunteer has applied to and not heard back from" do
+      contract1 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: nil)
+      contract2 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: logo.id, work_submitted: nil)
+      contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
+
+      application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id)
+      application2 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: cat.id, project_id: logo.id)
+      application3 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: dan.id, project_id: accounting.id, accepted: false, rejected: true)
+
+      expect(bob.open_applications.count).to eq(2)
+    end
+  end
   
 
   describe "#private_messages" do

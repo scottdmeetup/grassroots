@@ -4,6 +4,8 @@ class Organization < ActiveRecord::Base
   has_many :users
 
   def open_projects
+    projects.where(state: "open").to_a
+=begin
     all_of_orgs_project_ids = projects.map(&:id)
     projects_with_contracts_with_nils = all_of_orgs_project_ids.map do |member|
       Contract.find_by(project_id: member) 
@@ -17,6 +19,7 @@ class Organization < ActiveRecord::Base
     available_projects.map do |member|
       Project.find(member)
     end
+=end
   end
 
   def in_production_projects

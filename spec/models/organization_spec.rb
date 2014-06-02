@@ -34,7 +34,7 @@ describe Organization do
       
       accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
       grant_writing = Fabricate(:project, title: "need Grants", user_id: alice.id, organization_id: huggey_bear.id)
-      professional_site = Fabricate(:project, title: "need a site", user_id: alice.id, organization_id: huggey_bear.id)
+      professional_site = Fabricate(:project, title: "need a site", user_id: alice.id, organization_id: huggey_bear.id, state: "open")
 
       contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id)
       contract2 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: false, incomplete: true, project_id: logo.id)

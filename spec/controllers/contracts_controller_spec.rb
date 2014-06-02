@@ -186,8 +186,6 @@ describe ContractsController, :type => :controller do
       alice.update_columns(organization_id: huggey_bear.id)
     end
 
-    
-
     it "renders the conversation show view" do
       conversation.private_messages << [message1, message2]
       patch :dropping_contract, id: contract.id
@@ -228,6 +226,14 @@ describe ContractsController, :type => :controller do
       patch :dropping_contract, id: contract.id
 
       expect(word_press.reload.state).to eq("open")
+    end
+
+    it "reduces the number of projects in production for the user by one" do
+      set_current_user(bob)
+      conversation.private_messages << [message1, message2]
+      patch :dropping_contract, id: contract.id
+
+      expect(bob.projects_in_production.count).to eq(0)
     end
 
 =begin

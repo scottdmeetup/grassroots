@@ -35,10 +35,10 @@
               = link_to "Reply (before deciding)", conversation_path(conversation.id)
             %li.divider
             %li
-            - if current_user.organization_administrator
+            - if current_user_contractor(conversation)
               = link_to "Drop Volunteer", dropping_contract_path(id: conversation.contract_id), method: :patch
             - else
-              = link_to "Drop Project", dropping_contract_path(conversation_id: conversation.id), method: :patch
+              = link_to "Drop Project", dropping_contract_path(id: conversation.contract_id), method: :patch
       - if conversation.with_work_submitted
         - if current_user_contractor(conversation)
           .btn-group
