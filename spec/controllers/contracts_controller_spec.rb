@@ -174,7 +174,7 @@ describe ContractsController, :type => :controller do
     let(:dan) {Fabricate(:user, first_name: "Dan", user_group: "volunteer")}
     
     let(:logo) { Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open")  }
-    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
+    let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
 
     let(:contract) { Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id) } 
     let(:conversation) { Fabricate(:conversation, contract_id: contract.id) }
@@ -206,7 +206,7 @@ describe ContractsController, :type => :controller do
       conversation.private_messages << [message1, message2]
       patch :dropping_contract, id: contract.id
       
-      expect(contract.reload.active).to eq(nil)
+      expect(contract.reload.active).to eq(false)
     end
 
     it "automates a message to both parties" do
@@ -222,6 +222,14 @@ describe ContractsController, :type => :controller do
     
       expect(word_press.volunteers).to eq([])
     end
+
+    it "moves the project back to open" do
+      conversation.private_messages << [message1, message2]
+      patch :dropping_contract, id: contract.id
+
+      expect(word_press.reload.state).to eq("open")
+    end
+
 =begin
       it "makes the volunteer still keep a record of the contract and its dropped out status" do
         conversation.private_messages << [message1, message2]
@@ -292,6 +300,7 @@ describe ContractsController, :type => :controller do
     end
 
     it "associated the conversation with the contract " do
+      conversation.private_messages << [message1, message2]
       patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
 
       conversation = Conversation.last
@@ -308,6 +317,14 @@ describe ContractsController, :type => :controller do
       patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}  
 
       expect(response).to redirect_to(conversations_path)
+    end
+
+    it "sets the previous conversation's contract id to nil" do
+      conversation.private_messages << [message1, message2]
+
+      patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}  
+      conversation2 = Conversation.first
+      expect(conversation2.reload.contract_id).to eq(nil)
     end
   end
     

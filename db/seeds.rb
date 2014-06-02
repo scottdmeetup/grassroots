@@ -77,6 +77,6 @@ fundraising = Project.create(title: "Fundraising Help", description: "I need hel
   skills: "fundraising", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
 
 Contract.destroy_all
-
+  
 PrivateMessage.destroy_all
 Conversation.destroy_all

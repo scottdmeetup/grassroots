@@ -12,7 +12,7 @@
     %h4.project-org-name
       = link_to project.organization.name, organization_path(project.organization.id)
     %h5 
-      - project_title(project)
+      = project_title(project)
     %p 
       - if project.description > project.description.first(60)
         = "#{project.description.first(60)}..."

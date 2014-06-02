@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   has_secure_password validations: false
   belongs_to :organization
   #belongs_to :project
-  
+  #has_many :conversations
   has_many :sent_messages, class_name: 'PrivateMessage', foreign_key: 'sender_id'
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
   
@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
       convo_id = member.conversation_id
       Conversation.find_by(id: convo_id)
     end  
-    all_conversations.sort
+    all_conversations.sort! {|a, b| a.updated_at <=> b.updated_at}
   end
 
   def organization_name

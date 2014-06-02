@@ -33,13 +33,6 @@ describe PrivateMessagesController, :type => :controller do
 
         expect(assigns(:private_message).project_id).to be_nil
       end
-
-      it "sets the @update_contract_work_submitted to allow for a conditional that 
-      will change the form's route to update_contract_work_submitted controller action " do
-
-        get :new, user_id: bob.id, contract_id: contract.id
-        expect(assigns(:update_contract_work_submitted)).to be_instance_of(Contract)
-      end
     end
   end
 

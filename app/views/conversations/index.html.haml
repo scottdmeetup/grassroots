@@ -12,5 +12,6 @@
       %li 
         %a{:href => "#"}Archived
   .col-lg-9 
+  - if @conversations
     - @conversations.each do |conversation|
       = render 'shared/conversation_thumbnail', conversation: conversation

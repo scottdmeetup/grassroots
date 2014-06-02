@@ -15,6 +15,7 @@ feature 'User has a conversation with messages with other user' do
 
     user_signs_in(bob)
     visit conversations_path
+    
     click_on("question about your skills")
     fill_in "private_message[body]", with: "I started 9 months ago. Why do you ask?"
     click_on('Send')

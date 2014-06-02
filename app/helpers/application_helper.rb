@@ -71,7 +71,13 @@ module ApplicationHelper
     if project.title > project.title.first(25)
       "#{project.title.first(25)}..."
     else
-      project.title
+      "#{project.title}"
     end
+  end
+
+  def current_user_contractor(conversation)
+    contract = Contract.find(conversation.contract_id)
+    contractor = User.find(contract.contractor_id)
+    current_user == contractor
   end
 end

@@ -19,12 +19,14 @@ feature  "Volunteer applies to a project"do
       city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
       organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
     word_press = Fabricate(:project, title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
-      skills: "web development", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
+      skills: "web development", causes: "animals", deadline: Date.today + 1.month, 
+      user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
     
     user_signs_in(bob)
     expect(page).to have_content("You are logged in!")
 
     visit projects_path
+    
     expect(page).to have_content("Need WordPress Site")
     click_on('Join Project')
     fill_in "private_message[body]", with: "I'd like to join this project"
