@@ -62,4 +62,8 @@ class Project < ActiveRecord::Base
   def is_complete?
     true if self.contracts.where(active: false, work_submitted: true, complete: true, project_id: self.id).first
   end
+
+  def in_production_contract_id
+    self.contracts.where(active: true, work_submitted: nil, project_id: self.id).first
+  end
 end

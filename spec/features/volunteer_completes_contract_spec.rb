@@ -148,10 +148,11 @@ feature "Either volunteer or project administrator ends contract" do
     fill_in "private_message[body]", with: "This is done"
     click_on('Create')
     visit user_path(volunteer.id)
-    expect(page).to have_text("Completion Request 1")
+    expect(page).to have_text("Submitted Work 1")
   end
 
   def project_administrator_confirms_contracts_completion(administrator)
+    visit organization_path(administrator.organization.id)
     expect(page).to have_content("Completion Request 1")
     visit conversations_path
     click_on('Completed')

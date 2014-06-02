@@ -12,10 +12,7 @@
     %h4.project-org-name
       = link_to project.organization.name, organization_path(project.organization.id)
     %h5 
-      - if project.title > project.title.first(25)
-        = "#{project.title.first(25)}..."
-      - else
-        = project.title
+      - project_title(project)
     %p 
       - if project.description > project.description.first(60)
         = "#{project.description.first(60)}..."
@@ -38,7 +35,7 @@
         - if project.state == "open"
           %btn= link_to "Join Project", new_volunteer_application_path(project_id: project.id), class: 'btn btn-success btn-lg btn-block btn-project'
         - elsif project.in_production?
-          %btn= link_to "Project Complete", new_private_message_path(user_id: current_user.id), class: 'btn btn-warning btn-lg btn-block btn-project'
+          %btn= link_to "Project Complete", submit_work_form_path(contract_id: project.in_production_contract_id), class: 'btn btn-warning btn-lg btn-block btn-project'
         - elsif project.has_submitted_work?
           %btn= link_to "Pending Completion", new_private_message_path(user_id: project.id), class: 'btn btn-info btn-lg btn-block btn-project'
         - elsif project.is_complete?

@@ -72,11 +72,10 @@
         - elsif params[:tab] == 'pending approval'
           - @user.submitted_work.each do |project|
             = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'completed'
+        - else 
+          - params[:tab] == 'completed'
           - @user.projects_complete.each do |project|
-            = render 'shared/project_thumbnail', project: project
-
-      
+            = render 'shared/project_thumbnail', project: project      
     .row.row-custom
       .col-lg-12
         %h2 Bob Smith's Updates

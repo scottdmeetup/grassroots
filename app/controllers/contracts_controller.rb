@@ -32,12 +32,13 @@ class ContractsController < ApplicationController
   end
 
   def update_contract_work_submitted
-    contract = Contract.find(params[:id])
-    conversation_about_submitted_work = Conversation.create(contract_id: contract.id)
-    first_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation_about_submitted_work.id))
+    conversation_about_work_submission = Conversation.create
+    first_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation_about_work_submission.id))
     first_message.save
+    contract = Contract.find(params[:id])
+    conversation_about_work_submission.update_columns(contract_id: contract.id)
     contract.update_columns(work_submitted: true)
-    binding.pry
+    flash[:success] = "Your message has been sent to #{first_message.recipient.first_name} #{first_message.recipient.last_name}"
     redirect_to conversations_path
   end
 
@@ -46,6 +47,11 @@ class ContractsController < ApplicationController
     complete_work_conversation = Conversation.find_by(contract_id: contract.id)
     contract.update_columns(complete: true, active: false, incomplete: false, work_submitted: true )
     redirect_to conversation_path(complete_work_conversation.id)
+  end
+
+  def submit_work_message_form
+    @contract = Contract.find(params[:contract_id])
+    @private_message = PrivateMessage.new(recipient_id: @contract.contractor_id)
   end
 private
 

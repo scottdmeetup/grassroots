@@ -34,7 +34,6 @@ describe ContractsController, :type => :controller do
 
       expect(assigns(:private_message).recipient).to eq(alice)
     end
-  
   end
 
   describe "POST create" do
@@ -300,13 +299,19 @@ describe ContractsController, :type => :controller do
     end
 
     it "makes the contract reflect that the volunteer has submitted work" do
-      patch :update_contract_work_submitted, id: contract.id, conversation_id: conversation.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}  
+      patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}  
 
       expect(contract.reload.work_submitted).to eq(true)
     end
+
+    it "renders the conversation show view" do
+      patch :update_contract_work_submitted, id: contract.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}  
+
+      expect(response).to redirect_to(conversations_path)
+    end
   end
     
-  describe "PATCH update_contract_work_submitted" do
+  describe "PATCH contract_complete" do
     let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
     let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
     let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
@@ -341,10 +346,35 @@ describe ContractsController, :type => :controller do
       conversation = Fabricate(:conversation, contract_id: contract.id)
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")
-      #conversation.update(contract_id: contract.id)
       patch :contract_complete, id: contract.id
 
       expect(contract.reload.complete).to eq(true)
+    end
+  end
+  describe "GET submit_work_message_form" do
+    let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+    let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
+    let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+    
+    let(:logo) { Fabricate(:project, title: "need a logo", user_id: alice.id, organization_id: huggey_bear.id, state: "open")  }
+    let(:contract) { Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: logo.id) } 
+    
+    before do
+      get :submit_work_message_form, contract_id: contract.id
+    end
+    
+    it "renders the submit_work_message template for notifying the contractor that work has been submitted " do
+      expect(response).to render_template(:submit_work_message_form)
+    end
+
+    it "sets @contract to allow for a conditional that 
+      will change the form's route to update_contract_work_submitted controller action " do
+
+      expect(assigns(:contract)).to be_instance_of(Contract)
+    end
+
+    it "sets @private_message with contractor as recipient of message" do
+      expect(assigns(:private_message).recipient_id).to eq(alice.id)
     end
   end
 end

@@ -65,5 +65,13 @@ module ApplicationHelper
       ['WV', 'WV'],
       ['WY', 'WY']
     ]
-end
+  end
+
+  def project_title(project)
+    if project.title > project.title.first(25)
+      "#{project.title.first(25)}..."
+    else
+      project.title
+    end
+  end
 end

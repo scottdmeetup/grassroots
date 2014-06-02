@@ -5,7 +5,8 @@ describe PrivateMessagesController, :type => :controller do
   let(:bob) { Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
   let(:huggey_bear) { Fabricate(:organization, user_id: alice.id) }
   let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
-  let(:contract1) { Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id) } 
+  let(:contract) { Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: nil) } 
+  
   
   describe "GET new" do
 
@@ -31,6 +32,13 @@ describe PrivateMessagesController, :type => :controller do
         get :new, user_id: bob.id
 
         expect(assigns(:private_message).project_id).to be_nil
+      end
+
+      it "sets the @update_contract_work_submitted to allow for a conditional that 
+      will change the form's route to update_contract_work_submitted controller action " do
+
+        get :new, user_id: bob.id, contract_id: contract.id
+        expect(assigns(:update_contract_work_submitted)).to be_instance_of(Contract)
       end
     end
   end

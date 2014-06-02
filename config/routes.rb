@@ -30,8 +30,9 @@ Grassroots::Application.routes.draw do
   
   resources :contracts, only: [:create, :update, :new]
   patch 'dropping_contract', to: 'contracts#dropping_contract', as: 'dropping_contract'
-  patch 'update_contract_work_submitted', to: 'contracts#update_contract_work_submitted', as: 'update_contract_work_submitted'
+  patch 'update_contract_work_submitted/:id', to: 'contracts#update_contract_work_submitted', as: 'update_contract_work_submitted'
   patch 'contract_complete', to: 'contracts#contract_complete', as: 'contract_complete'
+  get 'submit_work_form', to: 'contracts#submit_work_message_form', as: 'submit_work_form'
 
   resources :conversations, only: [:show, :index]
 end
