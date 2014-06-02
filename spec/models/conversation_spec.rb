@@ -88,8 +88,4 @@ describe Conversation do
       expect(convo.with_opportunity_to_drop_job).to eq(true)
     end
   end
-
-  describe "#contractor?" do
-    it "returns true if the current user is the contractor of the conversation's contract"
-  end
 end
