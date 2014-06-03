@@ -54,7 +54,7 @@ private
     @conversation = Conversation.find(params[:conversation_id])
     volunteer = User.find(accepted_application.applicant_id)
     @contract = Contract.create(active: true, contractor_id: current_user.id,
-     volunteer_id: volunteer.id, project_id: accepted_application.project_id)
+     volunteer_id: volunteer.id, project_id: accepted_application.project_id, work_submitted: false)
     @conversation.update!(contract_id: @contract.id, volunteer_application_id: nil)
     redirect_to conversation_path(@conversation.id)
   end

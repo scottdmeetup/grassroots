@@ -52,7 +52,7 @@ class Project < ActiveRecord::Base
   end
 
   def in_production?
-    self.contracts.where(active: true, work_submitted: nil, project_id: self.id).present?
+    self.contracts.where(active: true, work_submitted: false, project_id: self.id).present?
   end
 
   def has_submitted_work?

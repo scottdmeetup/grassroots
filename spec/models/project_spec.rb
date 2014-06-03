@@ -18,7 +18,7 @@ describe Project do
   let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
   let(:accounting) {Fabricate(:project, title: "didn't do taxes", user_id: alice)}
 
-  let(:contract1) {Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: nil)}
+  let(:contract1) {Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: false)}
   let(:contract2) {Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: logo.id, work_submitted: true)}
   let(:contract3) {Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: accounting.id, work_submitted: false)}
 

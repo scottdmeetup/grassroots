@@ -82,7 +82,7 @@ describe Conversation do
       huggey_bear = Fabricate(:organization, user_id: alice.id)
       word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "pending completion")
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Project complete", body: "this project is done", conversation_id: convo.id)
-      contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: huggey_bear.id, work_submitted: nil)
+      contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: huggey_bear.id, work_submitted: false)
       convo.update_columns(contract_id: contract.id)      
 
       expect(convo.with_opportunity_to_drop_job).to eq(true)

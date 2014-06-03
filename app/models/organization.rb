@@ -24,7 +24,7 @@ class Organization < ActiveRecord::Base
 
   def in_production_projects
       
-    active_contracts = organization_administrator.procurements.where(active: true, dropped_out: nil, complete: nil, incomplete: nil, work_submitted: nil).to_a
+    active_contracts = organization_administrator.procurements.where(active: true, dropped_out: nil, complete: nil, incomplete: nil, work_submitted: false).to_a
     projects_in_production = active_contracts.map do |member|
       Project.find(member.project_id)
     end

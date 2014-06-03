@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   end
 
   def projects_in_production
-    contracts_reflecting_work_in_production = Contract.where(volunteer_id: self.id, active: true, work_submitted: nil).to_a
+    contracts_reflecting_work_in_production = Contract.where(volunteer_id: self.id, active: true, work_submitted: false).to_a
     in_production = contracts_reflecting_work_in_production.map do |member|
       Project.find(member.project_id)
     end

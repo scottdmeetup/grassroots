@@ -113,8 +113,8 @@ describe Organization do
       grant_writing = Fabricate(:project, title: "need Grants", user_id: alice.id, organization_id: huggey_bear.id)
       professional_site = Fabricate(:project, title: "need a site", user_id: alice.id, organization_id: huggey_bear.id)
 
-      contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id)
-      contract2 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: logo.id)
+      contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: false)
+      contract2 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: logo.id, work_submitted: false)
       contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
       contract4 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: grant_writing.id, work_submitted: true)
 
