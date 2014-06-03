@@ -85,13 +85,13 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
 
   def project_administrator_drops_project(admin)
     visit organization_path(admin.organization.id)
-    expect(page).to have_content("In Production 1")
+    expect(page).to have_content("Projects in Production 1")
     visit conversations_path
     click_on("Drop Volunteer")
     #page.find(:xpath, "//a[@href='/dropping_contract?conversation_id=#{Conversation.first.id}']").click
     visit organization_path(admin.organization.id)
-    expect(page).to have_content("Open 1")
-    expect(page).to have_content("In Production 0")
+    expect(page).to have_content("Available Projects 1")
+    expect(page).to have_content("Projects in Production 0")
     expect(page).to have_content("Completion Request 0")
     expect(page).to have_content("Completed Projects 0")
     expect(page).to have_content("Unfinished 0")
@@ -99,7 +99,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
 
   def volunteer_sees_contract_has_been_dropped
     expect(page).to have_content("Open Applications 0")
-    expect(page).to have_content("In Production 0")
+    expect(page).to have_content("Work in Production 0")
     expect(page).to have_content("Submitted Work 0")
     expect(page).to have_content("Completed Work 0")
     visit conversations_path
@@ -107,7 +107,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
   end
 
   def volunteer_drops_project(volunteer)
-    expect(page).to have_content("In Production 1")
+    expect(page).to have_content("Work in Production 1")
     visit conversations_path
     click_on("Drop Project")
     #page.find(:xpath, "//a[@href='/dropping_contract?conversation_id=#{Conversation.first.id}']").click
@@ -115,14 +115,14 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     #click_on("Drop Project")
     visit user_path(volunteer.id)
     expect(page).to have_content("Open Applications 0")
-    expect(page).to have_content("In Production 0")
+    expect(page).to have_content("Work in Production 0")
     expect(page).to have_content("Submitted Work 0")
     expect(page).to have_content("Completed Work 0")
   end
 
   def volunteer_submits_work_for_job_completion(volunteer)
     
-    click_on('In Production')
+    click_on('Work in Production')
     click_on('Project Complete')
     fill_in "private_message[body]", with: "This is done"
     click_on('Create')
@@ -165,7 +165,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     visit conversations_path
     expect(page).to have_text("Drop Contract")
     visit organization_path(user.organization.id)
-    expect(page).to have_text("In Production 1")
+    expect(page).to have_text("Projects in Production 1")
     sign_out
   end
 end

@@ -37,10 +37,10 @@ feature  "Administrator contracts a volunteer"do
     visit conversations_path
     expect(page).to have_text("Drop Contract")
     visit organization_path(alice.organization.id)
-    expect(page).to have_text("In Production 1")
+    expect(page).to have_text("Projects in Production 1")
     sign_out
     user_signs_in(bob)
-    expect(page).to have_text("In Production 1")
+    expect(page).to have_text("Work in Production 1")
     visit conversations_path
     
     expect(page).to have_text("Drop Project")
