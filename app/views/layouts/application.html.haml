@@ -10,13 +10,14 @@
   %body
     %header
       = render 'shared/header'
-      .container
-        .row.row-custom
-          %div
-            = render 'shared/sidebar'
-          .col-lg-10.col-lg-offset-2#active-pane
-            %section.content.clearfix
-              = render 'shared/messages'
-              = yield
-    %footer
-      About Blog Twitter Facebook &copy 2014 Grassroots
+    .container
+      .row.row-custom
+        = render 'shared/sidebar'
+        .col-lg-10.col-lg-offset-2.col-sm-9.col-sm-offset-3#active-pane
+          %section.content.clearfix
+            = render 'shared/messages'
+            = yield
+        .col-lg-10.col-lg-offset-2.col-sm-9.col-sm-offset-3#footer-wrapper
+          %footer
+            = render 'shared/footer'
+

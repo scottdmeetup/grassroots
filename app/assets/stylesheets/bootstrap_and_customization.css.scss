@@ -1,63 +1,108 @@
 @import "bootstrap";
 
 body {
-	background-color: #E9EAEC;
+  background-color: #E9EAEC;
 }
 
-/* Top Navigation */
-#search-bar {
-	margin-left: 33%;
+ul {
+  list-style-type: none;
 }
-	#search-bar input {
-		width: 350px;
-	}
-#account-tabs {
-	float:right;
-	border: 0px;
+
+li {
+  
 }
+
+
+
+
+/* Top Navigation Bar */
+/* In Header Partial */
+  #header {
+  } 
+    .navbar-toggle {
+      float: left;
+      margin-left: 15px;
+      margin-right: 0px;
+    }
+    .navbar-toggle-collapse {
+      position: relative;
+      left: 201px;
+    }
+        #account-tabs {
+          float:right;
+          border: 0px;
+        }
 
 /* SideBar Navigation */
-	#sidebar-custom {
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		border-color: #fff;
-		border-radius: 0px;
-	}
-		#sidebar-custom ul {
-			margin-top: 56px;
-		}
+/* In SideBar Partial */
+  #sidebar-custom {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin-bottom: 0px;
+    background-color: #2BBD60;
+    border-radius: 0px;
+  }
+    .navbar-collapse.collapsing {
+      -webkit-transition: height 100ms;
+      -moz-transition: height 100ms;
+      transition: height 100ms;
+    }
+
+    #interior-sidebar-wrapper {
+      padding: 0;
+      ul {
+        margin-top: 56px;
+        li {
+            margin-top: -8px;
+            border-top: 2px solid #2BC272;
+            a {
+              margin-left: 10px;
+              padding-right: 30px;
+              color: #fff;
+              font-weight: 700; 
+              font-size: 1.05em;
+            a:hover {
+              background-color: #2BBD60;
+            } 
+          }
+        }
+      }
+    } 
+      
+        
+>>>>>>> 12c328c... styles the footer menu
 
 /* Active Pane */ 
 
-	#active-pane {
-		padding: 0 5% 0 0;
-	}
+  #active-pane {
+    padding: 0 5% 20px 0;
+  }
 
 .container-wrapper {
-	
-	margin: 20px 0;
+  
+  margin: 20px 0;
 }
 
 .org-head {
-	line-height: .9;
+  line-height: .9;
 }
 
 @media screen and (max-width: 992px) {
-	.thumbnail {
-		margin: 1em auto 0;
-	}
+  .thumbnail {
+    margin: 1em auto 0;
+  }
 }
 
 /* Start of Project Area */ 
 
 .btn-project {
-	margin-top: 1em;
+  margin-top: 1em;
 }
 
 .btn-project, .text-clear {
-	clear: both;
+  clear: both;
 }
 
 
@@ -65,34 +110,34 @@ body {
 /* Newsfeed Changes */ 
 
 .row-wrapper {
-	padding: 7px 0;
+  padding: 7px 0;
 }
 
 .newsfeed-wrapper {
-	overflow: auto;
-	padding: 1em 0;
-	background-color: #fff;
+  overflow: auto;
+  padding: 1em 0;
+  background-color: #fff;
 }
 
 .img-staff-newsfeed {
-	width: 100px;
+  width: 100px;
 }
 
 .newsfeed-content-wrapper {
-	padding: 1em 0;
-	margin-left: -7%;
+  padding: 1em 0;
+  margin-left: -7%;
 }
 
 .vote-wrapper {
-	margin-left: 37px;
+  margin-left: 37px;
 }
 
 .comment-wrapper {
-	margin-left: 21px;
+  margin-left: 21px;
 }
 
 .profile-newsfeed-number {
-	text-align: center;
+  text-align: center;
 }
 
 /* Start of Overview Tab */ 
@@ -115,30 +160,116 @@ body {
 /* Staff Section */ 
 
 #staff-wrapper {
-	padding: 10px;
+  padding: 10px;
 }
-	.thumbnail-staff {
-		padding: 5px 10px 0;
-	}
-		.img-staff {
-			width: 150px;
-			margin-top: 7px;
-			margin-bottom: 10px;
-			margin-left: 17px;
-		}
-	.thumbnail-staff h3{
-		margin-top: 5px;
-	}
+  .thumbnail-staff {
+    padding: 5px 10px 0;
+  }
+    .img-staff {
+      width: 150px;
+      margin-top: 7px;
+      margin-bottom: 10px;
+      margin-left: 17px;
+    }
+  .thumbnail-staff h3{
+     margin-top: 5px;
+  }
+
+  /* Footer Changes */ 
+  /* In Footer Partial */ 
+#footer-wrapper {
+  padding-bottom: 40px;
+}
+  footer {
+    color: #709494;
+    padding: 35px 0 0;
+    margin-right: 45px;
+    border-top: 2px solid #E2E6DF;
+    ul {
+      padding-left: 0px;
+      li {
+        font-size: .95em;
+        a {
+          color: #2E5C8A;
+        }
+        a:hover {
+          color: #2E5C38;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+    #footer-mission {
+      p {
+        font-size: .88em;
+      }
+    }
+
+    #footer-info {
+      ul {
+        padding-left: 40px; 
+        li {
+          font-size: .95em;
+        }
+      }
+    }
+
+    #social-icons {
+      margin-bottom: 60px;
+      li { 
+        float: left;
+        padding: 0 8px 0 0;
+      }
+        a {
+          display: block;
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+      }
+    }
+    
+      .fb { 
+        a {
+          background-color: blue;
+          background-image: url("");
+        }
+      }
+      .twit{
+        a {
+        background-color: red;
+        background-image: url("");
+        }
+      }
+      .ln {
+        a {
+        background-color: green;
+        background-image: url("");
+        }
+      }
+      .gplus {
+        a {
+        background-color: orange;
+        background-image: url("");
+        }
+      }
+    #copy {
+      clear: both;
+    }
+    
+
+
+
 
 /*===============================================
-			Bootstrap Overrides 
+      Bootstrap Overrides 
 ================================================*/
-/* 		BackGround  Colors */
+/*    BackGround  Colors */
 .row {
-	background-color: #fff;
+  background-color: #fff;
 }
 .row-custom {
-	/* Overrides Row Background Color
-	For Areas that Need Body Color */ 
-	background-color: #E9EAEC;
-}					
+  /* Overrides Row Background Color
+  For Areas that Need Body Color */ 
+  background-color: #E9EAEC;
+}         

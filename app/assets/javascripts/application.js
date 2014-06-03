@@ -18,4 +18,18 @@ jQuery(function() {
   return $('#user_organization_name_box').autocomplete({
     source: $('#user_organization_name_box').data('autocomplete-source')
   });
+ });
+$(document).ready(function() {
+  $('.navbar-toggle').on('click', function() {
+    if($('.navbar-collapse').hasClass('in')) {
+      $('#active-pane').removeClass('col-xs-offset-4');
+      $('.navbar-toggle').removeClass('navbar-toggle-collapse'); 
+    }
+    else {
+    $('#active-pane').addClass('col-xs-offset-4');
+    $('.navbar-toggle').addClass('navbar-toggle-collapse'); 
+    }
+  });
 });
+
+
