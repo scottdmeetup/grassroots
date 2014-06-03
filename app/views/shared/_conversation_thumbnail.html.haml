@@ -36,9 +36,9 @@
             %li.divider
             %li
             - if current_user_contractor(conversation)
-              = link_to "Drop Volunteer", dropping_contract_path(id: conversation.contract_id), method: :patch
+              = link_to "Drop Volunteer", contract_path(id: conversation.contract_id), method: :delete
             - else
-              = link_to "Drop Project", dropping_contract_path(id: conversation.contract_id), method: :patch
+              = link_to "Drop Project", contract_path(id: conversation.contract_id), method: :delete
       - if conversation.with_work_submitted
         - if current_user_contractor(conversation)
           .btn-group
@@ -52,4 +52,4 @@
                 %a{href: "#"} Incompleted
               %li.divider
               %li
-                = link_to "Completed", contract_complete_path(id: conversation.contract_id), method: :patch
+                = link_to "Completed", contract_path(id: conversation.contract_id), method: :patch

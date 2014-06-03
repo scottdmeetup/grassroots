@@ -22,14 +22,6 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
   skills: "web development", causes: "animals", deadline: Date.today + 1.month, 
   user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")}
 
-  #contract = Fabricate(:contract, volunteer_id: bob.id, contractor_id: alice.id, 
-  # active: true, work_submitted: nil, project_id: word_press.id)
-  #conversation = Fabricate(:conversation)
-  #word_press.update_columns(state: nil)
-  ##message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Project Request: word press website", body: "I want to join this project")
-  #message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Project Request: word press website", body: "I approve you to do this work")
-  #conversation.update_columns(contract_id: contract.id)
-
   scenario "volunteer completes the project" do
     alice
     bob
@@ -49,7 +41,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     sign_out
 
     user_signs_in(bob)
-    expect(page).to have_text("Completed 1")
+    expect(page).to have_text("Completed Work 1")
   end
 
   scenario "volunteer drops the project" do
@@ -101,15 +93,15 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     expect(page).to have_content("Open 1")
     expect(page).to have_content("In Production 0")
     expect(page).to have_content("Completion Request 0")
-    expect(page).to have_content("Completed 0")
+    expect(page).to have_content("Completed Projects 0")
     expect(page).to have_content("Unfinished 0")
   end
 
   def volunteer_sees_contract_has_been_dropped
-    expect(page).to have_content("Open 0")
+    expect(page).to have_content("Open Applications 0")
     expect(page).to have_content("In Production 0")
     expect(page).to have_content("Submitted Work 0")
-    expect(page).to have_content("Completed 0")
+    expect(page).to have_content("Completed Work 0")
     visit conversations_path
     expect(page).to have_content("Bob Seltzer has been dropped on this project. This is an automated message.")
   end
@@ -122,17 +114,16 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     #click_on("Drop Contract")
     #click_on("Drop Project")
     visit user_path(volunteer.id)
-    expect(page).to have_content("Open 0")
+    expect(page).to have_content("Open Applications 0")
     expect(page).to have_content("In Production 0")
     expect(page).to have_content("Submitted Work 0")
-    expect(page).to have_content("Completed 0")
+    expect(page).to have_content("Completed Work 0")
   end
 
   def volunteer_submits_work_for_job_completion(volunteer)
     
     click_on('In Production')
     click_on('Project Complete')
-    fill_in "private_message[subject]", with: "finished job"
     fill_in "private_message[body]", with: "This is done"
     click_on('Create')
     visit user_path(volunteer.id)
@@ -148,7 +139,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     fill_in "private_message[body]", with: "Great work."
     click_on('Send')
     visit organization_path(administrator.organization.id)
-    expect(page).to have_text("Completed 1")
+    expect(page).to have_text("Completed Projects 1")
   end
 
   def volunteer_applies_to_project(user)

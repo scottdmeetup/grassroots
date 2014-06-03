@@ -52,15 +52,15 @@ class Project < ActiveRecord::Base
   end
 
   def in_production?
-    true if self.contracts.where(active: true, work_submitted: nil, project_id: self.id).first
+    self.contracts.where(active: true, work_submitted: nil, project_id: self.id).present?
   end
 
   def has_submitted_work?
-    true if self.contracts.where(active: true, work_submitted: true, project_id: self.id).first
+    self.contracts.where(active: true, work_submitted: true, project_id: self.id).present?
   end
 
   def is_complete?
-    true if self.contracts.where(active: false, work_submitted: true, complete: true, project_id: self.id).first
+    self.contracts.where(active: false, work_submitted: true, complete: true, project_id: self.id).present?
   end
 
   def in_production_contract_id

@@ -1,6 +1,5 @@
 class ContractsController < ApplicationController
   before_action :find_volunteer_application, only: [:create]
-  before_action :find_contract, only: [:submit_work_message_form]
   def new
     contract = Contract.find(params[:contract_id])
     @project = Project.find(contract.project_id)
@@ -13,22 +12,13 @@ class ContractsController < ApplicationController
     create_contract_and_associate_it_with_conversation_which_triggers_drop_opportunity(@volunteer_application)
   end
 
-  def dropping_contract 
+  def destroy 
     send_automated_message
     contract_drops_and_project_becomes_open(@contract)
   end
 
-  def update_contract_work_submitted
-    creates_new_conversation_about_work_submission_and_updates_contract
-    opportunity_to_drop_project_is_removed(@contract, @first_message)
-  end
-
-  def contract_complete
+  def update
     find_conversation_and_update_contract_associated_with_it
-  end
-
-  def submit_work_message_form
-    @private_message = PrivateMessage.new(recipient_id: @contract.contractor_id)
   end
 
 private
@@ -39,10 +29,6 @@ private
 
   def find_volunteer_application
     @volunteer_application = VolunteerApplication.find(params[:volunteer_application_id])
-  end
-
-  def find_contract
-    @contract = Contract.find(params[:contract_id])
   end
 
   def accept_application_and_project_in_production(application)
@@ -78,22 +64,6 @@ private
     project = Project.find(contract.project_id)
     project.update_columns(state: "open")
     redirect_to conversation_path(@conversation.id)
-  end
-
-  def creates_new_conversation_about_work_submission_and_updates_contract
-    conversation_about_work_submission = Conversation.create
-    @first_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation_about_work_submission.id))
-    @first_message.save
-    @contract = Contract.find(params[:id])
-    conversation_about_work_submission.update_columns(contract_id: @contract.id)
-    @contract.update_columns(work_submitted: true, complete: nil, active: true)
-  end
-
-  def opportunity_to_drop_project_is_removed(contract, first_message)
-    previous_conversation_loses_drop_opportunity = Conversation.where(contract_id: contract.id).first
-    previous_conversation_loses_drop_opportunity.update_columns(contract_id: nil)
-    flash[:success] = "Your message has been sent to #{first_message.recipient.first_name} #{first_message.recipient.last_name}"
-    redirect_to conversations_path
   end
 
   def find_conversation_and_update_contract_associated_with_it

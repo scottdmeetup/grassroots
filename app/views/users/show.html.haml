@@ -51,16 +51,16 @@
     .row
       %ul.nav.nav-tabs
         %li{:class => ('active' if params[:tab].nil?)}
-          = link_to "Open #{@user.open_applications.count}", user_path(@user)
+          = link_to "Open Applications #{@user.open_applications.count}", user_path(@user)
         
         %li{:class => ('active' if params[:tab] == 'in production')}
-          = link_to "In Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production') 
+          = link_to "Work In Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production') 
       
         %li{:class => ('active' if params[:tab] == 'pending completion')}
           = link_to "Submitted Work #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval')
       
         %li{:class => ('active' if params[:tab] == 'completed')}
-          = link_to "Completed #{@user.projects_complete.count}", user_path(@user, tab: 'completed')
+          = link_to "Completed Work #{@user.projects_complete.count}", user_path(@user, tab: 'completed')
 
       .col-lg-10
         - if params[:tab].nil?
