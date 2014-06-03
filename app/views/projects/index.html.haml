@@ -4,11 +4,12 @@
       = render 'shared/project_thumbnail', project: project
   .col-lg-2
     %div#project-search-wrapper 
-      %form.navbar-form.navbar-left{:role => "search"}
-        .form-group
-          %input.form-control{:placeholder => "Search", :type => "text", :id => "project-search-bar"}
-          %button.btn.btn-default{:type => "submit"} Submit
-        = form_tag '/search', method: 'get' do
+      .form-group
+        = form_tag('/projects/search', method: 'get') do
+          %input.form-control{:placeholder => "Search", :type => "text", :id => "project-search-bar", :name => "search_term"}
+          = submit_tag "Search", name: nil, class: 'btn btn-default'
+                    
+        = form_tag '/projects/search', method: 'get' do
           %h3 Skill Set
           %label 
             %input{:name => 'skills[]', :type => "checkbox", :value => "graphic design"}
