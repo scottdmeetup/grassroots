@@ -9,24 +9,28 @@ describe User do
   it { should have_many(:jobs)}
   it { should have_many(:procurements)}
 
-  describe "#open_applications" do
-    let(:huggey_bear) {Fabricate(:organization)}
-    let(:amnesty) {Fabricate(:organization)}
-    let(:global) {Fabricate(:organization)}
-    let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
-    let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
-    let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
-    let(:dan) {Fabricate(:organization_administrator, first_name: "Dan", user_group: "nonprofit")}
-    
-    let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
-    let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id, state: "open")  }
-    let(:accounting) {Fabricate(:project, title: "didn't do my taxes", user_id: dan.id, organization_id: global.id)}
+  let(:huggey_bear) {Fabricate(:organization)}
+  let(:amnesty) {Fabricate(:organization)}
+  let(:global) {Fabricate(:organization)}
+  let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+  let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+  let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
+  let(:dan) {Fabricate(:organization_administrator, first_name: "Dan", user_group: "nonprofit")}
+  
+  let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
+  let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id, state: "open")  }
+  let(:accounting) {Fabricate(:project, title: "didn't do my taxes", user_id: dan.id, organization_id: global.id)}
+  let(:grant_writing) {Fabricate(:project, title: "grant writing job", user_id: cat.id, organization_id: amnesty.id) }
 
-    before do
-      huggey_bear.update_columns(user_id: alice.id)
-      amnesty.update_columns(user_id: cat.id)
-      global.update_columns(user_id: dan.id)
-    end
+  before do
+    huggey_bear.update_columns(user_id: alice.id)
+    amnesty.update_columns(user_id: cat.id)
+    global.update_columns(user_id: dan.id)
+    alice.update(organization_id: huggey_bear.id)
+  end
+
+  describe "#open_applications" do
+   
     it "shows the projects that the volunteer has applied to and not heard back from" do
       contract1 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: nil)
       contract2 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: logo.id, work_submitted: nil)
@@ -44,8 +48,6 @@ describe User do
   describe "#private_messages" do
     it "returns all the conversations of the user in an arry" do
       convo = Conversation.create
-      bob = Fabricate(:user, first_name: "Bob", user_group: "nonprofit")
-      alice = Fabricate(:user, first_name: "Alice", user_group: "volunteer")
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo.id)
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Sounds good. what's your phone number?", conversation_id: convo.id)
       message3 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "my phone number is 123455", conversation_id: convo.id)
@@ -59,12 +61,8 @@ describe User do
   describe "#user_conversations" do
     it "returns a conversation of the user in an arry if there is only one received smessages" do
       convo1 = Conversation.create
-      bob = Fabricate(:user, first_name: "Bob", user_group: "nonprofit")
-      alice = Fabricate(:user, first_name: "Alice", user_group: "volunteer")
-      
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)
       
-
       expect(alice.user_conversations).to eq([convo1])
     end
 
@@ -83,11 +81,6 @@ describe User do
       convo1 = Conversation.create
       convo2 = Conversation.create
       convo3 = Conversation.create
-      
-      bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
-      alice = Fabricate(:user, first_name: "Alice", user_group: "nonprofit")
-      cat = Fabricate(:user, first_name: "Cat", user_group: "volunteer")
-      dan = Fabricate(:user, first_name: "Dan", user_group: "volunteer")
 
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)
       message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Sounds good. what's your phone number?", conversation_id: convo1.id)
@@ -115,30 +108,11 @@ describe User do
 
   describe "#organization_name" do
     it "returns the name of the organization of the user" do
-      alice = Fabricate(:user, first_name: "Alice", user_group: "nonprofit")
-      org = Fabricate(:organization)
-      alice.update(organization_id: 1)
-
-      expect(alice.organization_name).to eq(org.name)
+      expect(alice.organization_name).to eq(huggey_bear.name)
     end
   end
 
   describe "#projects_in_production" do
-    let(:huggey_bear) {Fabricate(:organization)}
-    let(:amnesty) {Fabricate(:organization)}
-    let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
-    let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
-    let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
-
-    let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
-    let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
-    #let(:accouting) {Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)}
-
-    before do
-      huggey_bear.update_columns(user_id: alice.id)
-      amnesty.update_columns(user_id: cat.id)
-    end
-
     it "returns the projects that are in production because of a contract" do    
       accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
 
@@ -149,22 +123,7 @@ describe User do
       expect(bob.projects_in_production).to eq([word_press, logo])
     end
 
-    describe "#submitted_work" do
-      let(:huggey_bear) {Fabricate(:organization)}
-      let(:amnesty) {Fabricate(:organization)}
-      let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
-      let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
-      let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
-
-      let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
-      let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
-      #let(:accouting) {Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)}
-
-      before do
-        huggey_bear.update_columns(user_id: alice.id)
-        amnesty.update_columns(user_id: cat.id)
-      end
-
+    describe "#submitted_work" do  
       it "returns all the projects for which the volunteer has submitted work to the contractor" do
         accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
 
@@ -177,20 +136,6 @@ describe User do
     end
 
     describe "#projects_completed" do
-      let(:huggey_bear) {Fabricate(:organization)}
-      let(:amnesty) {Fabricate(:organization)}
-      let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
-      let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
-      let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
-
-      let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
-      let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
-      #let(:accouting) {Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)}
-
-      before do
-        huggey_bear.update_columns(user_id: alice.id)
-        amnesty.update_columns(user_id: cat.id)
-      end
       it "returns all the projects for which the volunteer has completed" do
 
         accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
@@ -204,32 +149,7 @@ describe User do
     end
 
     describe "#applied_to_projects" do
-
-      let(:huggey_bear) {Fabricate(:organization)}
-      let(:amnesty) {Fabricate(:organization)}
-      let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
-      let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
-      let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
-
-      let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
-      let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
-
-      before do
-        huggey_bear.update_columns(user_id: alice.id)
-        amnesty.update_columns(user_id: cat.id)
-      end
-
-      it "returns all the projects to which the volunteer applied" do
-        bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
-        alice = Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")
-        cat = Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")
-        
-        huggey_bear = Fabricate(:organization, user_id: alice.id)
-        amnesty = Fabricate(:organization, user_id: cat.id)
-        
-        accounting = Fabricate(:project, title: "accounting", user_id: alice.id, organization_id: huggey_bear.id) 
-        grant_writing = Fabricate(:project, title: "grant writing job", user_id: cat.id, organization_id: amnesty.id) 
-        
+      it "returns all the projects to which the volunteer applied" do  
         application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id)
         application2 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: accounting.id, rejected: true)
         application3 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: cat.id, project_id: logo.id)
@@ -239,25 +159,9 @@ describe User do
       end
     end
 
-    describe "drop_contract(agreement)" do
-        let(:huggey_bear) {Fabricate(:organization)}
-        let(:amnesty) {Fabricate(:organization)}
-        let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
-        let(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
-        let(:cat) {Fabricate(:organization_administrator, first_name: "Cat", user_group: "nonprofit")}
-
-        let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id)  }
-        let(:word_press) {Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id) }
-        #let(:accouting) {Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)}
-
-        before do
-          huggey_bear.update_columns(user_id: alice.id)
-          amnesty.update_columns(user_id: cat.id)
-        end
+    describe "drop_contract(agreement)" do 
       it "dissassociates the user from the contract when the user wants to drop it" do
-       
         accounting = Fabricate(:project, title: "didn't do my taxes", user_id: cat.id, organization_id: amnesty.id)
-
         contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
         contract2 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: false, project_id: logo.id, work_submitted: false, complete: true)
         contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: true, project_id: accounting.id)

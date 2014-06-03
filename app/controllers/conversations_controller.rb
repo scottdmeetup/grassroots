@@ -1,8 +1,6 @@
 class ConversationsController < ApplicationController
   def index
-    if current_user.user_conversations != [nil]
-      @conversations = current_user.user_conversations
-    end
+    @conversations = current_user.user_conversations #unless current_user.user_conversations != [nil]
   end
 
   def show

@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe ProjectsController, :type => :controller do
   describe "GET index" do
-    it "shows all of the projects on Grassroots" do
-      word_press = Fabricate(:project, title: "WordPress Site")
-      logo = Fabricate(:project, title: "Huggey Bear Logo")
-      brochures = Fabricate(:project, title: "Schmancy Brochures")
+    it "shows all of the projects on Grassroots that are, open" do
+      word_press = Fabricate(:project, title: "WordPress Site", state: "open")
+      logo = Fabricate(:project, title: "Huggey Bear Logo", state: "open")
+      brochures = Fabricate(:project, title: "Schmancy Brochures", state: "open")
       web_development = Fabricate(:project, title: "Maintain Drupal Site")
 
       get :index
-      expect(assigns(:projects)).to match_array([word_press, logo, brochures, web_development])
+      expect(assigns(:projects)).to match_array([word_press, logo, brochures])
     end
   end
 

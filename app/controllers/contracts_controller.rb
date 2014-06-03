@@ -8,8 +8,9 @@ class ContractsController < ApplicationController
 
   def create
     accept_application_and_project_in_production(@volunteer_application)
-    reject_other_applications(@volunteer_application)
+    reject_other_applications_and_clear_conversations_of_application_id(@volunteer_application)
     create_contract_and_associate_it_with_conversation_which_triggers_drop_opportunity(@volunteer_application)
+    
   end
 
   def destroy 
@@ -37,19 +38,25 @@ private
     project.update_columns(state: nil)
   end
 
-  def reject_other_applications(accepted_application)
-    rejected_applications = VolunteerApplication.where(accepted: nil, rejected: nil, project_id: accepted_application.project_id).to_a
+  def reject_other_applications_and_clear_conversations_of_application_id(application)
+    rejected_applications = VolunteerApplication.where(accepted: nil, rejected: nil, 
+      project_id: application.project_id).to_a
     rejected_applications.each do |member|
-       member.update_columns(accepted: false, rejected: true)
-    end 
+      member.update!(accepted: false, rejected: true)
+      rejected_conversations = Conversation.where(volunteer_application_id: member.id).to_a
+      rejected_conversations.map do |member|
+        member.update!(volunteer_application_id: nil)
+      end
+    end
   end
 
   def create_contract_and_associate_it_with_conversation_which_triggers_drop_opportunity(accepted_application)
-    conversation = Conversation.find_by(params[:conversation_id])
+    @conversation = Conversation.find(params[:conversation_id])
     volunteer = User.find(accepted_application.applicant_id)
-    contract = Contract.create(active: true, contractor_id: current_user.id, volunteer_id: volunteer.id, project_id: accepted_application.project_id)
-    conversation.update_columns(contract_id: contract.id, volunteer_application_id: nil)
-    redirect_to conversation_path(conversation.id)
+    @contract = Contract.create(active: true, contractor_id: current_user.id,
+     volunteer_id: volunteer.id, project_id: accepted_application.project_id)
+    @conversation.update!(contract_id: @contract.id, volunteer_application_id: nil)
+    redirect_to conversation_path(@conversation.id)
   end
 
   def send_automated_message

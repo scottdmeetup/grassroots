@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
 
+
   def open_applications
     sent_applications.where(accepted: nil, rejected: nil).to_a
   end

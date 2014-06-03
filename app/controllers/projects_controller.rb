@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   before_action :current_user
 
   def index
-    @projects = Project.all
+    @projects = Project.where(state: "open").to_a
   end
 
   def show
