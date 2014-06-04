@@ -41,11 +41,11 @@ class Conversation < ActiveRecord::Base
 
   def with_work_submitted
     contract = Contract.find(self.contract_id)
-    true if contract.active && contract.work_submitted
+    contract.active && contract.work_submitted
   end
 
   def with_opportunity_to_drop_job
     contract = Contract.find(self.contract_id)
-    true if contract.active && contract.work_submitted == false
+    contract.active && contract.work_submitted == false && contract.created_at > 5.days.ago
   end
 end

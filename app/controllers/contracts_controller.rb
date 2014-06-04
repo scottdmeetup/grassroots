@@ -10,7 +10,7 @@ class ContractsController < ApplicationController
     accept_application_and_project_in_production(@volunteer_application)
     reject_other_applications_and_clear_conversations_of_application_id(@volunteer_application)
     create_contract_and_associate_it_with_conversation_which_triggers_drop_opportunity(@volunteer_application)
-    
+
   end
 
   def destroy 
@@ -63,11 +63,11 @@ private
     @contract = Contract.find(params[:id])
     @conversation = Conversation.find_by(contract_id: @contract.id)
     first_message = @conversation.private_messages.first
-    @conversation.private_messages << PrivateMessage.create(subject: first_message.subject, body: "#{first_message.sender.first_name} #{first_message.sender.last_name} has been dropped on this project. This is an automated message." )
+    @conversation.private_messages << PrivateMessage.create(subject: first_message.subject, body: "Automated Message: #{first_message.sender.first_name} #{first_message.sender.last_name} has been dropped on this project. This is an automated message." )
   end
 
   def contract_drops_and_project_becomes_open(contract)
-    @contract.update!(active: nil, volunteer_id: nil, dropped_out: true, active: false)
+    @contract.update!(volunteer_id: nil, dropped_out: true, active: false)
     project = Project.find(contract.project_id)
     project.update_columns(state: "open")
     redirect_to conversation_path(@conversation.id)

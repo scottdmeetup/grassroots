@@ -49,27 +49,24 @@ feature "Administrator interacts with various applications, contracts and messag
     administrator_contracts_volunteer(alice)
 
   end
+=begin
+  scenario "Administrator received two applications on two different projects. He/she accepts one of them, and
+   the button to drop appears while the button to accept application remains on the other project. The 
+   contracted volunteer signs in, submits work and then signs out. the administrator signs in and sees a button to 
+    accept the submitted work. The administrator accepts the volunteers work, sees the button to accept the other application
+    and accepts it.  " do
 
-  scenario "Administrator received two applications on one project, accepts one of them, and
-   receives another application on another project. The administrator sees two buttons: 
-   one for dropping the project in production and the other for accepting a solicitation
-    from a volunteer. The administrator accepts the application and signs out. The contracted volunteer submits 
-    work and then signs out. the administrator signs in and sees a button to 
-    accept the submitted work. There is still a button to drop the other project that is still in
-    production. " do
-=begin    
     word_press
+    logo
     bob
     cat
     dan
     alice
 
     volunteer_applies_to_word_press_project_and_signs_out(bob)
-    volunteer_applies_to_word_press_project_and_signs_out(cat)
+    volunteer_applies_to_logo_and_signs_out(cat)
     administrator_contracts_volunteer(alice)
-    volunteer_applies_to_logo_project_and_signs_out(dan)
-
-    administrator_contracts_volunteer(alice)
+    #volunteer_applies_to_logo_project_and_signs_out(dan)
 =end
   end
 
@@ -115,9 +112,27 @@ private
     click_on('Send')
     visit conversations_path
     expect(page).to have_text("Drop Contract")
-    page.should have_no_content("Volunteer Application")
+    #expect(page).to have_text("Volunteer Application")
     visit organization_path(user.organization.id)
     expect(page).to have_text("Projects in Production 1")
+    #expect(page).to have_text("Available Projects 1")
+    sign_out
+  end
+
+  def administrator_contracts_volunteer_and_sees_another_application(user)
+    user_signs_in(user)
+    visit organization_path(user.organization.id)
+    expect(page).to have_text("Available Projects 1")
+    visit conversations_path
+    page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
+    fill_in "private_message[body]", with: "I have accepted your participation"
+    click_on('Send')
+    visit conversations_path
+    expect(page).to have_text("Drop Contract")
+    expect(page).to have_text("Volunteer Application")
+    visit organization_path(user.organization.id)
+    expect(page).to have_text("Projects in Production 1")
+    expect(page).to have_text("Available Projects 1")
     sign_out
   end
 end

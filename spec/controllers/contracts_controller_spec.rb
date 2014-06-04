@@ -53,6 +53,7 @@ describe ContractsController, :type => :controller do
     before do
       set_current_user(alice)
       huggey_bear.update_columns(user_id: alice.id)
+      alice.update_columns(organization_id: huggey_bear.id)
     end
 
     it "renders the conversation show view" do
@@ -132,7 +133,7 @@ describe ContractsController, :type => :controller do
     it "associates the project with the volunteer" do
       post :create, volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id
 
-      expect(word_press.volunteers).to eq([bob])
+      expect(word_press.reload.volunteers).to eq([bob])
     end
 
     it "moves the project's state into, in production" do

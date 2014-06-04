@@ -7,6 +7,8 @@ describe Project do
   it { should belong_to(:administrator)}
   it { should have_many(:volunteers)}
   it { should have_many(:volunteers).through(:contracts)}
+  it { should have_many(:contractors)}
+  it { should have_many(:contractors).through(:contracts)}
 
   let(:huggey_bear) {Fabricate(:organization)}
   let(:amnesty) {Fabricate(:organization)}

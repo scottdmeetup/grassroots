@@ -7,7 +7,10 @@ describe User do
   it { should have_many(:received_applications)}
   it { should have_many(:sent_applications)}
   it { should have_many(:jobs)}
+  #it { should have_many(:jobs).through(:contracts)}
   it { should have_many(:procurements)}
+  #it { should have_many(:procurements).through(:contracts)}
+
 
   let(:huggey_bear) {Fabricate(:organization)}
   let(:amnesty) {Fabricate(:organization)}
@@ -21,13 +24,6 @@ describe User do
   let(:logo) {Fabricate(:project, title: "need a logo", user_id: cat.id, organization_id: amnesty.id, state: "open")  }
   let(:accounting) {Fabricate(:project, title: "didn't do my taxes", user_id: dan.id, organization_id: global.id)}
   let(:grant_writing) {Fabricate(:project, title: "grant writing job", user_id: cat.id, organization_id: amnesty.id) }
-
-  before do
-    huggey_bear.update_columns(user_id: alice.id)
-    amnesty.update_columns(user_id: cat.id)
-    global.update_columns(user_id: dan.id)
-    alice.update(organization_id: huggey_bear.id)
-  end
 
   describe "#open_applications" do
    
@@ -107,8 +103,12 @@ describe User do
   end
 
   describe "#organization_name" do
+    let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+    let(:huggey_bear) {Fabricate(:organization, user_id: alice.id)}
+    
     it "returns the name of the organization of the user" do
-      expect(alice.organization_name).to eq(huggey_bear.name)
+      alice.update_columns(organization_id: huggey_bear.id)
+      expect(alice.organization.name).to eq(huggey_bear.name)
     end
   end
 
@@ -168,6 +168,34 @@ describe User do
         bob.drop_contract(contract3)
 
         expect(bob.projects_in_production).to eq([])
+      end
+    end
+
+
+    describe "#administrated_projects" do
+
+      let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+      let(:huggey_bear) {Fabricate(:organization, user_id: alice.id)}
+      let(:word_press) {Fabricate(:project, title: "word press website", organization_id: huggey_bear.id, state: "open") }
+      let(:logo) {Fabricate(:project, title: "need a logo", organization_id: huggey_bear.id, state: "open")  }
+      let(:accounting) {Fabricate(:project, title: "didn't do my taxes", organization_id: huggey_bear.id, state: "open")}
+      
+
+      it "returns an array of projects which belong to the organization" do
+        expect(alice.administrated_projects).to eq([word_press, logo, accounting])
+      end
+    end
+
+
+    describe "#administrated_organization" do
+
+      let!(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+      let!(:huggey_bear) {Fabricate(:organization, user_id: alice.id)}
+      let!(:amnesty) {Fabricate(:organization)}
+
+      it "returns the organization which the user has" do
+        alice.update_columns(organization_id: huggey_bear.id)
+        expect(alice.administrated_organization).to eq(huggey_bear)
       end
     end
   end

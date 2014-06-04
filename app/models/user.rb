@@ -1,24 +1,29 @@
 class User < ActiveRecord::Base
+
   has_secure_password validations: false
   belongs_to :organization
-  #belongs_to :project
-  #has_many :conversations
+  has_one :administrated_organization, foreign_key: 'user_id', class_name: 'Organization'
   has_many :sent_messages, class_name: 'PrivateMessage', foreign_key: 'sender_id'
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
   
-  has_many :received_applications, class_name: 'VolunteerApplication', foreign_key: 'administrator_id'
-  has_many :projects, through: :volunteer_applications, source: :administrator
+  has_many :administrated_projects, through: :administrated_organization, source: :projects
 
   has_many :sent_applications, class_name: 'VolunteerApplication', foreign_key: 'applicant_id'
   has_many :projects, through: :volunteer_applications, source: :applicant
-  
+
   has_many :contracts
   has_many :projects, through: :contracts
 
   has_many :jobs, class_name: 'Contract', foreign_key: 'volunteer_id'
   has_many :projects, through: :contracts, source: :volunteer
+  #has_many :jobs, through: :contracts, source: :volunteer
+  
   has_many :procurements, class_name: 'Contract', foreign_key: 'contractor_id'
   has_many :projects, through: :contracts, source: :contractor
+
+
+  has_many :received_applications, class_name: 'VolunteerApplication', foreign_key: 'administrator_id'
+  #has_many :procurements, through: :contracts, source: :contractor
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
