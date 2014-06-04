@@ -1,30 +1,28 @@
 %link{:href => "/Users/robertjewell/sites/grassroots/app/assets/stylesheets", :rel => "stylesheet"}  
-  %nav.navbar.navbar-default{:role => "navigation"}
-    / Brand and toggle get grouped for better mobile display
-    .navbar-header
-      %button.navbar-toggle{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
-        %span.sr-only Toggle navigation
-        %span.icon-bar
-        %span.icon-bar
-        %span.icon-bar
+  %nav.navbar.navbar-default#header{:role => "navigation"}
+    %button.navbar-toggle{"data-target" => "#interior-sidebar-wrapper", "data-toggle" => "collapse", :type => "button"}
+      %span.sr-only Toggle navigation
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
       / <a class="navbar-brand" href="#">Brand</a>
     / Collect the nav links, forms, and other content for toggling
     %nav
       - if current_user
-        #bs-example-navbar-collapse-1.collapse.navbar-collapse
-          %ul.nav.nav-tabs#account-tabs
-            %li
-              = link_to "Inbox", conversations_path if current_user          
-            %li.dropdown
-              %a(href="#" id="dlabel" role="button" data-toggle="dropdown" class="dropdown-toggle" data-target="#")
-                = "Welcome, #{current_user.first_name}"
-                %b.caret
-              %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
-                %li
-                  %a(href="#") Account
-                  %a(href="#") Plan and Billing
-                  = link_to "Profile", user_path(current_user.id) if current_user
-                  = link_to "Organization", organization_path(current_user.organization.id) if current_user.organization
-                  = link_to "Log out", log_out_path
+        //#bs-example-navbar-collapse-1.collapse.navbar-collapse
+        %ul.nav.nav-tabs#account-tabs
+          %li
+            = link_to "Inbox", conversations_path if current_user          
+          %li.dropdown
+            %a(href="#" id="dlabel" role="button" data-toggle="dropdown" class="dropdown-toggle" data-target="#")
+              = "Welcome, #{current_user.first_name}"
+              %b.caret
+            %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
+              %li
+                %a(href="#") Account
+                %a(href="#") Plan and Billing
+                = link_to "Profile", user_path(current_user.id) if current_user
+                = link_to "Organization", organization_path(current_user.organization.id) if current_user.organization
+                = link_to "Log out", log_out_path
       / /.navbar-collapse
 %body
