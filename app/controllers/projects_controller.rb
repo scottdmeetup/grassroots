@@ -2,7 +2,10 @@ class ProjectsController < ApplicationController
   before_action :current_user
 
   def index
-    @projects = Project.where(state: "open").to_a
+    open_projects = Project.where(state: "open").to_a
+    @projects = open_projects.select do |member|
+      member.state == "open" && member.deadline > Date.today
+    end
   end
 
   def show

@@ -48,6 +48,8 @@
       
         %li{:class => ('active' if params[:tab] == 'unfinished')}
           = link_to "Unfinished #{@organization.unfinished_projects.count}", organization_path(@organization, tab: 'unfinished')
+        %li{:class => ('active' if params[:tab] == 'expired')}
+          = link_to "Expired #{@organization.expired_projects.count}", organization_path(@organization, tab: 'expired')
 
       .col-lg-10
         - if params[:tab].nil?
@@ -64,6 +66,10 @@
             = render 'shared/project_thumbnail', project: project
         - elsif params[:tab] == 'unfinished'
           - @organization.unfinished_projects.each do |project|  
+            = render 'shared/project_thumbnail', project: project
+        - else
+          - params[:tab] == 'unfinished'
+          - @organization.expired_projects.each do |project|  
             = render 'shared/project_thumbnail', project: project
 
     .row.row-custom

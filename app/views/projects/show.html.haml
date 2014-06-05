@@ -11,6 +11,8 @@
             %h4.org-head
               %strong 
                 = @project.skills
+            %h4
+              = link_to "Edit Project", edit_organization_admin_project_path(@project.id)
           .col-lg-6#project-details-top-right
             %h4.org-head 
               %strong 

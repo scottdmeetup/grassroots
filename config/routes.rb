@@ -17,7 +17,7 @@ Grassroots::Application.routes.draw do
   resources :users, except: [:destroy]
   delete 'remove', to: 'users#remove'
   resources :organizations, only: [:show, :index, :new, :create]
-  resources :projects, only: [:index, :show, :edit] do
+  resources :projects, only: [:index, :show] do
     collection do
       get 'search', to: 'projects#search', as: 'search'
     end

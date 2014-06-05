@@ -41,4 +41,4 @@
         - elsif project.is_complete?
           %btn= link_to "Finished", "#", class: 'btn btn-default btn-lg btn-block btn-project'
         - else
-          %btn= "Completed"
+          %btn= link_to "Unfinished", "#", class: 'btn btn-default btn-lg btn-block btn-project'
