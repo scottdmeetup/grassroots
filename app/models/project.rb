@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
   belongs_to :organization
-  belongs_to :administrator, class_name: 'Organization', foreign_key: 'user_id'
+  belongs_to :administrator, foreign_key: 'user_id', class_name: 'Organization'
 
   #why do I need: 
   #has_many :volunteer_applications

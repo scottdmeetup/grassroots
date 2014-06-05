@@ -7,7 +7,9 @@ feature 'User has a conversation with messages with other user' do
 
     user_signs_in(alice)
     visit users_path
+
     page.find(:xpath, "//a[@href='/private_messages/new?user_id=#{bob.id}']").click
+    
     fill_in "private_message[subject]", with: "question about your skills"
     fill_in "private_message[body]", with: "When did you start programming?"
     click_on('Create')

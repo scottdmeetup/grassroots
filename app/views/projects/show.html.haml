@@ -25,7 +25,7 @@
           - if @project.administrator == current_user
             = link_to "Edit Project", edit_organization_admin_project_path(@project.id), class: "btn btn-primary btn-lg btn-project"
           - elsif @project.state == "open"
-            = link_to "Request to Join", new_private_message_path(project_id: @project.id), class: "btn btn-primary btn-lg btn-project" 
+            = link_to "Request to Join", new_volunteer_application_path(project_id: @project.id), class: "btn btn-primary btn-lg btn-project" 
           - elsif @project.state == "in production"
             = link_to "Project Complete", new_private_message_path(project_id: @project.id), class: "btn btn-primary btn-lg btn-project"
 
