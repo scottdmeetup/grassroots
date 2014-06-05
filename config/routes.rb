@@ -14,7 +14,11 @@ Grassroots::Application.routes.draw do
     resources :volunteer_applications, only: [:index]
   end
 
-  resources :users, except: [:destroy]
+  resources :users, except: [:destroy] do
+    collection do
+      get 'search', to: 'users#search', as: 'search'
+    end
+  end
   delete 'remove', to: 'users#remove'
   resources :organizations, only: [:show, :index, :new, :create]
   resources :projects, only: [:index, :show] do

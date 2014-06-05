@@ -1,8 +1,41 @@
-%div#search-bar
-  %form.navbar-form.navbar-left{:role => "search"}
+.col-lg-2.pull-right
+  %div#project-search-wrapper 
     .form-group
-      %input.form-control{:placeholder => "Search", :type => "text"}
-    %button.btn.btn-default{:type => "submit"} Submit
-.row
-  - @users.each do |user|
-    = render "shared/user_thumbnail", user: user
+      = form_tag(search_users_path, method: 'get') do
+      
+        %input.form-control{:placeholder => "Search", :type => "text", :id => "project-search-bar", :name => "search_term"}
+        = submit_tag "Search", name: nil, class: 'btn btn-default'
+                  
+      = form_tag search_users_path, method: 'get' do
+        %h3 Skill Set
+        %label 
+          %input{:name => 'skills[]', :type => "checkbox", :value => "graphic design"}
+          Graphic Design
+        %label
+          %input{:name => 'skills', :type => "checkbox", :value => "web development"}
+          Web Development
+        %label
+          %input{:name => 'skills[]', :type => "checkbox", :value => "accounting"}
+          Accounting
+        %label 
+          %input{:name => 'skills[]', :type => "checkbox", :value => "fundraising"}
+          Fundraising
+        %label 
+          %input{:name => 'skills[]', :type => "checkbox", :value => "business planning"}
+          Business Planning
+        %h3 Cause
+        %label
+          %input{:name => 'causes[]', :type => "checkbox", :value => "animals"}
+          Animal
+        %label 
+          %input{:name => 'causes[]', :type => "checkbox", :value => "human rights"}
+          Human Rights
+        %label
+          %input{:name => 'causes[]', :type => "checkbox", :value => "social"}
+          Social Good
+        %h3 State
+        %label
+          = select_tag :state_abbreviation, options_for_select(us_states)
+        
+
+        = submit_tag "Search", :id => "project-filter-submit"

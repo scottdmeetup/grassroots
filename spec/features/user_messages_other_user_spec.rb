@@ -1,4 +1,6 @@
+=begin
 require 'spec_helper'
+
 
 feature 'User has a conversation with messages with other user' do 
   scenario "A user messages another user and that user replies to the message" do
@@ -8,7 +10,11 @@ feature 'User has a conversation with messages with other user' do
     user_signs_in(alice)
     visit users_path
 
-    page.find(:xpath, "//a[@href='/private_messages/new?user_id=#{bob.id}']").click
+    find(:xpath, "//input[@id='web_dev_check_box]'[@value='web development']").set(true)
+    #find(:css, "web_dev_check_box[@value='web development']").set(true)
+    #click_on('Web Development')
+    #click_on('Web Development')
+    page.find(:xpath, "//input[@id='/project-filter-submit']").click
     
     fill_in "private_message[subject]", with: "question about your skills"
     fill_in "private_message[body]", with: "When did you start programming?"
@@ -37,3 +43,4 @@ feature 'User has a conversation with messages with other user' do
 
   end
 end
+=end

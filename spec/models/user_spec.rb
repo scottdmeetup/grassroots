@@ -173,7 +173,6 @@ describe User do
 
 
     describe "#administrated_projects" do
-
       let(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
       let(:huggey_bear) {Fabricate(:organization, user_id: alice.id)}
       let(:word_press) {Fabricate(:project, title: "word press website", organization_id: huggey_bear.id, state: "open") }
@@ -188,7 +187,6 @@ describe User do
 
 
     describe "#administrated_organization" do
-
       let!(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
       let!(:huggey_bear) {Fabricate(:organization, user_id: alice.id)}
       let!(:amnesty) {Fabricate(:organization)}

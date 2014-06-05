@@ -94,4 +94,19 @@ class User < ActiveRecord::Base
     agreement.update_columns(volunteer_id: nil, active: nil)
   end
 
+  def self.search_by_first_or_last_name(search_term)
+=begin
+    return [] if search_term.blank?
+    if where("title or description LIKE ?", "%#{search_term}%") != []
+      where("title or description LIKE ?", "%#{search_term}%")
+    elsif where("title LIKE ?", "%#{search_term}%") != []
+      where("title LIKE ?", "%#{search_term}%")
+    elsif where("description LIKE ?", "%#{search_term}%") != []
+      where("description LIKE ?", "%#{search_term}%")
+    else
+      []
+    end
+=end
+  end
+
 end
