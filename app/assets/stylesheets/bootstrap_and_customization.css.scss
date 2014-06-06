@@ -4,6 +4,12 @@ body {
   background-color: #E9EAEC;
 }
 
+
+ul {
+  list-style-type: none;
+}
+
+
 /* Top Navigation Bar */
 /* In Header Partial */
   #header {
@@ -38,35 +44,39 @@ body {
       -moz-transition: height 100ms;
       transition: height 100ms;
     }
+
+
     #interior-sidebar-wrapper {
       padding: 0;
-    } 
-      #interior-sidebar-wrapper ul {
+      ul {
         margin-top: 56px;
+        li {
+            margin-top: -8px;
+            border-top: 2px solid #2BC272;
+            a {
+              margin-left: 10px;
+              padding-right: 30px;
+              color: #fff;
+              font-weight: 700; 
+              font-size: 1.05em;
+            a:hover {
+              background-color: #2BBD60;
+            } 
+          }
+        }
       }
-        #interior-sidebar-wrapper li {
-          margin-top: -8px;
-          border-top: 2px solid #2BC272;
-        }
-          #interior-sidebar-wrapper li a {
-            margin-left: 10px;
-            padding-right: 30px;
-            color: #fff;
-            font-weight: 700; 
-            font-size: 1.05em;
-        }
-        #interior-sidebar-wrapper li a:hover {
-          background-color: #2BBD60;
-        }
+    } 
+      
+        
+
 
 /* Active Pane */ 
 
   #active-pane {
-    padding: 0 5% 0 0;
+    padding: 0 5% 20px 0;
   }
 
 .container-wrapper {
-  
   margin: 20px 0;
 }
 
@@ -159,6 +169,90 @@ body {
   .thumbnail-staff h3{
     margin-top: 5px;
   }
+
+
+  /* Footer Changes */ 
+  /* In Footer Partial */ 
+#footer-wrapper {
+  padding-bottom: 40px;
+}
+  footer {
+    color: #709494;
+    padding: 35px 0 0;
+    margin-right: 45px;
+    border-top: 2px solid #E2E6DF;
+    ul {
+      padding-left: 0px;
+      li {
+        font-size: .95em;
+        a {
+          color: #2E5C8A;
+        }
+        a:hover {
+          color: #2E5C38;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+    #footer-mission {
+      p {
+        font-size: .88em;
+      }
+    }
+
+    #footer-info {
+      ul {
+        padding-left: 40px; 
+        li {
+          font-size: .95em;
+        }
+      }
+    }
+
+    #social-icons {
+      margin-bottom: 60px;
+      li { 
+        float: left;
+        padding: 0 8px 0 0;
+      }
+        a {
+          display: block;
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+      }
+    }
+    
+      .fb { 
+        a {
+          background-color: blue;
+          background-image: url("");
+        }
+      }
+      .twit{
+        a {
+        background-color: red;
+        background-image: url("");
+        }
+      }
+      .ln {
+        a {
+        background-color: green;
+        background-image: url("");
+        }
+      }
+      .gplus {
+        a {
+        background-color: orange;
+        background-image: url("");
+        }
+      }
+    #copy {
+      clear: both;
+    }
+    
 
 /*===============================================
       Bootstrap Overrides 
