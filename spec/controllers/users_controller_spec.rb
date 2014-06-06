@@ -72,6 +72,7 @@ describe UsersController, :type => :controller do
         expect(flash[:notice]).to be_present
       end
     end
+    
     context "when sending emails" do
 
       after { ActionMailer::Base.deliveries.clear }
