@@ -11,6 +11,10 @@ describe User do
   it { should have_many(:procurements)}
   #it { should have_many(:procurements).through(:contracts)}
 
+  it "generates a random token when the user is created for password reset" do
+    alice = Fabricate(:user, user_group: "nonprofit")
+    expect(alice.new_password_token).to be_present
+  end
 
   let(:huggey_bear) {Fabricate(:organization)}
   let(:amnesty) {Fabricate(:organization)}

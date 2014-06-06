@@ -72,6 +72,28 @@ describe UsersController, :type => :controller do
         expect(flash[:notice]).to be_present
       end
     end
+    context "when sending emails" do
+
+      after { ActionMailer::Base.deliveries.clear }
+
+      it "sends out email to the user with valid inputs" do
+        post :create, user: {email: "joe@example.com", password: "password", first_name: "Joe", last_name: "Smith", user_group: "nonprofit"}
+
+        expect(ActionMailer::Base.deliveries.last.to).to eq(['joe@example.com'])
+      end
+      
+      it "sends out email containing the user's name with valid inputs" do
+        post :create, user: {email: "joe@example.com", password: "password", first_name: "Joe", last_name: "Smith", user_group: "nonprofit"}
+
+        expect(ActionMailer::Base.deliveries.last.body).to include("Joe Smith")
+      end
+      
+      it "does not send out email with invlid inputs" do
+        post :create, user: {email: "joe@example.com", first_name: "Joe", last_name: "Smith", user_group: "nonprofit"}
+
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
   end
 
   describe "GET edit" do
@@ -265,9 +287,9 @@ describe UsersController, :type => :controller do
       end
     end
     context "when using the search bar" do
-      it "sets the @results variable by search term"
+      #it "sets the @results variable by search term"
         #get :search, search_term: "smith", last_name:
-      it "removes duplicate items in @results" 
+      #it "removes duplicate items in @results" 
     end
   end
 end

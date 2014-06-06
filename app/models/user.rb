@@ -28,6 +28,8 @@ class User < ActiveRecord::Base
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
 
+  before_create :generate_token
+
 
   def open_applications
     sent_applications.where(accepted: nil, rejected: nil).to_a
@@ -94,19 +96,8 @@ class User < ActiveRecord::Base
     agreement.update_columns(volunteer_id: nil, active: nil)
   end
 
-  def self.search_by_first_or_last_name(search_term)
-=begin
-    return [] if search_term.blank?
-    if where("title or description LIKE ?", "%#{search_term}%") != []
-      where("title or description LIKE ?", "%#{search_term}%")
-    elsif where("title LIKE ?", "%#{search_term}%") != []
-      where("title LIKE ?", "%#{search_term}%")
-    elsif where("description LIKE ?", "%#{search_term}%") != []
-      where("description LIKE ?", "%#{search_term}%")
-    else
-      []
-    end
-=end
+  def generate_token
+    self.new_password_token = SecureRandom.urlsafe_base64
   end
 
 end

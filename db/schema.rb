@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140606152956) do
+ActiveRecord::Schema.define(version: 20140606174217) do
 
   create_table "contracts", force: true do |t|
     t.integer  "contractor_id"
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 20140606152956) do
     t.string   "type"
     t.string   "user_group"
     t.string   "state_abbreviation"
+    t.string   "new_password_token"
   end
 
   create_table "volunteer_applications", force: true do |t|
