@@ -20,6 +20,7 @@ global_giving = Organization.create(name: "Global Giving", cause: "Social Good",
   goal: "We want each of our nonprofit partners to raise at least $ 5,000.00 from our platform a year.")
 
 User.destroy_all
+=begin
 huggey_bear = Fabricate(:organization, name: "Huggey Bear Land", cause: "Animal Rights", 
   ruling_year: 1998, mission_statement: "We want to give everyone a huggey bear in their sad times", 
   guidestar_membership: nil, ein: "192512653-6", street1: "2998 Hansen Heights", 
@@ -88,7 +89,7 @@ jacob_seltzer = Fabricate(:user, first_name: "Jacob", last_name: "Seltzer",
   street1: nil, street2: nil, city: "New York", state_id: "NY", phone_number: nil, 
   zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
   user_group: "volunteer")
-=begin
+=end
 alice = User.create(organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 
   interests: "Animal Rights", skills: "Grant Writing", street1: nil, street2: nil, 
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
@@ -129,7 +130,28 @@ jacob = User.create(first_name: "Jacob", last_name: "Seltzer", email: "jacob@exa
   interests: "Web Development", skills: "ROR", street1: nil, street2: nil, 
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
-=end
+
+kate_daniels = User.create(:user, first_name: "Kate", last_name: "Daniels", 
+  email: "frank@example.org", interests: "environment", skills: "fundraising", 
+  street1: nil, street2: nil, city: "Birmingham", state_id: "AL", phone_number: nil, 
+  zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
+  user_group: "volunteer")
+larry_nunez = User.create(:user, first_name: "Larry", last_name: "Nunez", 
+  email: "george@example.org", interests: "human rights", skills: "web development", 
+  street1: nil, street2: nil, city: "Boston", state_id: "MA", phone_number: nil, 
+  zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
+  user_group: "volunteer")
+maria_jacobs = User.create(:user, first_name: "Maria", last_name: "Jacobs", 
+  email: "harry@example.org", interests: "animal rights", skills: "social media", 
+  street1: nil, street2: nil, city: "Boston", state_id: "MA", phone_number: nil, 
+  zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
+  user_group: "volunteer")
+nancy_smith = User.create(:user, first_name: "Nancy", last_name: "Smith", 
+  email: "isabel@example.org", interests: "environment", skills: "web development", 
+  street1: nil, street2: nil, city: "New York", state_id: "NY", phone_number: nil, 
+  zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
+  user_group: "volunteer")
+
 
 huggey_bears.update_columns(user_id: 1)
 amnesty_international.update_columns(user_id: 2)
