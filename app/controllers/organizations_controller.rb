@@ -18,6 +18,15 @@ class OrganizationsController < ApplicationController
     redirect_to organization_path(@organization.id)
   end
 
+  def search
+    filter = {cause: params[:cause]} if params[:cause]
+    
+    if filter != nil
+      @results = Organization.where(filter).to_a
+      @results.sort! {|x,y| x.name <=> y.name }
+    end 
+  end
+
 private
 
   def organization_params

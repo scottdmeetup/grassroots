@@ -50,27 +50,16 @@ class UsersController < ApplicationController
   end
 
   def search
-
-    if params[:search_term]
-      #search_term = params[:search_term]
-      #@results_by_title = Project.where("title LIKE ?", "%#{search_term}%")
-      #@results_by_description = Project.where("description LIKE ?", "%#{search_term}%")
-      #@results = @results_by_title.concat(@results_by_description)
-      #@results.to_a
-      #@results.uniq!
-      #@results = Project.search_by_title_or_description(params[:search_term])
-    else
-      filter = {skills: params[:skills]} if params[:skills]
-      filter = {interests: params[:interests]}  if params[:interests]
-      filter = {state_abbreviation: params[:state_abbreviation]} if params[:state_abbreviation]
-      filter = {city: params[:city]} if params[:city]
-      filter = {position: params[:position]} if params[:position]
-      filter = {interests: params[:interests]} if params[:interests]
-      
-      if filter != nil
-        @results = User.where(filter).to_a
-        @results.sort! {|x,y| x.last_name <=> y.last_name }
-      end
+    filter = {skills: params[:skills]} if params[:skills]
+    filter = {interests: params[:interests]}  if params[:interests]
+    filter = {state_abbreviation: params[:state_abbreviation]} if params[:state_abbreviation]
+    filter = {city: params[:city]} if params[:city]
+    filter = {position: params[:position]} if params[:position]
+    filter = {interests: params[:interests]} if params[:interests]
+    
+    if filter != nil
+      @results = User.where(filter).to_a
+      @results.sort! {|x,y| x.last_name <=> y.last_name }
     end 
   end
 
