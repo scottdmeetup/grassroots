@@ -45,7 +45,7 @@ end
 
 group :test do
   gem 'shoulda-matchers'
-  gem 'capybara', git: 'git@github.com:jnicklas/capybara.git'
+  gem 'capybara'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'capybara-webkit'
