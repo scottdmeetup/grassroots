@@ -131,22 +131,22 @@ jacob = User.create(first_name: "Jacob", last_name: "Seltzer", email: "jacob@exa
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
 
-kate_daniels = User.create(:user, first_name: "Kate", last_name: "Daniels", 
+kate_daniels = User.create(first_name: "Kate", last_name: "Daniels", 
   email: "frank@example.org", interests: "environment", skills: "fundraising", 
   street1: nil, street2: nil, city: "Birmingham", state_id: "AL", phone_number: nil, 
   zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
   user_group: "volunteer")
-larry_nunez = User.create(:user, first_name: "Larry", last_name: "Nunez", 
+larry_nunez = User.create(first_name: "Larry", last_name: "Nunez", 
   email: "george@example.org", interests: "human rights", skills: "web development", 
   street1: nil, street2: nil, city: "Boston", state_id: "MA", phone_number: nil, 
   zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
   user_group: "volunteer")
-maria_jacobs = User.create(:user, first_name: "Maria", last_name: "Jacobs", 
+maria_jacobs = User.create(first_name: "Maria", last_name: "Jacobs", 
   email: "harry@example.org", interests: "animal rights", skills: "social media", 
   street1: nil, street2: nil, city: "Boston", state_id: "MA", phone_number: nil, 
   zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
   user_group: "volunteer")
-nancy_smith = User.create(:user, first_name: "Nancy", last_name: "Smith", 
+nancy_smith = User.create(first_name: "Nancy", last_name: "Smith", 
   email: "isabel@example.org", interests: "environment", skills: "web development", 
   street1: nil, street2: nil, city: "New York", state_id: "NY", phone_number: nil, 
   zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
