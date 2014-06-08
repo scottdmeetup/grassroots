@@ -46,7 +46,7 @@
           %h2 Projects
         .col-lg-6
           - if @user.organization_administrator && current_user == @user
-            = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
+            = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization_id), class: "btn btn-primary btn-lg pull-right btn-project"
 
     .row
       %ul.nav.nav-tabs
