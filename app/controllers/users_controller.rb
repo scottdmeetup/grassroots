@@ -30,10 +30,15 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     organization = Organization.find_by(name: params[:user][:organization_name_box])
-    if organization.nil?
+    
+    if organization.nil? && current_user.user_group == "nonprofit"
       @user.update_columns(user_params)
       redirect_to new_organization_path
-    elsif @user.update_columns(user_params.merge!(organization_id: organization.id))
+    elsif current_user.user_group == "nonprofit" && @user.update_columns(user_params.merge!(organization_id: organization.id))
+      flash[:notice] = "You have updated your profile successfully."
+      redirect_to user_path(@user.id)
+    elsif current_user.user_group == "volunteer"
+      @user.update_columns(user_params)
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
     else

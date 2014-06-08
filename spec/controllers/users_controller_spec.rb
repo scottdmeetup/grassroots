@@ -115,26 +115,35 @@ describe UsersController, :type => :controller do
   end
 
   describe "PATCH update" do
+
+      let!(:huggey_bear) {Fabricate(:organization)}
+      let!(:alice) {Fabricate(:organization_administrator, organization_id: huggey_bear.id, user_group: "nonprofit")}
+
+      before do
+        set_current_user(alice)
+      end
+
     context "when the user is affiliated with an organization" do
+
       it "redirects to the user's profile page" do
-        huggey_bear = Fabricate(:organization)
-        alice = Fabricate(:user, user_group: "nonprofit")
+        
+        
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: alice.last_name, email: "test@example.com", organization_name_box: huggey_bear.name} 
 
         expect(response).to redirect_to(user_path(alice.id))
       end
       
       it "updates the user's information" do
-        huggey_bear = Fabricate(:organization)
-        alice = Fabricate(:user, user_group: "nonprofit")
+      huggey_bear = Fabricate(:organization)
+        
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: "Adams", email: "test@example.com", organization_name_box: huggey_bear.name} 
 
         expect(alice.reload.last_name).to eq("Adams")
       end
       
       it "flashes a notice that the user updated his/her profile" do
-        huggey_bear = Fabricate(:organization)
-        alice = Fabricate(:user, user_group: "nonprofit")
+
+        
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: alice.last_name, email: "test@example.com", organization_name_box: huggey_bear.name} 
         
         expect(flash[:notice]).to eq("You have updated your profile successfully.")
@@ -142,14 +151,14 @@ describe UsersController, :type => :controller do
     end
     context "when the user's organization is not present" do
       it "redirects the user to a form to create the organization" do
-        alice = Fabricate(:user, user_group: "nonprofit")
+        
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: alice.last_name, email: "test@example.com", organization_name_box: "The Red Cross"}  
 
         expect(response).to redirect_to(new_organization_path)
       end
 
       it "still updates the user's attributes" do
-        alice = Fabricate(:user, user_group: "nonprofit")
+        
         patch :update, id: alice.id, user: {first_name: "Gil", last_name: alice.last_name, email: "test@example.com", organization_name_box: "The Red Cross"}  
 
         expect(alice.reload.first_name).to eq("Gil")

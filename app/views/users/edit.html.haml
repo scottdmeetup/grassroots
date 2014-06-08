@@ -34,8 +34,9 @@
       .col-lg-7
         .form-group
           .field#edit-organization-wrapper
+          - if @user.user_group == "nonprofit"
             %h3 Join or Create Your Nonprofit
-            = f.label :organization_name_box
+            = f.label :organization_name_box 
             = f.text_field :organization_name_box, data: {autocomplete_source: Organization.order(:name).map(&:name)}
       .col-lg-12  
         .form-group        
