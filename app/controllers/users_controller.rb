@@ -50,6 +50,7 @@ class UsersController < ApplicationController
   end
 
   def search
+
     filter = {skills: params[:skills]} if params[:skills]
     filter = {interests: params[:interests]}  if params[:interests]
     filter = {state_abbreviation: params[:state_abbreviation]} if params[:state_abbreviation]

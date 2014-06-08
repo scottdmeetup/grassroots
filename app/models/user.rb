@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
     collection = self.received_messages.select(:conversation_id).distinct
     all_conversations = collection.map do |member|
       convo_id = member.conversation_id
-      Conversation.find_by(id: convo_id)
+      Conversation.find(convo_id)
     end  
     all_conversations.sort! {|a, b| a.updated_at <=> b.updated_at}
   end
