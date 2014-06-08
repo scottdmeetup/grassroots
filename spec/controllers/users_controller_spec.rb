@@ -126,24 +126,18 @@ describe UsersController, :type => :controller do
     context "when the user is affiliated with an organization" do
 
       it "redirects to the user's profile page" do
-        
-        
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: alice.last_name, email: "test@example.com", organization_name_box: huggey_bear.name} 
 
         expect(response).to redirect_to(user_path(alice.id))
       end
       
       it "updates the user's information" do
-      huggey_bear = Fabricate(:organization)
-        
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: "Adams", email: "test@example.com", organization_name_box: huggey_bear.name} 
 
         expect(alice.reload.last_name).to eq("Adams")
       end
       
       it "flashes a notice that the user updated his/her profile" do
-
-        
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: alice.last_name, email: "test@example.com", organization_name_box: huggey_bear.name} 
         
         expect(flash[:notice]).to eq("You have updated your profile successfully.")
@@ -164,7 +158,9 @@ describe UsersController, :type => :controller do
         expect(alice.reload.first_name).to eq("Gil")
       end
     end
-    #context "when the user is a freelancer"
+    context "when the user is a freelancer" do
+      
+    end
   end
 
   describe "DELETE remove" do

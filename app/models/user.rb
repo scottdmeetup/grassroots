@@ -99,5 +99,4 @@ class User < ActiveRecord::Base
   def generate_token
     self.new_password_token = SecureRandom.urlsafe_base64
   end
-
 end
