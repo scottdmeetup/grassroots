@@ -9,28 +9,28 @@
       = form_tag search_users_path, method: 'get' do
         %h3 Skill Set
         %label
-          %input{:name => 'skills', :type => "checkbox", :value => "graphic design"}
+          %input{:name => 'skills', :type => "checkbox", :value => "Graphic Design"}
           Graphic Design
         %label
           %input{:name => 'skills', :type => "checkbox", :value => "Web Development"}
           Web Development
         %label
-          %input{:name => 'skills', :type => "checkbox", :value => "accounting"}
+          %input{:name => 'skills', :type => "checkbox", :value => "Accounting"}
           Accounting
         %label 
-          %input{:name => 'skills', :type => "checkbox", :value => "fundraising"}
+          %input{:name => 'skills', :type => "checkbox", :value => "Fundraising"}
           Fundraising
         %label 
-          %input{:name => 'skills', :type => "checkbox", :value => "business planning"}
+          %input{:name => 'skills', :type => "checkbox", :value => "Business Planning"}
           Business Planning
         %h3 Cause
         %label
-          %input{:name => 'causes[]', :type => "checkbox", :value => "animals"}
+          %input{:name => 'causes', :type => "checkbox", :value => "Animals"}
           Animal
         %label 
-          %input{:name => 'causes[]', :type => "checkbox", :value => "human rights"}
+          %input{:name => 'causes', :type => "checkbox", :value => "Human Rights"}
           Human Rights
         %label
-          %input{:name => 'causes[]', :type => "checkbox", :value => "social"}
+          %input{:name => 'causes', :type => "checkbox", :value => "Social Good"}
           Social Good
         = submit_tag "Search", :id => "project-filter-submit"

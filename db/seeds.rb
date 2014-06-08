@@ -132,22 +132,22 @@ jacob = User.create(first_name: "Jacob", last_name: "Seltzer", email: "jacob@exa
   organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
 
 kate_daniels = User.create(first_name: "Kate", last_name: "Daniels", 
-  email: "kate@example.org", interests: "environment", skills: "Fundraising", 
+  email: "kate@example.org", interests: "Environment", skills: "Fundraising", 
   street1: nil, street2: nil, city: "Birmingham", password: "password", state_id: "AL", phone_number: nil, 
   zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
   user_group: "volunteer")
 larry_nunez = User.create(first_name: "Larry", last_name: "Nunez", 
-  email: "larry@example.org", interests: "human rights", password: "password", skills: "Web Development", 
+  email: "larry@example.org", interests: "Human Rights", password: "password", skills: "Web Development", 
   street1: nil, street2: nil, city: "Boston", state_id: "MA", phone_number: nil, 
   zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
   user_group: "volunteer")
 maria_jacobs = User.create(first_name: "Maria", last_name: "Jacobs", password: "password", 
-  email: "maria@example.org", interests: "animal rights", skills: "Social Media", 
+  email: "maria@example.org", interests: "Animal Rights", skills: "Social Media", 
   street1: nil, street2: nil, city: "Boston", state_id: "MA", phone_number: nil, 
   zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
   user_group: "volunteer")
 nancy_smith = User.create(first_name: "Nancy", last_name: "Smith", 
-  email: "nancy@example.org", interests: "environment", skills: "Web Development", 
+  email: "nancy@example.org", interests: "Environment", skills: "Web Development", 
   street1: nil, street2: nil, city: "New York", password: "password", state_id: "NY", phone_number: nil, 
   zip: nil, organization_administrator: nil, organization_staff: nil, volunteer: true, 
   user_group: "volunteer")
