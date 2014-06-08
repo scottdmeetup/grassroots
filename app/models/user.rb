@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
   end
 
   def user_conversations
-    collection = self.received_messages.select(:conversation_id).distinct
+    collection = self.received_messages.select(:conversation_id)
     all_conversations = collection.map do |member|
       convo_id = member.conversation_id
       Conversation.find(convo_id)

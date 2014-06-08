@@ -93,16 +93,18 @@ describe User do
 
     it "does not return duplicate conversations" do
       convo1 = Conversation.create
-
+      convo2 = Conversation.create
+      convo3 = Conversation.create
+      
       bob = Fabricate(:user, first_name: "Bob", user_group: "volunteer")
       alice = Fabricate(:user, first_name: "Alice", user_group: "nonprofit")
 
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)
-      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Sounds good. what's your phone number?", conversation_id: convo1.id)
-      message3 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd really like to help out with your project", conversation_id: convo1.id)
+      message2 = Fabricate(:private_message, recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Sounds good. what's your phone number?", conversation_id: convo2.id)
+      message3 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd really like to help out with your project", conversation_id: convo3.id)
       
 
-      expect(alice.user_conversations).to eq([convo1])
+      expect(alice.user_conversations).to eq([convo1, convo3])
     end
   end
 
