@@ -90,6 +90,7 @@ describe UsersController, :type => :controller do
       end
       
       it "does not send out email with invlid inputs" do
+        
         post :create, user: {email: "joe@example.com", first_name: "Joe", last_name: "Smith", user_group: "nonprofit"}
 
         expect(ActionMailer::Base.deliveries).to be_empty
