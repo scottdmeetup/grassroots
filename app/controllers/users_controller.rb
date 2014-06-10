@@ -4,7 +4,16 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    respond_to do |format|
+      format.html do
+        @user = User.find(params[:id])
+        #@applied_to_projects = @user.applied_to_projects if @user.applied_to_projects
+        #@projects_in_production = @user.projects_in_production if @user.projects_in_production
+        #@submitted_work = @user.submitted_work if @user.submitted_work
+        #@completed_projects = @user.projects_complete if @user.projects_complete
+      end
+      format.js
+    end
   end
 
   def new

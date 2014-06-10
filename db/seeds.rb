@@ -160,13 +160,21 @@ global_giving.update_columns(user_id: 3)
 
 Project.destroy_all
 word_press = Project.create(title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
-  skills: "web development", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
+  skills: "Web Development", causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open")
 pretty_logo = Project.create(title: "Elegant Logo", description: "I want a logo that reflects the strenght of the human spirit!", 
-  skills: "graphic design", causes: "human rights", deadline: Date.today + 1.month, user_id: 2, organization_id: 2, estimated_hours: 32, state: "open")
+  skills: "Graphic Design", causes: "human rights", deadline: Date.today + 1.month, organization_id: amnesty_international.id, estimated_hours: 32, state: "open")
 social_media = Project.create(title: "Twitter Help", description: "I need someone to push out 10 tweets a day for me", 
-  skills: "social media", causes: "social", deadline: Date.today + 1.month, user_id: 3, organization_id: 3, estimated_hours: 11, state: "open")
+  organization_id: global_giving.id, skills: "Social Media", causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
 fundraising = Project.create(title: "Fundraising Help", description: "I need help fundraising my organization", 
-  skills: "fundraising", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
+  skills: "Fundraising", causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open")
+rails_app = Project.create(title: "Ruby on Rails Application", description: "I want robust, agile software to help ", 
+  skills: "Web Development", causes: "animals", deadline: Date.today + 1.month, organization_id: amnesty_international.id, estimated_hours: 22, state: "open")
+nice_pages = Project.create(title: "Front-end Design", description: "I need someone to snaz up our current organization's pages", 
+  organization_id: global_giving.id, skills: "Web Development", causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
+facebook_help = Project.create(title: "Facebook assistance", description: "We need someone to help run a facebook campaign", 
+  skills: "Fundraising", causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open")
+tax_assistance = Project.create(title: "Accounting Help", description: "We forgot to do our taxes. O well.....", 
+  organization_id: global_giving.id, skills: "Accounting", causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
 
 Contract.destroy_all
   

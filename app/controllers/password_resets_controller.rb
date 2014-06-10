@@ -1,6 +1,5 @@
 class PasswordResetsController < ApplicationController
   def show
-    
     user = User.where(new_password_token: params[:id]).first
     if user
       @new_password_token = user.new_password_token

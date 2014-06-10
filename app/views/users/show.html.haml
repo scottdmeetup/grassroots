@@ -54,12 +54,12 @@
           = link_to "Open Applications #{@user.open_applications.count}", user_path(@user)
         
         %li{:class => ('active' if params[:tab] == 'in production')}
-          = link_to "Work in Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production') 
+          = link_to "Work in Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production')
       
-        %li{:class => ('active' if params[:tab] == 'pending completion')}
+        %li{:class => ('active' if params[:tab] == 'submitted work')}
           = link_to "Submitted Work #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval')
       
-        %li{:class => ('active' if params[:tab] == 'completed')}
+        %li{:class => ('active' if params[:tab] == 'completed')}        
           = link_to "Completed Work #{@user.projects_complete.count}", user_path(@user, tab: 'completed')
 
       .col-lg-10
@@ -69,47 +69,17 @@
         - elsif params[:tab] == 'in production'
           - @user.projects_in_production.each do |project|
             = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'pending approval'
+        - elsif params[:tab] == 'submitted work'
           - @user.submitted_work.each do |project|
             = render 'shared/project_thumbnail', project: project
         - else 
           - params[:tab] == 'completed'
           - @user.projects_complete.each do |project|
             = render 'shared/project_thumbnail', project: project      
-    .row.row-custom
-      .col-lg-12
-        %h2 Bob Smith's Updates
-    .row
-      .col-lg-12
-        .row.row-custom.row-wrapper
-          %div.newsfeed-wrapper
-            .col-lg-2.col-lg-offset-1
-              %img.img-staff-newsfeed{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-            .col-lg-6
-              %div.newsfeed-content-wrapper
-                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-            .col-lg-3
-          .row.row-custom.row-wrapper
-          %div.newsfeed-wrapper
-            .col-lg-2.col-lg-offset-1
-              %div.newsfeed-vote-wrapper
-                %dl.vote-wrapper
-                  %dt.profile-newsfeed-number 3
-                  %dd Votes
-                %dl.comment-wrapper
-                  %dt.profile-newsfeed-number 10 
-                  %dd Comments
-            .col-lg-6
-              %div.newsfeed-content-wrapper
-                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-            .col-lg-3
-
   .tab-pane#about
-
     .row.row-custom
       .col-lg-12
         %h2 About Me
-
     .row#org-data-wrapper 
       .col-lg-12
         .col-lg-8
