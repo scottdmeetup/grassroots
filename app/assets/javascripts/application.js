@@ -31,14 +31,14 @@ $(document).ready(function() {
     $('.navbar-toggle').addClass('navbar-toggle-collapse'); 
     }
   });
-  $('#open_applications').on('click', function() {
-    $.ajax({
-      type: 'GET', 
-      url: '/user/#{id}'
-    }).done(function(open_projects) {
-      $('#open_applications').replaceWith(open_projects);
-    });
-  });
+  //$('#open_applications').on('click', function() {
+  //  $.ajax({
+  //    type: 'GET', 
+  //    url: '/user/#{id}'
+  //  }).done(function(open_projects) {
+  //    $('#open_applications').replaceWith(open_projects);
+  //  });
+  //});
 });
 
 

@@ -103,7 +103,6 @@ class User < ActiveRecord::Base
   end
 
   def update_profile_progress
-
     profile_completeness = [self.email, self.first_name, self.last_name, self.skills, 
       self.interests, self.contact_reason, self.state_abbreviation, self.city, self.bio, self.position]
     progress = 0
