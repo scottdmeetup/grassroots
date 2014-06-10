@@ -7,17 +7,6 @@ class OrganizationsController < ApplicationController
     @organizations = Organization.all
   end
 
-  def new
-    @organization = Organization.new
-  end
-
-  def create
-    @organization = Organization.new(organization_params.merge!(user_id: current_user.id))
-    @organization.save
-    current_user.update_columns(organization_id: @organization.id)
-    redirect_to organization_path(@organization.id)
-  end
-
   def search
     filter = {cause: params[:cause]} if params[:cause]
     

@@ -6,7 +6,7 @@ Grassroots::Application.routes.draw do
 
   namespace :organization_admin do
     resources :projects, only: [:new, :create, :edit, :update]
-    resources :organizations, only: [:edit, :update]
+    resources :organizations, only: [:edit, :update, :new, :create]
     resources :volunteer_applications, only: [:index]
   end
 
@@ -21,7 +21,7 @@ Grassroots::Application.routes.draw do
   end
   delete 'remove', to: 'users#remove'
   
-  resources :organizations, only: [:show, :index, :new, :create] do
+  resources :organizations, only: [:show, :index] do
     collection do
       get 'search', to: 'organizations#search', as: 'search'
     end

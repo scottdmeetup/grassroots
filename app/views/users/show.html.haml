@@ -20,16 +20,16 @@
             = "#{@user.skills}"
         %btn
           = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block' unless current_user
-        %p.pull-right
-          = link_to "Edit Your Profile", edit_user_path(current_user) if @user.organization
-        %p.pull-right
-          = link_to "Edit Your Profile", edit_user_path(current_user) if @user.user_group == "volunteer"
-        %p.pull-right
-          = link_to "Update Your Profile and Find Your Organization", edit_user_path(current_user) if @user.user_group == "nonprofit" && !@user.organization
+      %p.pull-right
+        = link_to "Edit Your Profile", edit_user_path(current_user) if @user.organization
+      %p.pull-right
+        = link_to "Edit Your Profile", edit_user_path(current_user) if @user.user_group == "volunteer"
+      %p.pull-right
+        = link_to "Update Your Profile and Find Your Organization", edit_user_path(current_user) if @user.user_group == "nonprofit" && !@user.organization
 
         - if @user.organization  
           - if current_user.id == @user.organization.user_id
-            %p.pull-right
+            %p.pull-left
               = link_to 'Remove Staff', remove_path(id: @user.id), :method => :delete, data: {confirm: 'Are you sure you want to remove this person from your organization?'}
   .col-lg-12
     %ul.nav.nav-tabs#myTab
@@ -91,7 +91,7 @@
               %dt 
                 What I do for 
                 = "#{@user.organization_name}"
-              %dd @user.organization_role
+              %dd= @user.organization_role
 
           %dl 
             %dt Contact Me for: 

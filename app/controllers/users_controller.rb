@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     
     if organization.nil? && current_user.user_group == "nonprofit"
       @user.update_columns(user_params)
-      redirect_to new_organization_path
+      redirect_to new_organization_admin_organization_path
     elsif current_user.user_group == "nonprofit" && @user.update_columns(user_params.merge!(organization_id: organization.id))
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)

@@ -176,7 +176,6 @@ facebook_help = Project.create(title: "Facebook assistance", description: "We ne
 tax_assistance = Project.create(title: "Accounting Help", description: "We forgot to do our taxes. O well.....", 
   organization_id: global_giving.id, skills: "Accounting", causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
 
-Contract.destroy_all
-  
+Contract.destroy_all  
 PrivateMessage.destroy_all
 Conversation.destroy_all

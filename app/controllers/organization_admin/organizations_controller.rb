@@ -1,4 +1,8 @@
 class OrganizationAdmin::OrganizationsController < OrganizationAdminController
+  def new
+    @organization = Organization.new
+  end
+
   def edit
     @organization = Organization.find(params[:id])
   end
@@ -8,6 +12,13 @@ class OrganizationAdmin::OrganizationsController < OrganizationAdminController
     organization.update_columns(organization_params)
     flash[:notice] = "You have updated your organization's profile."
     redirect_to organization_path(organization.id)
+  end
+
+  def create
+    @organization = Organization.new(organization_params.merge!(user_id: current_user.id))
+    @organization.save
+    current_user.update_columns(organization_id: @organization.id)
+    redirect_to organization_path(@organization.id)
   end
 
 private

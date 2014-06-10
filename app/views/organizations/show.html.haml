@@ -13,8 +13,8 @@
         %h5.org-head 
           %strong 
             = "#{@organization.cause}"
-        %p.pull-right
-          = link_to "Edit Organization Profile", edit_organization_admin_organization_path(@organization) if current_user.organization_administrator && current_user.organization_id == @organization.id
+      %p.pull-right
+        = link_to "Edit Organization Profile", edit_organization_admin_organization_path(@organization) if current_user.organization_administrator && current_user.organization_id == @organization.id
   .col-lg-12
     %ul.nav.nav-tabs#myTab
       %li.active

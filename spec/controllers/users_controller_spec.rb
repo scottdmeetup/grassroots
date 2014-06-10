@@ -148,7 +148,7 @@ describe UsersController, :type => :controller do
         
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: alice.last_name, email: "test@example.com", organization_name_box: "The Red Cross"}  
 
-        expect(response).to redirect_to(new_organization_path)
+        expect(response).to redirect_to(new_organization_admin_organization_path)
       end
 
       it "still updates the user's attributes" do
