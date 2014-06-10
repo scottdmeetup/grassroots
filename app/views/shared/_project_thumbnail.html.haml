@@ -28,7 +28,7 @@
         = fix_date_time(project.deadline)
     - if project.project_admin == current_user
       %btn= link_to "View Project", project_path(project.id), class: 'btn btn-primary btn-lg btn-block btn-project'
-    - elsif project.organization == current_user.organization
+    - if project.organization == current_user.organization
       %btn= link_to "View Project", project_path(project.id), class: 'btn btn-primary btn-lg btn-block btn-project'
     - if project.project_admin != current_user
       - if project.organization != current_user.organization
