@@ -28,6 +28,9 @@
               %div.edit-input-wrapper
                 = f.label :interests
                 = f.text_field :interests
+              %div.edit-input-wrapper
+                = f.label :contact_reason, "Contact me for:"
+                = f.text_area :contact_reason, cols: 2, rows: 2, class: "form-control"
               %div.edit-input-wrapper 
                 = f.label :bio
                 = f.text_area :bio, cols: 4, rows: 4, class: "form-control"

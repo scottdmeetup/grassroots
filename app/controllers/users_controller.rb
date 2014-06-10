@@ -44,6 +44,7 @@ class UsersController < ApplicationController
       @user.update_columns(user_params)
       redirect_to new_organization_admin_organization_path
     elsif current_user.user_group == "nonprofit" && @user.update_columns(user_params.merge!(organization_id: organization.id))
+      @user.update_columns(user_params)
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
     elsif current_user.user_group == "volunteer"
@@ -82,6 +83,6 @@ private
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, 
-      :organization_id, :bio, :skills, :interests, :position, :user_group)
+      :organization_id, :bio, :skills, :interests, :position, :user_group, :contact_reason)
   end
 end

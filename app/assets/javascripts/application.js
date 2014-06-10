@@ -19,6 +19,7 @@ jQuery(function() {
     source: $('#user_organization_name_box').data('autocomplete-source')
   });
  });
+
 $(document).ready(function() {
   $('.navbar-toggle').on('click', function() {
     if($('.navbar-collapse').hasClass('in')) {
@@ -30,6 +31,15 @@ $(document).ready(function() {
     $('.navbar-toggle').addClass('navbar-toggle-collapse'); 
     }
   });
+  $('#open_applications').on('click', function() {
+    $.ajax({
+      type: 'GET', 
+      url: '/user/#{id}'
+    }).done(function(open_projects) {
+      $('#open_applications').replaceWith(open_projects);
+    });
+  });
 });
+
 
 

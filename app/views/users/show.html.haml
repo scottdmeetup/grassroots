@@ -2,9 +2,13 @@
   .col-lg-3.col-sm-12
     %a.thumbnail.img-org{href: ""}
       %img{alt: "", "data-src" => "holder.js/100%x180"}/
-  .col-lg-8.col-sm-12#user-info
+  .col-lg-7.col-sm-12#user-info
     %h2 
       = "#{@user.first_name} #{@user.last_name}"
+    - if @user.organization  
+      - if current_user.id == @user.organization.user_id
+        %p
+          = link_to 'Remove Staff', remove_path(id: @user.id), :method => :delete, data: {confirm: 'Are you sure you want to remove this person from your organization?'}
     .row
       .col-lg-4.col-md-3#user-header-info
         %h5.org-head
@@ -20,17 +24,18 @@
             = "#{@user.skills}"
         %btn
           = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block' unless current_user
-      %p.pull-right
-        = link_to "Edit Your Profile", edit_user_path(current_user) if @user.organization
-      %p.pull-right
-        = link_to "Edit Your Profile", edit_user_path(current_user) if @user.user_group == "volunteer"
-      %p.pull-right
-        = link_to "Update Your Profile and Find Your Organization", edit_user_path(current_user) if @user.user_group == "nonprofit" && !@user.organization
+  .col-lg-2
+    %p.pull-right
+      = link_to "Edit Your Profile", edit_user_path(current_user) if @user.organization
+    %p.pull-right
+      = link_to "Edit Your Profile", edit_user_path(current_user) if @user.user_group == "volunteer"
+    %p.pull-right
+      = link_to "Update Your Profile and Find Your Organization", edit_user_path(current_user) if @user.user_group == "nonprofit" && !@user.organization
+  .col-lg-2
+    .progress
+      .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "60", :role => "progressbar", :style => "width: 60%;"}
+        = "%#{@user.update_profile_progress}"
 
-        - if @user.organization  
-          - if current_user.id == @user.organization.user_id
-            %p.pull-left
-              = link_to 'Remove Staff', remove_path(id: @user.id), :method => :delete, data: {confirm: 'Are you sure you want to remove this person from your organization?'}
   .col-lg-12
     %ul.nav.nav-tabs#myTab
       %li.active
@@ -52,7 +57,6 @@
       %ul.nav.nav-tabs
         %li{:class => ('active' if params[:tab].nil?)}
           = link_to "Open Applications #{@user.open_applications.count}", user_path(@user)
-        
         %li{:class => ('active' if params[:tab] == 'in production')}
           = link_to "Work in Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production')
       

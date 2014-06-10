@@ -202,6 +202,22 @@ describe User do
         expect(alice.administrated_organization).to eq(huggey_bear)
       end
     end
+
+    describe "#update_profile_progress" do
+
+      it "returns 18 for the user's profile completion if the user only has first and last name" do
+        bob = User.create(first_name: "bob", last_name: "smith", user_group: "volunteer")
+        expect(bob.update_profile_progress).to eq(20)
+      end
+
+      it "returns 100 for the user's profile completion if the user has everything filled out" do
+        bob = User.create(email: "bob@example.com", first_name: "Bob", last_name:"Smith", skills: "Web Development", 
+          interests: "Environment", contact_reason: "if you wanna hang out!", state_abbreviation: "AL", 
+          city: "Birmingham", bio: "I like to juggle apples.", position: "CEO")
+
+        expect(bob.update_profile_progress).to eq(100)
+      end
+    end
   end
 end
   

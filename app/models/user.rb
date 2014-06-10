@@ -30,6 +30,8 @@ class User < ActiveRecord::Base
 
   before_create :generate_token
 
+  #before_update :update_profile_progress, :if => Proc.new {|u| u.profile_progress_status < 100}  
+
 
   def open_applications
     sent_applications.where(accepted: nil, rejected: nil).to_a
@@ -99,4 +101,20 @@ class User < ActiveRecord::Base
   def generate_token
     self.new_password_token = SecureRandom.urlsafe_base64
   end
+
+  def update_profile_progress
+
+    profile_completeness = [self.email, self.first_name, self.last_name, self.skills, 
+      self.interests, self.contact_reason, self.state_abbreviation, self.city, self.bio, self.position]
+    progress = 0
+    profile_completeness.each do |field|
+      progress += 1 unless field.nil? || field == ""
+    end
+    
+    entirety = progress * 100
+    self.profile_progress_status = entirety / profile_completeness.count
+  end
+
+private
+
 end
