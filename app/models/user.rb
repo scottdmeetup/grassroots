@@ -5,6 +5,9 @@ class User < ActiveRecord::Base
   has_one :administrated_organization, foreign_key: 'user_id', class_name: 'Organization'
   has_many :sent_messages, class_name: 'PrivateMessage', foreign_key: 'sender_id'
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
+  #has_mamy :private_messages
+  #has_many :conversations, through: :private_messages, source: :conversation
+  #has_many :conversations, through: :received_messages, source: :conversation
   
   has_many :administrated_projects, through: :administrated_organization, source: :projects
 
@@ -29,8 +32,6 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email
 
   before_create :generate_token
-
-  #before_update :update_profile_progress, :if => Proc.new {|u| u.profile_progress_status < 100}  
 
 
   def open_applications
@@ -109,7 +110,6 @@ class User < ActiveRecord::Base
     profile_completeness.each do |field|
       progress += 1 unless field.nil? || field == ""
     end
-    
     entirety = progress * 100
     self.profile_progress_status = entirety / profile_completeness.count
   end

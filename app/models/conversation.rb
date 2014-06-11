@@ -1,5 +1,6 @@
 class Conversation < ActiveRecord::Base
-  has_many :private_messages, -> {order('created_at ASC')}
+  has_many :private_messages, -> {order('created_at ASC')}#, dependent: :destroy
+  #has many users
 
   def sender_user_name_of_recent_message
     message = self.private_messages.last 
