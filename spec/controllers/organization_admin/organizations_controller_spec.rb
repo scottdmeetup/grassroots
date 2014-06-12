@@ -59,6 +59,12 @@ describe OrganizationAdmin::OrganizationsController, :type => :controller do
       huggey_bears = Organization.first
       expect(alice.reload.organization).to eq(huggey_bears)
     end
+
+    it "should flash a notice about creating an organization" do
+      post :create, organization: Fabricate.attributes_for(:organization)
+
+      expect(flash[:success]).to eq("You created your organization.")
+    end
   end
 
   describe "GET edit" do

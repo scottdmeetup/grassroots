@@ -24,7 +24,7 @@
                 = f.text_field :position
               %div.edit-input-wrapper
                 = f.label :skills
-                = f.text_field :skills
+                = f.text_field :skills, data: {autocomplete_source: skill_set.sort}
               %div.edit-input-wrapper
                 = f.label :interests
                 = f.text_field :interests

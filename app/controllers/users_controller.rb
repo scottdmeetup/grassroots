@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     organization = Organization.find_by(name: params[:user][:organization_name_box])
     
     if organization.nil? && current_user.user_group == "nonprofit"
-      @user.update_columns(user_params)
+      @user.update_columns(user_params.merge!(organization_administrator: true))
       redirect_to new_organization_admin_organization_path
     elsif current_user.user_group == "nonprofit" && @user.update_columns(user_params.merge!(organization_id: organization.id))
       @user.update_columns(user_params)

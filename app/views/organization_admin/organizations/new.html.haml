@@ -1,7 +1,7 @@
 
 .row.edit-profile-wrapper
   .col-lg-12
-    = form_for(@organization) do |f|
+    = form_for(@organization, url: organization_admin_organizations_path) do |f|
       %header
         %h1 Create Your Organization
       .col-lg-5

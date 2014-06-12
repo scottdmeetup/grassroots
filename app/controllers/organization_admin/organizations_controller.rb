@@ -18,6 +18,7 @@ class OrganizationAdmin::OrganizationsController < OrganizationAdminController
     @organization = Organization.new(organization_params.merge!(user_id: current_user.id))
     @organization.save
     current_user.update_columns(organization_id: @organization.id)
+    flash[:success] = "You created your organization."
     redirect_to organization_path(@organization.id)
   end
 

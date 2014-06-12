@@ -116,14 +116,13 @@ describe UsersController, :type => :controller do
 
   describe "PATCH update" do
 
+    context "when the user is affiliated with an organization" do
       let!(:huggey_bear) {Fabricate(:organization)}
-      let!(:alice) {Fabricate(:organization_administrator, organization_id: huggey_bear.id, user_group: "nonprofit")}
+      let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
 
       before do
         set_current_user(alice)
       end
-
-    context "when the user is affiliated with an organization" do
 
       it "redirects to the user's profile page" do
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: alice.last_name, email: "test@example.com", organization_name_box: huggey_bear.name} 
@@ -144,22 +143,48 @@ describe UsersController, :type => :controller do
       end
     end
     context "when the user's organization is not present" do
+
+      let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
+
+      before do
+        set_current_user(alice)
+      end
+
       it "redirects the user to a form to create the organization" do
-        
         patch :update, id: alice.id, user: {first_name: alice.first_name, last_name: alice.last_name, email: "test@example.com", organization_name_box: "The Red Cross"}  
 
         expect(response).to redirect_to(new_organization_admin_organization_path)
       end
 
       it "still updates the user's attributes" do
-        
         patch :update, id: alice.id, user: {first_name: "Gil", last_name: alice.last_name, email: "test@example.com", organization_name_box: "The Red Cross"}  
 
         expect(alice.reload.first_name).to eq("Gil")
       end
+
+      it "makes the user the administrator of the absent organization" do
+        patch :update, id: alice.id, user: {first_name: "Gil", last_name: alice.last_name, email: "test@example.com", organization_name_box: "The Red Cross"}  
+
+        expect(alice.reload.organization_administrator).to eq(true)
+      end
     end
     context "when the user is a freelancer" do
-      
+      let!(:jerry) {Fabricate(:user, user_group: "volunteer")}
+
+      before do
+        set_current_user(jerry)
+      end
+
+      it "redirects tot he users profile page" do
+        patch :update, id: jerry.id, user: {first_name: "Jerry", last_name: jerry.last_name, email: "test@example.com"}
+        
+        expect(response).to redirect_to(user_path(jerry.id))
+      end
+      it "update's the volunteers information" do
+        patch :update, id: jerry.id, user: {first_name: "Jerry", last_name: jerry.last_name, email: "test@example.com"}
+        
+        expect(jerry.reload.first_name).to eq("Jerry")
+      end
     end
   end
 

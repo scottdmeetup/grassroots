@@ -21,6 +21,13 @@ jQuery(function() {
  });
 
 $(document).ready(function() {
+  return $('#user_skills').autocomplete({
+    source: $('#user_skills').data('autocomplete-source')
+  });
+});
+
+
+$(document).ready(function() {
   $('.navbar-toggle').on('click', function() {
     if($('.navbar-collapse').hasClass('in')) {
       $('#active-pane').removeClass('col-xs-offset-4');
