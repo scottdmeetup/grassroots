@@ -55,31 +55,21 @@
 
     .row
       %ul.nav.nav-tabs
-        %li{:class => ('active' if params[:tab].nil?)}
-          = link_to "Open Applications #{@user.open_applications.count}", user_path(@user)
+        %li{:class => ('active' if params[:tab] == 'open')}
+          = link_to "Open Applications #{@user.open_applications.count}", user_path(@user, tab: 'open'), remote: true
+
         %li{:class => ('active' if params[:tab] == 'in production')}
-          = link_to "Work in Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production')
-      
+          = link_to "Work in Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production'), remote: true
+    
         %li{:class => ('active' if params[:tab] == 'submitted work')}
-          = link_to "Submitted Work #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval')
+          = link_to "Submitted Work #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval'), remote: true
       
         %li{:class => ('active' if params[:tab] == 'completed')}        
-          = link_to "Completed Work #{@user.projects_complete.count}", user_path(@user, tab: 'completed')
+          = link_to "Completed Work #{@user.projects_complete.count}", user_path(@user, tab: 'completed'), remote: true
 
       .col-lg-10
-        - if params[:tab].nil?
-          - @user.applied_to_projects.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'in production'
-          - @user.projects_in_production.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'submitted work'
-          - @user.submitted_work.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - else 
-          - params[:tab] == 'completed'
-          - @user.projects_complete.each do |project|
-            = render 'shared/project_thumbnail', project: project      
+        %div{:id => "projectsDiv"}
+              
   .tab-pane#about
     .row.row-custom
       .col-lg-12
