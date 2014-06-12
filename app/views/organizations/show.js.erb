@@ -1,33 +1,57 @@
-
 <%if @open_params %>
-	"<% @open_projects.each do |project| %>"
+	<% if @open_projects.empty?%>
 		$('#projectsDiv').empty()
-		$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>')
-	"<% end %>"
+  	$('#projectsDiv').append('<p> <%= j render "shared/empty_project_thumbnail" %></p>')
+	<% else %>
+		"<% @open_projects.each do |project| %>"
+			$('#projectsDiv').empty()
+			$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>')
+		"<% end %>"
+	<% end %>
 <% elsif @production_params %>
 	"<% @in_production_projects.each do |project| %>"
 		$('#projectsDiv').empty()
 		$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>')
 	"<% end %>"
 <% elsif @work_submitted_params %>
-	"<% @projects_with_work_submitted.each do |project| %>"
+	<% if @projects_with_work_submitted.empty?%>
 		$('#projectsDiv').empty()
-  	$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>')
-	"<% end %>"
+  	$('#projectsDiv').append('<p> <%= j render "shared/empty_project_thumbnail" %></p>')
+	<% else %>
+		"<% @projects_with_work_submitted.each do |project| %>"
+			$('#projectsDiv').empty()
+	  	$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>')
+		"<% end %>"
+	<% end %>
 <% elsif @completed_params %>
-	"<% @completed_projects.each do |project| %>"
+	<% if @completed_projects.empty?%>
 		$('#projectsDiv').empty()
-  	$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>')
-	"<% end %>"
+  	$('#projectsDiv').append('<p> <%= j render "shared/empty_project_thumbnail" %></p>')
+	<% else %>
+		"<% @completed_projects.each do |project| %>"
+			$('#projectsDiv').empty()
+	  	$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>')
+		"<% end %>"
+	<% end %>
 <% elsif @unifinished_params %>
-	"<% @unfinished_projects.each do |project| %>"
+	<% if @unfinished_projects.empty?%>
 		$('#projectsDiv').empty()
-	  $('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>');
-	"<% end %>"
+  	$('#projectsDiv').append('<p> <%= j render "shared/empty_project_thumbnail" %></p>')
+	<% else %>
+		"<% @unfinished_projects.each do |project| %>"
+			$('#projectsDiv').empty()
+		  $('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>');
+		"<% end %>"
+	<% end %>
 <% else %>
-	"<% @expired_projects.each do |project| %>"
+	<% if @expired_projects.empty?%>
 		$('#projectsDiv').empty()
-  	$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>');
-	"<% end %>"
+  	$('#projectsDiv').append('<p> <%= j render "shared/empty_project_thumbnail" %></p>')
+	<% else %>
+		"<% @expired_projects.each do |project| %>"
+			$('#projectsDiv').empty()
+	  	$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>');
+		"<% end %>"
+	<% end %>
 <% end %>
 
