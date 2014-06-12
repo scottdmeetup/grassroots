@@ -1,7 +1,6 @@
 
 require 'spec_helper'
 
-
 feature 'User has a conversation with messages with other user' do 
   scenario "A user messages another user and that user replies to the message" do
     alice = Fabricate(:user, user_group: "nonprofit")

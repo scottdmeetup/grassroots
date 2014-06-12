@@ -4,12 +4,16 @@ describe OrganizationsController, :type => :controller do
   describe "GET show" do
     it "renders the organization show template" do
       amnesty = Fabricate(:organization)
+      alice = Fabricate(:organization_administrator, organization_id: amnesty.id, user_group: "nonprofit")
+      amnesty.update_columns(user_id: alice.id)
       get :show, id: amnesty
 
       expect(response).to render_template(:show)
     end
     it "shows the organization's profile" do
       amnesty = Fabricate(:organization)
+      alice = Fabricate(:organization_administrator, organization_id: amnesty.id, user_group: "nonprofit")
+      amnesty.update_columns(user_id: alice.id)
       get :show, id: amnesty.id
 
       expect(assigns(:organization)).to eq(amnesty)

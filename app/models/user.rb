@@ -34,6 +34,8 @@ class User < ActiveRecord::Base
   before_create :generate_token
 
 
+
+
   def open_applications
     sent_applications.where(accepted: nil, rejected: nil).to_a
   end

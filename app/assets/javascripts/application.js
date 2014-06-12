@@ -27,10 +27,12 @@ $(document).ready(function() {
       $('.navbar-toggle').removeClass('navbar-toggle-collapse'); 
     }
     else {
-    $('#active-pane').addClass('col-xs-offset-4');
-    $('.navbar-toggle').addClass('navbar-toggle-collapse'); 
+      $('#active-pane').addClass('col-xs-offset-4');
+      $('.navbar-toggle').addClass('navbar-toggle-collapse'); 
     }
   });
+
+
   //$('#open_applications').on('click', function() {
   //  $.ajax({
   //    type: 'GET', 
