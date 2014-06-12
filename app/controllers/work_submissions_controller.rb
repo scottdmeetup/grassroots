@@ -1,6 +1,6 @@
 class WorkSubmissionsController < ApplicationController
   def new
-    @contract = Contract.find_by(params[:contract_id])
+    @contract = Contract.find(params[:contract_id])
     @project = Project.find(@contract.project_id)
     @private_message = PrivateMessage.new(recipient_id: @contract.contractor_id, subject: "Work Submission for #{@project.title}")
   end

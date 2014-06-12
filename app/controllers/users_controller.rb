@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    
     @user = User.find(params[:id])
     @open_params = params[:tab] == 'open'
     @production_params = params[:tab] == 'in production' 

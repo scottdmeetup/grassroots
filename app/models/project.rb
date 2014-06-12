@@ -64,7 +64,7 @@ class Project < ActiveRecord::Base
   end
 
   def in_production_contract_id
-    self.contracts.where(active: true, work_submitted: nil, project_id: self.id).first
+    self.contracts.where(active: true, work_submitted: false, project_id: self.id).first
   end
 
   def is_unfinished?

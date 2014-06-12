@@ -22,7 +22,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
   skills: "web development", causes: "animals", deadline: Date.today + 1.month, 
   user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")}
 
-  scenario "volunteer completes the project" do
+  scenario "volunteer completes the project", :js => true do
     alice
     bob
     huggey_bear.update_columns(user_id: 1)
@@ -121,9 +121,12 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
   end
 
   def volunteer_submits_work_for_job_completion(volunteer)
+    find(:xpath, "//a[@href='/users/#{volunteer.id}?tab=in+production']").click()
     
-    click_on('Work in Production')
-    click_on('Project Complete')
+    wait_for_ajax
+    click_on("Project Complete")
+    
+    
     fill_in "private_message[body]", with: "This is done"
     click_on('Create')
     visit user_path(volunteer.id)
@@ -135,6 +138,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     expect(page).to have_content("Completion Request 1")
     visit conversations_path
     expect(page).to have_text("Contract Complete")
+    click_on('Contract Complete')
     click_on('Completed')
     fill_in "private_message[body]", with: "Great work."
     click_on('Send')
@@ -158,7 +162,9 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
   def administrator_contracts_volunteer(user)
     user_signs_in(user)
     visit conversations_path
-    page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
+    click_on("Volunteer Application")
+    click_on("Accept")
+    #page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
     
     fill_in "private_message[body]", with: "I have accepted your participation"
     click_on('Send')
