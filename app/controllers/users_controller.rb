@@ -13,10 +13,10 @@ class UsersController < ApplicationController
     @unifinished_params = params[:tab] == 'unfinished' 
     @expired_params = params[:tab] == 'expired' 
 
-    @applications = @user.applied_to_projects
+    @applications = @user.projects_with_open_applications
     @projects_in_production = @user.projects_in_production
     @submitted_work = @user.submitted_work
-    @completed_projects = @user.projects_complete
+    @completed_projects = @user.completed_projects
 
     respond_to do |format|
       format.html do

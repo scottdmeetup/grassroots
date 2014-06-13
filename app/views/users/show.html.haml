@@ -65,7 +65,7 @@
           = link_to "Submitted Work #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval'), remote: true
       
         %li{:class => ('active' if params[:tab] == 'completed')}        
-          = link_to "Completed Work #{@user.projects_complete.count}", user_path(@user, tab: 'completed'), remote: true
+          = link_to "Completed Work #{@user.completed_projects.count}", user_path(@user, tab: 'completed'), remote: true
 
       .col-lg-10
         %div{:id => "projectsDiv"}

@@ -5,28 +5,19 @@ class User < ActiveRecord::Base
   has_one :administrated_organization, foreign_key: 'user_id', class_name: 'Organization'
   has_many :sent_messages, class_name: 'PrivateMessage', foreign_key: 'sender_id'
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
-  #has_mamy :private_messages
-  #has_many :conversations, through: :private_messages, source: :conversation
-  #has_many :conversations, through: :received_messages, source: :conversation
   
   has_many :administrated_projects, through: :administrated_organization, source: :projects
 
-  has_many :sent_applications, class_name: 'VolunteerApplication', foreign_key: 'applicant_id'
-  has_many :projects, through: :volunteer_applications, source: :applicant
-
-  has_many :contracts
-  has_many :projects, through: :contracts
-
-  has_many :jobs, class_name: 'Contract', foreign_key: 'volunteer_id'
-  has_many :projects, through: :contracts, source: :volunteer
-  #has_many :jobs, through: :contracts, source: :volunteer
-  
-  has_many :procurements, class_name: 'Contract', foreign_key: 'contractor_id'
+  has_many :volunteer_requests,  class_name: 'VolunteerApplication', foreign_key: 'administrator_id'
+  has_many :projects, through: :volunteer_applications, source: :administrator
+  has_many :delegated_projects, class_name: "Contract", foreign_key: 'contractor_id'
   has_many :projects, through: :contracts, source: :contractor
+  
+  has_many :requests_to_volunteer, class_name: 'VolunteerApplication', foreign_key: 'applicant_id'
+  has_many :projects, through: :volunteer_applications, source: :applicant
+  has_many :assignments, class_name: "Contract", foreign_key: 'volunteer_id'
+  has_many :projects, through: :contracts, source: :volunteer
 
-
-  has_many :received_applications, class_name: 'VolunteerApplication', foreign_key: 'administrator_id'
-  #has_many :procurements, through: :contracts, source: :contractor
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
@@ -37,11 +28,11 @@ class User < ActiveRecord::Base
 
 
   def open_applications
-    sent_applications.where(accepted: nil, rejected: nil).to_a
+    requests_to_volunteer.where(accepted: nil, rejected: nil).to_a
   end
 
-  def projects_complete
-    contracts_reflecting_completed_work = Contract.where(volunteer_id: self.id, active: false, complete: true).to_a
+  def completed_projects  
+    contracts_reflecting_completed_work = assignments.where(active: false, complete: true).to_a
     completed_projects = contracts_reflecting_completed_work.map do |member|
       Project.find(member.project_id)
     end
@@ -90,8 +81,7 @@ class User < ActiveRecord::Base
     organization.name
   end
 
-  def applied_to_projects
-    open_applications = sent_applications.where(applicant_id: self.id, rejected: nil, accepted: nil).to_a
+  def projects_with_open_applications
     open_applications.map do |member|
       Project.find(member.project_id)
     end

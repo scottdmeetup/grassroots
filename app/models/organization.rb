@@ -10,8 +10,7 @@ class Organization < ActiveRecord::Base
   end
 
   def in_production_projects
-      
-    active_contracts = organization_administrator.procurements.where(active: true, dropped_out: nil, complete: nil, incomplete: nil, work_submitted: false).to_a
+    active_contracts = organization_administrator.delegated_projects.where(active: true, dropped_out: nil, complete: nil, incomplete: nil, work_submitted: false).to_a
     projects_in_production = active_contracts.map do |member|
       Project.find(member.project_id)
     end
@@ -19,21 +18,21 @@ class Organization < ActiveRecord::Base
   end
 
   def projects_with_work_submitted
-    contracts_reflecting_work_submitted = organization_administrator.procurements.where(active: true, work_submitted: true).to_a
+    contracts_reflecting_work_submitted = organization_administrator.delegated_projects.where(active: true, work_submitted: true).to_a
     contracts_reflecting_work_submitted.map do |member|
       Project.find(member.project_id)
     end
   end
 
   def completed_projects
-    completed_contracts = organization_administrator.procurements.where(active: false, work_submitted: true, complete: true, incomplete: false).to_a
+    completed_contracts = organization_administrator.delegated_projects.where(active: false, work_submitted: true, complete: true, incomplete: false).to_a
     completed_contracts.map do |member|
       Project.find(member.project_id)
     end
   end
 
   def unfinished_projects
-    unfinished_contracts = organization_administrator.procurements.where(incomplete: true).to_a
+    unfinished_contracts = organization_administrator.delegated_projects.where(incomplete: true).to_a
     unfinished_contracts.map do |member|
       Project.find(member.project_id)
     end
