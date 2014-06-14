@@ -6,7 +6,7 @@
       %div#project-search-wrapper
         .form-group
           = form_tag search_projects_path, method: 'get' do
-            %input.form-control{:placeholder => "Search", :type => "text", :id => "project-search-bar", :name => "search_term"}
+            %input.form-control{:placeholder => "Search by project title or project description", :type => "text", :id => "project-search-bar", :name => "search_term"}
             %h3 Skill Set
             %label 
               %input{:name => 'skills', :type => "checkbox", :value => "Graphic Design"}
