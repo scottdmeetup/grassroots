@@ -13,7 +13,7 @@ class ProjectsController < ApplicationController
   end
 
   def search
-    if params[:search_term]
+    if params[:search_term] && params[:search_term] != ""
       search_term = params[:search_term]
       @results_by_title = Project.where("title LIKE ?", "%#{search_term}%")
       @results_by_description = Project.where("description LIKE ?", "%#{search_term}%")
