@@ -131,14 +131,14 @@ describe Organization do
     it "returns all projects that have active contracts with no work submitted" do
       
       accounting = Fabricate(:project, title: "didn't do my taxes", organization_id: huggey_bear.id, deadline: Date.today + 1.month)
-      grant_writing = Fabricate(:project, title: "need Grants", organization_id: huggey_bear.id, deadline: 1.day.ago)
+      grant_writing = Fabricate(:project, title: "need Grants", organization_id: huggey_bear.id, deadline: Date.yesterday)
       word_press = Fabricate(:project, title: "word press website", organization_id: huggey_bear.id, deadline: 2.day.ago)
 
       #contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: false)
       #contract2 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
       #contract3 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: grant_writing.id, work_submitted: true)
 
-      expect(huggey_bear.expired_projects).to eq([grant_writing, word_press])
+      expect(huggey_bear.reload.expired_projects).to eq([grant_writing, word_press])
     end
   end
 end
