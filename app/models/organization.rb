@@ -45,15 +45,7 @@ class Organization < ActiveRecord::Base
   end
 
   def self.search_by_name(search_term)
-    #return [] if search_term.blank?
-    #if where("title or description LIKE ?", "%#{search_term}%") != []
-    #  where("title or description LIKE ?", "%#{search_term}%")
-    #elsif where("title LIKE ?", "%#{search_term}%") != []
-    #  where("title LIKE ?", "%#{search_term}%")
-    #elsif where("description LIKE ?", "%#{search_term}%") != []
-    #  where("description LIKE ?", "%#{search_term}%")
-    #else
-    #  []
-    #end
+    return [] if search_term.blank?
+    where("name LIKE ?", "%#{search_term}%")
   end
 end

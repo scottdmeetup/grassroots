@@ -34,6 +34,8 @@ class OrganizationsController < ApplicationController
     if filter != nil
       @results = Organization.where(filter).to_a
       @results.sort! {|x,y| x.name <=> y.name }
+    else
+      @results = Organization.search_by_name(params[:search_term])
     end 
   end
 

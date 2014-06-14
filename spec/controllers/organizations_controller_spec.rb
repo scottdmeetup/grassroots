@@ -60,6 +60,8 @@ describe OrganizationsController, :type => :controller do
       budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
       goal: "We want each of our nonprofit partners to raise at least $ 5,000.00 from our platform a year.")}
 
+    let!(:the_bears) {Fabricate(:organization, name: "The Bears")}
+
     let!(:boys_girls) {Fabricate(:organization, name: "Boys and Girls Club Of America", cause: "Youth Education")}
 
     let!(:red_cross) {Fabricate(:organization, name: "Red Cross", cause: "Human Rights")}
@@ -79,9 +81,16 @@ describe OrganizationsController, :type => :controller do
 
     end
     context "when using the search bar" do
-      #it "sets the @results variable by search term"
-        #get :search, search_term: "smith", last_name:
-      #it "removes duplicate items in @results" 
+      it "sets the @results variable by search term" do
+        get :search, search_term: "bear"
+
+        expect(assigns(:results)).to eq([huggey_bear, the_bears])
+      end
+      it "redirects to the results page" do
+        get :search, search_term: "bear"
+
+        expect(response).to render_template(:search)
+      end
     end
   end
 end

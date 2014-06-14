@@ -164,12 +164,26 @@ describe Organization do
       budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
       goal: "We want each of our nonprofit partners to raise at least $ 5,000.00 from our platform a year.")}
 
+    let!(:the_bears) {Fabricate(:organization, name: "The Bears")}
+
     it "should return an empty array if the user submits no parameters" do
-      expect(Organization.search_by_name())
+      expect(Organization.search_by_name("")).to eq([])
     end
-    it "should return an empty array if it finds no organizations"
-    it "should return an array of one organizations if it is an exact match"
-    it "should return an array of one organizations for a partial match" 
-    it "should return an array of all matches oredered by created_at" 
+
+    it "should return an empty array if it finds no organizations" do
+      expect(Organization.search_by_name("red cross")).to eq([])
+    end
+
+    it "should return an array of one organizations if it is an exact match" do
+      expect(Organization.search_by_name("Global Giving")).to eq([global_giving])
+    end
+
+    it "should return an array of one organizations for a partial match" do 
+      expect(Organization.search_by_name("glo")).to eq([global_giving])
+    end
+    
+    it "should return an array of all matches oredered by created_at" do
+      expect(Organization.search_by_name("bear")).to eq([huggey_bears, the_bears])
+    end
   end
 end
