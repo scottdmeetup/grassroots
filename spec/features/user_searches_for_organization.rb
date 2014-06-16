@@ -3,11 +3,11 @@ require 'spec_helper'
 feature 'User searches for an organization' do 
 
   let!(:huggey_bears) {Fabricate(:organization, name: "Huggey Bear Land", cause: "Animal Rights", ruling_year: 1998, 
-      mission_statement: "We want to give everyone a huggey bear in their sad times", guidestar_membership: nil, 
-      ein: "192512653-6", street1: "2998 Hansen Heights", street2: nil, city: "New York", 
-      state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
-      budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
-      goal: "We want 1 out of every 5 Americans to have a huggey bear.")}
+    mission_statement: "We want to give everyone a huggey bear in their sad times", guidestar_membership: nil, 
+    ein: "192512653-6", street1: "2998 Hansen Heights", street2: nil, city: "New York", 
+    state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
+    budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
+    goal: "We want 1 out of every 5 Americans to have a huggey bear.")}
 
   let!(:amnesty_international) {Fabricate(:organization, name: "Amnesty International", cause: "Human Rights", ruling_year: 1912,
     mission_statement: "We want to see human rights spread across the globe -- chyea.", guidestar_membership: nil, 

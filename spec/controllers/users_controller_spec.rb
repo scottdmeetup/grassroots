@@ -189,19 +189,21 @@ describe UsersController, :type => :controller do
   end
 
   describe "DELETE remove" do
-    it "redirects to the organization's profile page" do
-      huggey_bear = Fabricate(:organization)
-      alice = Fabricate(:user, organization_id: huggey_bear.id, user_group: "nonprofit")
+    context "when removing user from organization's profile" do
+      it "redirects to the organization's profile page" do
+        huggey_bear = Fabricate(:organization)
+        alice = Fabricate(:user, organization_id: huggey_bear.id, user_group: "nonprofit")
 
-      delete :remove, id: alice.id
-      expect(response).to redirect_to organization_path(huggey_bear.id)
-    end
-    it "unassociates the staff member selected from the organization" do
-      huggey_bear = Fabricate(:organization)
-      alice = Fabricate(:user, organization_id: huggey_bear.id, user_group: "nonprofit")
+        delete :remove, id: alice.id
+        expect(response).to redirect_to organization_path(huggey_bear.id)
+      end
+      it "unassociates the staff member selected from the organization" do
+        huggey_bear = Fabricate(:organization)
+        alice = Fabricate(:user, organization_id: huggey_bear.id, user_group: "nonprofit")
 
-      delete :remove, id: alice.id
-      expect(alice.reload.organization_id).to be_nil
+        delete :remove, id: alice.id
+        expect(alice.reload.organization_id).to be_nil
+      end
     end
   end
 

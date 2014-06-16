@@ -1,27 +1,44 @@
 require 'spec_helper'
 
 feature 'User searches for a project' do 
-  scenario "user logs in and searches for a project based on his/her competency and checks the box" do
-  huggey_bears = Organization.create(name: "Huggey Bear Land", cause: "Animal Rights", ruling_year: 1998, 
+  let!(:huggey_bears) {Fabricate(:organization, name: "Huggey Bear Land", cause: "Animal Rights", ruling_year: 1998, 
     mission_statement: "We want to give everyone a huggey bear in their sad times", guidestar_membership: nil, 
     ein: "192512653-6", street1: "2998 Hansen Heights", street2: nil, city: "New York", 
     state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
     budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
-    goal: "We want 1 out of every 5 Americans to have a huggey bear.")
+    goal: "We want 1 out of every 5 Americans to have a huggey bear.")}
 
-  amnesty_international = Organization.create(name: "Amnesty International", cause: "Human Rights", ruling_year: 1912,
+  let!(:amnesty_international) {Fabricate(:organization, name: "Amnesty International", cause: "Human Rights", ruling_year: 1912,
     mission_statement: "We want to see human rights spread across the globe -- chyea.", guidestar_membership: nil, 
     ein: "987931299-1", street1: "3293 Dunnit Hill", street2: nil, city: "New York", 
     state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
     budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
-    goal: "Every year we want at least one thousand human rights activists released from prisons around the world.")
+    goal: "Every year we want at least one thousand human rights activists released from prisons around the world.")}
 
-  global_giving = Organization.create(name: "Global Giving", cause: "Social Good", ruling_year: 2000, 
+  let!(:global_giving) {Fabricate(:organization, name: "Global Giving", cause: "Social Good", ruling_year: 2000, 
     mission_statement: "We make it rain on Nonprofits, erreday", guidestar_membership: nil, 
     ein: "222222222-2", street1: "2222 Rick Ross", street2: nil, city: "DC", 
     state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
     budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
-    goal: "We want each of our nonprofit partners to raise at least $ 5,000.00 from our platform a year.")
+    goal: "We want each of our nonprofit partners to raise at least $ 5,000.00 from our platform a year.")}
+
+  let!(:the_bears) {Fabricate(:organization, name: "The Bears")}
+
+  let!(:alice) {Fabricate(:user, organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 
+    interests: "Animal Rights", skills: "Grant Writing", street1: nil, street2: nil, 
+    city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
+    organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")}
+  let!(:bob) {Fabricate(:user, organization_id: 2, first_name: "Bob", last_name: "Adams", email: "bob@amnesty.org", 
+    interests: "Human Rights", skills: "Web Development", street1: nil, street2: nil, 
+    city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
+    organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")}
+  let!(:catherine) {Fabricate(:user, organization_id: 3, first_name: "Catherine", last_name: "Hemingway", email: "cat@globalgiving.org", 
+    interests: "Health", skills: "Graphic Design", street1: nil, street2: nil, 
+    city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
+    organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")}
+
+  scenario "user logs in and searches for a project based on his/her competency and checks the box" do
+  
 
   word_press = Project.create(title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
     skills: "Web Development", causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open")
@@ -40,18 +57,6 @@ feature 'User searches for a project' do
   tax_assistance = Project.create(title: "Accounting Help", description: "We forgot to do our taxes. O well.....", 
     organization_id: global_giving.id, skills: "Accounting", causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
 
-  alice = User.create(organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 
-    interests: "Animal Rights", skills: "Grant Writing", street1: nil, street2: nil, 
-    city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
-    organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")
-  bob = User.create(organization_id: 2, first_name: "Bob", last_name: "Adams", email: "bob@amnesty.org", 
-    interests: "Human Rights", skills: "Web Development", street1: nil, street2: nil, 
-    city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
-    organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")
-  catherine = User.create(organization_id: 3, first_name: "Catherine", last_name: "Hemingway", email: "cat@globalgiving.org", 
-    interests: "Health", skills: "Graphic Design", street1: nil, street2: nil, 
-    city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
-    organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")
 
   huggey_bears.update_columns(user_id: 1)
   amnesty_international.update_columns(user_id: 2)

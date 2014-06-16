@@ -19,8 +19,6 @@
               %b.caret
             %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
               %li
-                %a(href="#") Account
-                %a(href="#") Plan and Billing
                 = link_to "Profile", user_path(current_user.id) if current_user
                 = link_to "Organization", organization_path(current_user.organization.id) if current_user.organization
                 = link_to "Log out", log_out_path
