@@ -50,4 +50,4 @@
       .col-lg-12  
         .form-group        
           .field
-            = f.submit "Create", :method => :delete, :confirm=>'Is all the information accurate and its spelling correct?', class: "btn btn-success"
+            = f.submit "Create", :method => :delete, :data => {:confirm => 'Is all the information accurate and its spelling correct?'}, class: "btn btn-success"

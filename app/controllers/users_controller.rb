@@ -49,14 +49,14 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     organization = Organization.find_by(name: params[:user][:organization_name_box])
     
-    if organization.nil? && current_user.user_group == "nonprofit"
+    if unaffiliated_nonprofit_user_updates_profile(organization)
       @user.update_columns(user_params.merge!(organization_administrator: true))
       redirect_to new_organization_admin_organization_path
-    elsif current_user.user_group == "nonprofit" && @user.update_columns(user_params.merge!(organization_id: organization.id))
+    elsif nonprofit_staff_member_updates_profile(organization)
       @user.update_columns(user_params)
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
-    elsif current_user.user_group == "volunteer"
+    elsif volunteer_updates_profile
       @user.update_columns(user_params)
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
@@ -93,5 +93,17 @@ private
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, 
       :organization_id, :bio, :skills, :interests, :position, :user_group, :contact_reason)
+  end
+
+  def unaffiliated_nonprofit_user_updates_profile(organization)
+    organization.nil? && current_user.user_group == "nonprofit"
+  end
+ 
+  def nonprofit_staff_member_updates_profile(organization)
+    current_user.user_group == "nonprofit" && organization
+  end
+ 
+  def volunteer_updates_profile
+    current_user.user_group == "volunteer"
   end
 end
