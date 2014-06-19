@@ -1,0 +1,35 @@
+ul {
+  list-style-type: none;
+}
+
+
+/* Background Colors */
+
+
+body {
+  background-color: #E9EAEC;
+}
+	.row {
+	  background-color: #fff;
+	}
+	.row-custom {
+	  /* Overrides Row Background Color
+	  For Areas that Need Body Color */ 
+	  background-color: #E9EAEC;
+	}     
+
+
+/* Images */ 
+
+.thumbnail-staff {
+    padding: 0;
+  }
+
+.img-thumb {
+  width: 150px;
+  height: 150px;
+}
+
+.img-staff {
+      width: 150px;
+}

@@ -1,16 +1,16 @@
 .row#profile-details-row
   .col-lg-3
-    %a.thumbnail.img-org{href: ""}
+    %a.thumbnail.img-thumb{href: ""}
       %img{alt: "", "data-src" => "holder.js/100%x180"}/
   .col-lg-8#org-info
     %h2 
       = @organization.name
     .row
       .col-lg-4#org-header-info
-        %h5.org-head 
+        %h5.header-spacing 
           %strong 
             = "#{@organization.city}"
-        %h5.org-head 
+        %h5.header-spacing 
           %strong 
             = "#{@organization.cause}"
       %p.pull-right

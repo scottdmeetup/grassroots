@@ -1,0 +1,68 @@
+/* Message Inbox View */ 
+ #inbox-wrapper {
+    padding: 25px 0;
+    #tabs {
+      margin-top: 20px;
+    }
+    .active-tab {
+      background-color: #e0e0e0;
+    }
+  }
+
+/* Thumbnail of Message in Inbox */ 
+      .msg-thumbnail {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 20px 0 30px;
+          .header-img {
+            width: 70px;
+          }
+          .content-wrapper {
+            margin-top: -18px;
+          }
+      }
+
+/* Conversation View */ 
+     
+
+#conversation-thread-wrapper {
+  padding: 25px 0 0 0;
+    #img-wrapper {
+      margin-right: -18px;
+      .header-img {
+        width: 70px;
+      }
+    }
+      #title { 
+        h4, 
+        p {
+        line-height: 14px;
+      }
+    }
+      #title {
+        p {
+        color: #a9a9a9;
+      }
+    }
+    .msg-wrapper {
+      padding-top: 20px;
+        .msg-body {
+          padding-bottom: 20px;
+          border-bottom: 1px solid #E9EAEC;
+        }
+    }
+        #form-field {
+          padding-bottom: 15px;
+        }
+}
+
+/* New Message View */ 
+
+    #message {
+      padding: 10px 25px;
+        .recipient, 
+        .sender {
+          line-height: 4px;
+          margin-right: 25px;
+        }
+    }
+
