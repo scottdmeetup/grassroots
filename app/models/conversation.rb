@@ -1,5 +1,6 @@
 class Conversation < ActiveRecord::Base
-  has_many :private_messages, -> {order('created_at ASC')}
+  has_many :private_messages, -> {order('created_at ASC')}#, dependent: :destroy
+  #has many users
 
   def sender_user_name_of_recent_message
     message = self.private_messages.last 
@@ -40,12 +41,12 @@ class Conversation < ActiveRecord::Base
   end
 
   def with_work_submitted
-    contract = Contract.find_by(self.contract_id)
-    contract.active && contract.work_submitted 
+    contract = Contract.find(self.contract_id)
+    contract.active && contract.work_submitted
   end
 
   def with_opportunity_to_drop_job
-    contract = Contract.find_by(self.contract_id)
-    contract.active && contract.work_submitted == nil
+    contract = Contract.find(self.contract_id)
+    contract.active && contract.work_submitted == false && contract.created_at > 5.days.ago
   end
 end

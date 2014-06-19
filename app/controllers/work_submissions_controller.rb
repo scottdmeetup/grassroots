@@ -1,6 +1,6 @@
 class WorkSubmissionsController < ApplicationController
   def new
-    @contract = Contract.find_by(params[:contract_id])
+    @contract = Contract.find(params[:contract_id])
     @project = Project.find(@contract.project_id)
     @private_message = PrivateMessage.new(recipient_id: @contract.contractor_id, subject: "Work Submission for #{@project.title}")
   end
@@ -20,7 +20,7 @@ private
     conversation_about_work_submission = Conversation.create
     @first_message = PrivateMessage.new(message_params.merge!(conversation_id: conversation_about_work_submission.id))
     @first_message.save
-    @contract = Contract.find_by(params[:contract_id])
+    @contract = Contract.find(params[:id])
     conversation_about_work_submission.update_columns(contract_id: @contract.id)
     @contract.update_columns(work_submitted: true, complete: nil, active: true)
   end

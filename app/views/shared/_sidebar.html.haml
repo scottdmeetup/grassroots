@@ -7,12 +7,8 @@
     .collapse.navbar-collapse#interior-sidebar-wrapper
       %ul.nav.nav-pills.nav-stacked
         %li
-          = link_to "Community", "#" if current_user
-        %li
-          = link_to "People", users_path if current_user
+          = link_to "Projects", projects_path if current_user
         %li
           = link_to "Organizations", organizations_path if current_user
-        %li
-          = link_to "Services", "#" if current_user
-        %li
-          = link_to "Projects", projects_path if current_user
+
+

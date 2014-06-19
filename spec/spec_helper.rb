@@ -4,8 +4,13 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rails'
 require 'database_cleaner'
+require 'sidekiq/testing'
+
+Sidekiq::Testing.inline!
 #require 'capybara/email/rspec'
 Capybara.javascript_driver = :webkit
+Capybara.default_wait_time = 5
+Capybara.ignore_hidden_elements = false
 
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }

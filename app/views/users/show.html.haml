@@ -1,10 +1,14 @@
 .row#profile-details-row
   .col-lg-3.col-sm-12
     %a.thumbnail.img-org{href: ""}
-      %img{alt: "", "data-src" => "holder.js/100%x180"}/
-  .col-lg-8.col-sm-12#user-info
+      = image_tag("#{@user.small_cover}") if @user.small_cover
+  .col-lg-7.col-sm-12#user-info
     %h2 
       = "#{@user.first_name} #{@user.last_name}"
+    - if @user.organization  
+      - if current_user.id == @user.organization.user_id
+        %p
+          = link_to 'Remove Staff', remove_path(id: @user.id), :method => :delete, data: {confirm: 'Are you sure you want to remove this person from your organization?'}
     .row
       .col-lg-4.col-md-3#user-header-info
         %h5.org-head
@@ -20,17 +24,18 @@
             = "#{@user.skills}"
         %btn
           = link_to "Message", new_private_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block' unless current_user
-        %p.pull-right
-          = link_to "Edit Your Profile", edit_user_path(current_user) if @user.organization
-        %p.pull-right
-          = link_to "Edit Your Profile", edit_user_path(current_user) if @user.user_group == "volunteer"
-        %p.pull-right
-          = link_to "Update Your Profile and Find Your Organization", edit_user_path(current_user) if @user.user_group == "nonprofit" && !@user.organization
+  .col-lg-2
+    %p.pull-right
+      = link_to "Edit Your Profile", edit_user_path(current_user) if @user.organization
+    %p.pull-right
+      = link_to "Edit Your Profile", edit_user_path(current_user) if @user.user_group == "volunteer"
+    %p.pull-right
+      = link_to "Update Your Profile and Find Your Organization", edit_user_path(current_user) if @user.user_group == "nonprofit" && !@user.organization
+  .col-lg-2
+    .progress
+      .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "60", :role => "progressbar", :style => "width: #{@user.update_profile_progress}%;"}
+        = "#{@user.update_profile_progress}%"
 
-        - if @user.organization  
-          - if current_user.id == @user.organization.user_id
-            %p.pull-right
-              = link_to 'Remove Staff', remove_path(id: @user.id), :method => :delete, data: {confirm: 'Are you sure you want to remove this person from your organization?'}
   .col-lg-12
     %ul.nav.nav-tabs#myTab
       %li.active
@@ -46,70 +51,29 @@
           %h2 Projects
         .col-lg-6
           - if @user.organization_administrator && current_user == @user
-            = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization.id), class: "btn btn-primary btn-lg pull-right btn-project"
+            = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization_id), class: "btn btn-primary btn-lg pull-right btn-project"
 
     .row
       %ul.nav.nav-tabs
-        %li{:class => ('active' if params[:tab].nil?)}
-          = link_to "Open Applications #{@user.open_applications.count}", user_path(@user)
-        
+        %li{:class => ('active' if params[:tab] == 'open')}
+          = link_to "Open Applications #{@user.open_applications.count}", user_path(@user, tab: 'open'), remote: true
+
         %li{:class => ('active' if params[:tab] == 'in production')}
-          = link_to "Work in Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production') 
+          = link_to "Work in Production #{@user.projects_in_production.count}", user_path(@user, tab: 'in production'), remote: true
+    
+        %li{:class => ('active' if params[:tab] == 'submitted work')}
+          = link_to "Submitted Work #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval'), remote: true
       
-        %li{:class => ('active' if params[:tab] == 'pending completion')}
-          = link_to "Submitted Work #{@user.submitted_work.count}", user_path(@user, tab: 'pending approval')
-      
-        %li{:class => ('active' if params[:tab] == 'completed')}
-          = link_to "Completed Work #{@user.projects_complete.count}", user_path(@user, tab: 'completed')
+        %li{:class => ('active' if params[:tab] == 'completed')}        
+          = link_to "Completed Work #{@user.completed_projects.count}", user_path(@user, tab: 'completed'), remote: true
 
       .col-lg-10
-        - if params[:tab].nil?
-          - @user.applied_to_projects.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'in production'
-          - @user.projects_in_production.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'pending approval'
-          - @user.submitted_work.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - else 
-          - params[:tab] == 'completed'
-          - @user.projects_complete.each do |project|
-            = render 'shared/project_thumbnail', project: project      
-    .row.row-custom
-      .col-lg-12
-        %h2 Bob Smith's Updates
-    .row
-      .col-lg-12
-        .row.row-custom.row-wrapper
-          %div.newsfeed-wrapper
-            .col-lg-2.col-lg-offset-1
-              %img.img-staff-newsfeed{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-            .col-lg-6
-              %div.newsfeed-content-wrapper
-                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-            .col-lg-3
-          .row.row-custom.row-wrapper
-          %div.newsfeed-wrapper
-            .col-lg-2.col-lg-offset-1
-              %div.newsfeed-vote-wrapper
-                %dl.vote-wrapper
-                  %dt.profile-newsfeed-number 3
-                  %dd Votes
-                %dl.comment-wrapper
-                  %dt.profile-newsfeed-number 10 
-                  %dd Comments
-            .col-lg-6
-              %div.newsfeed-content-wrapper
-                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-            .col-lg-3
-
+        %div{:id => "projectsDiv"}
+              
   .tab-pane#about
-
     .row.row-custom
       .col-lg-12
         %h2 About Me
-
     .row#org-data-wrapper 
       .col-lg-12
         .col-lg-8
@@ -121,7 +85,7 @@
               %dt 
                 What I do for 
                 = "#{@user.organization_name}"
-              %dd @user.organization_role
+              %dd= @user.organization_role
 
           %dl 
             %dt Contact Me for: 

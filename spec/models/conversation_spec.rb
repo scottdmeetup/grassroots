@@ -75,17 +75,31 @@ describe Conversation do
   end
 
   describe "#with_opportunity_to_drop_job" do
-    it "returns true if the conversation has a contract that is only active" do
+    it "returns true if the conversation has a contract that is only active true, work_submitted false and created at less than 5 days ago" do
       convo = Conversation.create
       bob = Fabricate(:user, first_name: "Bob", last_name: "Smith", user_group: "volunteer")
       alice = Fabricate(:user, first_name: "Alice", last_name: "Smith", user_group: "nonprofit")
       huggey_bear = Fabricate(:organization, user_id: alice.id)
       word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "pending completion")
       message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Project complete", body: "this project is done", conversation_id: convo.id)
-      contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: huggey_bear.id, work_submitted: nil)
+      contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: huggey_bear.id, work_submitted: false, updated_at: 4.day.ago)
       convo.update_columns(contract_id: contract.id)      
 
       expect(convo.with_opportunity_to_drop_job).to eq(true)
+    end
+
+    it "returns false if the conversation has a contract that is only active, work submitted false and created more than 5 days ago" do
+      convo = Conversation.create
+      bob = Fabricate(:user, first_name: "Bob", last_name: "Smith", user_group: "volunteer")
+      alice = Fabricate(:user, first_name: "Alice", last_name: "Smith", user_group: "nonprofit")
+      huggey_bear = Fabricate(:organization, user_id: alice.id)
+      word_press = Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "pending completion")
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, subject: "Project complete", body: "this project is done", conversation_id: convo.id)
+      contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, 
+        active: true, project_id: word_press.id, work_submitted: false, created_at: 6.days.ago)
+      convo.update_columns(contract_id: contract.id)      
+
+      expect(convo.with_opportunity_to_drop_job).to eq(false)
     end
   end
 end

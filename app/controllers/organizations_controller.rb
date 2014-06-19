@@ -1,21 +1,42 @@
 class OrganizationsController < ApplicationController
   def show
     @organization = Organization.find(params[:id])
+
+    @open_params = params[:tab] == 'open'
+    @production_params = params[:tab] == 'in production' 
+    @work_submitted_params = params[:tab] == 'pending approval'
+    @completed_params = params[:tab] == 'completed' 
+    @unifinished_params = params[:tab] == 'unfinished' 
+    @expired_params = params[:tab] == 'expired' 
+
+    @open_projects = @organization.open_projects
+    @in_production_projects = @organization.in_production_projects
+    @projects_with_work_submitted = @organization.projects_with_work_submitted
+    @completed_projects = @organization.completed_projects
+    @unfinished_projects = @organization.unfinished_projects
+    @expired_projects = @organization.expired_projects
+
+
+    respond_to do |format|
+      format.html do
+      end
+      format.js
+    end
   end
 
   def index
     @organizations = Organization.all
   end
 
-  def new
-    @organization = Organization.new
-  end
-
-  def create
-    @organization = Organization.new(organization_params.merge!(user_id: current_user.id))
-    @organization.save
-    current_user.update_columns(organization_id: @organization.id)
-    redirect_to organization_path(@organization.id)
+  def search
+    filter = {cause: params[:cause]} if params[:cause]
+    
+    if filter != nil
+      @results = Organization.where(filter).to_a
+      @results.sort! {|x,y| x.name <=> y.name }
+    else
+      @results = Organization.search_by_name(params[:search_term])
+    end 
   end
 
 private

@@ -19,6 +19,14 @@ jQuery(function() {
     source: $('#user_organization_name_box').data('autocomplete-source')
   });
  });
+
+$(document).ready(function() {
+  return $('#user_skills').autocomplete({
+    source: $('#user_skills').data('autocomplete-source')
+  });
+});
+
+
 $(document).ready(function() {
   $('.navbar-toggle').on('click', function() {
     if($('.navbar-collapse').hasClass('in')) {
@@ -26,10 +34,21 @@ $(document).ready(function() {
       $('.navbar-toggle').removeClass('navbar-toggle-collapse'); 
     }
     else {
-    $('#active-pane').addClass('col-xs-offset-4');
-    $('.navbar-toggle').addClass('navbar-toggle-collapse'); 
+      $('#active-pane').addClass('col-xs-offset-4');
+      $('.navbar-toggle').addClass('navbar-toggle-collapse'); 
     }
   });
+
+
+  //$('#open_applications').on('click', function() {
+  //  $.ajax({
+  //    type: 'GET', 
+  //    url: '/user/#{id}'
+  //  }).done(function(open_projects) {
+  //    $('#open_applications').replaceWith(open_projects);
+  //  });
+  //});
 });
+
 
 

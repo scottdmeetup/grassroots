@@ -1,34 +1,36 @@
 class User < ActiveRecord::Base
+
   has_secure_password validations: false
   belongs_to :organization
-  #belongs_to :project
-  #has_many :conversations
+  has_one :administrated_organization, foreign_key: 'user_id', class_name: 'Organization'
   has_many :sent_messages, class_name: 'PrivateMessage', foreign_key: 'sender_id'
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
   
-  has_many :received_applications, class_name: 'VolunteerApplication', foreign_key: 'administrator_id'
+  has_many :administrated_projects, through: :administrated_organization, source: :projects
+
+  has_many :volunteer_requests,  class_name: 'VolunteerApplication', foreign_key: 'administrator_id'
   has_many :projects, through: :volunteer_applications, source: :administrator
-
-  has_many :sent_applications, class_name: 'VolunteerApplication', foreign_key: 'applicant_id'
-  has_many :projects, through: :volunteer_applications, source: :applicant
-  
-  has_many :contracts
-  has_many :projects, through: :contracts
-
-  has_many :jobs, class_name: 'Contract', foreign_key: 'volunteer_id'
-  has_many :projects, through: :contracts, source: :volunteer
-  has_many :procurements, class_name: 'Contract', foreign_key: 'contractor_id'
+  has_many :delegated_projects, class_name: "Contract", foreign_key: 'contractor_id'
   has_many :projects, through: :contracts, source: :contractor
+  
+  has_many :requests_to_volunteer, class_name: 'VolunteerApplication', foreign_key: 'applicant_id'
+  has_many :projects, through: :volunteer_applications, source: :applicant
+  has_many :assignments, class_name: "Contract", foreign_key: 'volunteer_id'
+  has_many :projects, through: :contracts, source: :volunteer
+
+  has_many :questions
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
 
+  before_create :generate_token
+
   def open_applications
-    sent_applications.where(accepted: nil, rejected: nil).to_a
+    requests_to_volunteer.where(accepted: nil, rejected: nil).to_a
   end
 
-  def projects_complete
-    contracts_reflecting_completed_work = Contract.where(volunteer_id: self.id, active: false, complete: true).to_a
+  def completed_projects  
+    contracts_reflecting_completed_work = assignments.where(active: false, complete: true).to_a
     completed_projects = contracts_reflecting_completed_work.map do |member|
       Project.find(member.project_id)
     end
@@ -44,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def projects_in_production
-    contracts_reflecting_work_in_production = Contract.where(volunteer_id: self.id, active: true, work_submitted: nil).to_a
+    contracts_reflecting_work_in_production = Contract.where(volunteer_id: self.id, active: true, work_submitted: false).to_a
     in_production = contracts_reflecting_work_in_production.map do |member|
       Project.find(member.project_id)
     end
@@ -65,10 +67,10 @@ class User < ActiveRecord::Base
   end
 
   def user_conversations
-    collection = self.received_messages.select(:conversation_id).distinct
+    collection = self.received_messages.select(:conversation_id)
     all_conversations = collection.map do |member|
       convo_id = member.conversation_id
-      Conversation.find_by(id: convo_id)
+      Conversation.find(convo_id)
     end  
     all_conversations.sort! {|a, b| a.updated_at <=> b.updated_at}
   end
@@ -77,8 +79,7 @@ class User < ActiveRecord::Base
     organization.name
   end
 
-  def applied_to_projects
-    open_applications = sent_applications.where(applicant_id: self.id, rejected: nil, accepted: nil).to_a
+  def projects_with_open_applications
     open_applications.map do |member|
       Project.find(member.project_id)
     end
@@ -87,5 +88,22 @@ class User < ActiveRecord::Base
   def drop_contract(agreement)
     agreement.update_columns(volunteer_id: nil, active: nil)
   end
+
+  def generate_token
+    self.new_password_token = SecureRandom.urlsafe_base64
+  end
+
+  def update_profile_progress
+    profile_completeness = [self.email, self.first_name, self.last_name, self.skills, 
+      self.interests, self.contact_reason, self.state_abbreviation, self.city, self.bio, self.position]
+    progress = 0
+    profile_completeness.each do |field|
+      progress += 1 unless field.nil? || field == ""
+    end
+    entirety = progress * 100
+    self.profile_progress_status = entirety / profile_completeness.count
+  end
+
+private
 
 end

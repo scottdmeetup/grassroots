@@ -113,12 +113,77 @@ describe Organization do
       grant_writing = Fabricate(:project, title: "need Grants", user_id: alice.id, organization_id: huggey_bear.id)
       professional_site = Fabricate(:project, title: "need a site", user_id: alice.id, organization_id: huggey_bear.id)
 
-      contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id)
-      contract2 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: logo.id)
+      contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: false)
+      contract2 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: logo.id, work_submitted: false)
       contract3 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
       contract4 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: grant_writing.id, work_submitted: true)
 
       expect(huggey_bear.in_production_projects).to eq([word_press, logo])
+    end
+  end
+
+  describe "#expired_projects" do
+
+    before do
+      huggey_bear.update_columns(user_id: alice.id)
+    end
+
+    it "returns all projects that have active contracts with no work submitted" do
+      
+      accounting = Fabricate(:project, title: "didn't do my taxes", organization_id: huggey_bear.id, deadline: Date.today + 1.month)
+      grant_writing = Fabricate(:project, title: "need Grants", organization_id: huggey_bear.id, deadline: Date.yesterday)
+      word_press = Fabricate(:project, title: "word press website", organization_id: huggey_bear.id, deadline: 2.day.ago)
+
+      #contract1 =  Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: false)
+      #contract2 = Fabricate(:contract, contractor_id: cat.id, volunteer_id: bob.id, active: nil, project_id: accounting.id)
+      #contract3 = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: grant_writing.id, work_submitted: true)
+
+      expect(huggey_bear.reload.expired_projects).to eq([grant_writing, word_press])
+    end
+  end
+
+  describe ".search_by_name" do
+    let!(:huggey_bears) {Fabricate(:organization, name: "Huggey Bear Land", cause: "Animal Rights", ruling_year: 1998, 
+      mission_statement: "We want to give everyone a huggey bear in their sad times", guidestar_membership: nil, 
+      ein: "192512653-6", street1: "2998 Hansen Heights", street2: nil, city: "New York", 
+      state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
+      budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
+      goal: "We want 1 out of every 5 Americans to have a huggey bear.")}
+
+    let!(:amnesty_international) {Fabricate(:organization, name: "Amnesty International", cause: "Human Rights", ruling_year: 1912,
+      mission_statement: "We want to see human rights spread across the globe -- chyea.", guidestar_membership: nil, 
+      ein: "987931299-1", street1: "3293 Dunnit Hill", street2: nil, city: "New York", 
+      state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
+      budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
+      goal: "Every year we want at least one thousand human rights activists released from prisons around the world.")}
+
+    let!(:global_giving) {Fabricate(:organization, name: "Global Giving", cause: "Social Good", ruling_year: 2000, 
+      mission_statement: "We make it rain on Nonprofits, erreday", guidestar_membership: nil, 
+      ein: "222222222-2", street1: "2222 Rick Ross", street2: nil, city: "DC", 
+      state_id: 0, zip: "28200-1366", ntee_major_category_id: 0, funding_method: nil, user_id: nil,
+      budget: "$22,000,000.00", contact_number: "555-555-5555", contact_email: "test@example.com",
+      goal: "We want each of our nonprofit partners to raise at least $ 5,000.00 from our platform a year.")}
+
+    let!(:the_bears) {Fabricate(:organization, name: "The Bears")}
+
+    it "should return an empty array if the user submits no parameters" do
+      expect(Organization.search_by_name("")).to eq([])
+    end
+
+    it "should return an empty array if it finds no organizations" do
+      expect(Organization.search_by_name("red cross")).to eq([])
+    end
+
+    it "should return an array of one organizations if it is an exact match" do
+      expect(Organization.search_by_name("Global Giving")).to eq([global_giving])
+    end
+
+    it "should return an array of one organizations for a partial match" do 
+      expect(Organization.search_by_name("glo")).to eq([global_giving])
+    end
+    
+    it "should return an array of all matches oredered by created_at" do
+      expect(Organization.search_by_name("bear")).to eq([huggey_bears, the_bears])
     end
   end
 end

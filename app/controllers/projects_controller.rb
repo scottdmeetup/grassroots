@@ -2,7 +2,10 @@ class ProjectsController < ApplicationController
   before_action :current_user
 
   def index
-    @projects = Project.all
+    open_projects = Project.where(state: "open").to_a
+    @projects = open_projects.select do |member|
+      member.state == "open" && member.deadline > Date.today
+    end
   end
 
   def show
@@ -10,7 +13,7 @@ class ProjectsController < ApplicationController
   end
 
   def search
-    if params[:search_term]
+    if params[:search_term] && params[:search_term] != ""
       search_term = params[:search_term]
       @results_by_title = Project.where("title LIKE ?", "%#{search_term}%")
       @results_by_description = Project.where("description LIKE ?", "%#{search_term}%")

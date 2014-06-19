@@ -4,7 +4,25 @@ class UsersController < ApplicationController
   end
 
   def show
+    
     @user = User.find(params[:id])
+    @open_params = params[:tab] == 'open'
+    @production_params = params[:tab] == 'in production' 
+    @work_submitted_params = params[:tab] == 'pending approval'
+    @completed_params = params[:tab] == 'completed' 
+    @unifinished_params = params[:tab] == 'unfinished' 
+    @expired_params = params[:tab] == 'expired' 
+
+    @applications = @user.projects_with_open_applications
+    @projects_in_production = @user.projects_in_production
+    @submitted_work = @user.submitted_work
+    @completed_projects = @user.completed_projects
+
+    respond_to do |format|
+      format.html do
+      end
+      format.js
+    end
   end
 
   def new
@@ -14,6 +32,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      AppMailer.delay.send_welcome_email(@user.id)
       session[:user_id] = @user.id
       redirect_to user_path(@user.id)
     else
@@ -29,10 +48,27 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     organization = Organization.find_by(name: params[:user][:organization_name_box])
-    if organization.nil?
+    if an_unaffiliated_nonprofit_user_updates_profile?(organization)
+      @user.update_columns(user_params.merge!(organization_administrator: true))
+      if uploading_image?
+        @user.small_cover = params[:user][:small_cover].original_filename
+        @user.update_columns(small_cover: @user.small_cover)
+      end
+      redirect_to new_organization_admin_organization_path
+    elsif a_nonprofit_staff_member_updates_profile?(organization)
       @user.update_columns(user_params)
-      redirect_to new_organization_path
-    elsif @user.update_columns(user_params.merge!(organization_id: organization.id))
+      if uploading_image?
+        @user.small_cover = params[:user][:small_cover].original_filename
+        @user.update_columns(small_cover: @user.small_cover)
+      end
+      flash[:notice] = "You have updated your profile successfully."
+      redirect_to user_path(@user.id)
+    elsif a_volunteer_updates_profile?
+      @user.update_columns(user_params)
+      if uploading_image?
+        @user.small_cover = params[:user][:small_cover].original_filename
+        @user.update_columns(small_cover: @user.small_cover)
+      end
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
     else
@@ -48,11 +84,41 @@ class UsersController < ApplicationController
     redirect_to organization_path(organization.id)
   end
 
+  def search
+
+    filter = {skills: params[:skills]} if params[:skills]
+    filter = {interests: params[:interests]}  if params[:interests]
+    filter = {state_abbreviation: params[:state_abbreviation]} if params[:state_abbreviation]
+    filter = {city: params[:city]} if params[:city]
+    filter = {position: params[:position]} if params[:position]
+    filter = {interests: params[:interests]} if params[:interests]
+    
+    if filter != nil
+      @results = User.where(filter).to_a
+      @results.sort! {|x,y| x.last_name <=> y.last_name }
+    end 
+  end
+
 private
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, 
-      :organization_id, :bio, :skills, :interests, :position, :user_group)
+      :organization_id, :bio, :skills, :interests, :position, :user_group, :contact_reason)
   end
 
+  def uploading_image?
+    params[:user][:small_cover]
+  end
+
+  def an_unaffiliated_nonprofit_user_updates_profile?(organization)
+    organization.nil? && current_user.user_group == "nonprofit"
+  end
+ 
+  def a_nonprofit_staff_member_updates_profile?(organization)
+    current_user.user_group == "nonprofit" && organization
+  end
+ 
+  def a_volunteer_updates_profile?
+    current_user.user_group == "volunteer"
+  end
 end

@@ -18,7 +18,7 @@
             %label.control-label.col-lg-1 Body:
             = f.text_area :body, cols: 6, rows: 6, class: "form-control"
             = hidden_field_tag 'project_id', @project.id if @project
-            = hidden_field_tag 'contract_id', @contract.id if @contract
+            = hidden_field_tag 'id', @contract.id if @contract
             
           .form-group 
             = f.submit "Create", class: "btn btn-lg btn-primary pull-right"

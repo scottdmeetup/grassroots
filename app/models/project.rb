@@ -1,19 +1,6 @@
 class Project < ActiveRecord::Base
   belongs_to :organization
-  belongs_to :administrator, class_name: 'Organization', foreign_key: 'user_id'
-
-  #why do I need: 
-  #has_many :volunteer_applications
-  #has_many :users, through: :volunteer_applications
-  #to make my tests to pass for:
-  #it { should have_many(:applicants)}
-  #it { should have_many(:applicants).through(:volunteer_applications)}
-  # the same question goes for having many volunteers, 
-  # why do I need has many contracts, users through contracts
-  #in all of the above cases i get this error message: 
-  #Failure/Error: it { should have_many(:volunteers)}
-  # NoMethodError:
-  #  undefined method `klass' for nil:NilClass
+  belongs_to :administrator, foreign_key: 'user_id', class_name: 'Organization'
 
   has_many :volunteer_applications
   has_many :users, through: :volunteer_applications
@@ -52,7 +39,7 @@ class Project < ActiveRecord::Base
   end
 
   def in_production?
-    self.contracts.where(active: true, work_submitted: nil, project_id: self.id).present?
+    self.contracts.where(active: true, work_submitted: false, project_id: self.id).present?
   end
 
   def has_submitted_work?
@@ -64,6 +51,10 @@ class Project < ActiveRecord::Base
   end
 
   def in_production_contract_id
-    self.contracts.where(active: true, work_submitted: nil, project_id: self.id).first
+    self.contracts.where(active: true, work_submitted: false, project_id: self.id).first
+  end
+
+  def is_unfinished?
+    self.contracts.where(active: false, incomplete: true).present?
   end
 end

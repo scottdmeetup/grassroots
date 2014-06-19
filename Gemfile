@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.0.0'
 
 gem 'rails', '4.0.2'
 gem 'sass-rails', '~> 4.0.0'
@@ -13,6 +14,10 @@ gem 'haml-rails'
 gem 'jbuilder', '~> 1.2'
 gem "bcrypt-ruby"
 gem 'bootstrap_form'
+gem 'sidekiq'
+gem 'unicorn'
+gem 'paratrooper'
+gem 'carrierwave'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -44,6 +49,8 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'capybara'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
+  gem 'capybara-webkit'
 end

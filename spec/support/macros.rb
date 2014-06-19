@@ -17,3 +17,4 @@ end
 def sign_out
   visit log_out_path
 end
+

@@ -1,7 +1,9 @@
 module ApplicationHelper
 
   def skill_set
-    ["Grant Writing", "Web Development", "Graphic Design", "Business Planning", "Accounting"]
+    ["Grant Writing", "Web Development", "Graphic Design",
+     "Business Planning", "Accounting", "Social Media", "Blogging", 
+      "Editing", "Writing", "Business Developemnt", "Marketing"]
   end
 
   def fix_date_time(dt)

@@ -53,6 +53,7 @@ describe ContractsController, :type => :controller do
     before do
       set_current_user(alice)
       huggey_bear.update_columns(user_id: alice.id)
+      alice.update_columns(organization_id: huggey_bear.id)
     end
 
     it "renders the conversation show view" do
@@ -93,7 +94,7 @@ describe ContractsController, :type => :controller do
       application3 = Fabricate(:volunteer_application, applicant_id: dan.id, administrator_id: alice.id, project_id: word_press.id) 
       conversation3 = Fabricate(:conversation, volunteer_application_id: application3.id) 
       message3 = Fabricate(:private_message, recipient_id: alice.id, sender_id: dan.id, conversation_id: conversation3.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
-      post :create, volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id
+      post :create, volunteer_application_id: conversation1.volunteer_application_id, conversation_id: conversation1.id
 
       expect(application2.reload.rejected).to eq(true)
       expect(application3.reload.rejected).to eq(true)
@@ -132,7 +133,7 @@ describe ContractsController, :type => :controller do
     it "associates the project with the volunteer" do
       post :create, volunteer_application_id: conversation.volunteer_application_id, conversation_id: conversation.id
 
-      expect(word_press.volunteers).to eq([bob])
+      expect(word_press.reload.volunteers).to eq([bob])
     end
 
     it "moves the project's state into, in production" do
@@ -164,6 +165,44 @@ describe ContractsController, :type => :controller do
 
       expect(huggey_bear.in_production_projects).to eq([word_press])
     end
+
+    it "removes the application ids from the other conversations with rejected volunteer application ids" do
+      application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id) 
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+
+      application2 = Fabricate(:volunteer_application, applicant_id: cat.id, administrator_id: alice.id, project_id: word_press.id)
+      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id)  
+      message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: cat.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+
+      application3 = Fabricate(:volunteer_application, applicant_id: dan.id, administrator_id: alice.id, project_id: word_press.id) 
+      conversation3 = Fabricate(:conversation, volunteer_application_id: application3.id) 
+      message3 = Fabricate(:private_message, recipient_id: alice.id, sender_id: dan.id, conversation_id: conversation3.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+      post :create, volunteer_application_id: conversation1.volunteer_application_id, conversation_id: conversation1.id
+
+      expect(conversation2.reload.volunteer_application_id).to eq(nil)
+      expect(conversation3.reload.volunteer_application_id).to eq(nil)
+      expect(conversation1.reload.volunteer_application_id).to eq(nil)
+    end
+
+    it "does not assign the contract value to any of the conversations which previously contained the rejected volunteer applications" do
+      application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id) 
+      conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 
+      message1 = Fabricate(:private_message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+
+      application2 = Fabricate(:volunteer_application, applicant_id: cat.id, administrator_id: alice.id, project_id: word_press.id)
+      conversation2 = Fabricate(:conversation, volunteer_application_id: application2.id)  
+      message2 = Fabricate(:private_message, recipient_id: alice.id, sender_id: cat.id, conversation_id: conversation2.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+
+      application3 = Fabricate(:volunteer_application, applicant_id: dan.id, administrator_id: alice.id, project_id: word_press.id) 
+      conversation3 = Fabricate(:conversation, volunteer_application_id: application3.id) 
+      message3 = Fabricate(:private_message, recipient_id: alice.id, sender_id: dan.id, conversation_id: conversation3.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+      post :create, volunteer_application_id: conversation1.volunteer_application_id, conversation_id: conversation1.id
+
+      expect(conversation1.reload.contract_id).to eq(1)
+      expect(conversation2.reload.contract_id).to eq(nil)
+      expect(conversation3.reload.contract_id).to eq(nil)
+    end    
   end
 
   describe "DELETE destroy" do

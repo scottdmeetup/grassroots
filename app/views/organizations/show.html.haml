@@ -13,8 +13,8 @@
         %h5.org-head 
           %strong 
             = "#{@organization.cause}"
-        %p.pull-right
-          = link_to "Edit Organization Profile", edit_organization_admin_organization_path(@organization) if current_user.organization_administrator && current_user.organization_id == @organization.id
+      %p.pull-right
+        = link_to "Edit Organization Profile", edit_organization_admin_organization_path(@organization) if current_user.organization_administrator && current_user.organization_id == @organization.id
   .col-lg-12
     %ul.nav.nav-tabs#myTab
       %li.active
@@ -34,66 +34,26 @@
 
     .row
       %ul.nav.nav-tabs
-        %li{:class => ('active' if params[:tab].nil?)}
-          = link_to "Available Projects #{@organization.open_projects.count}", organization_path(@organization)
+        %li{:class => ('active' if params[:tab] == 'open')}
+          = link_to "Available Projects #{@organization.open_projects.count}", organization_path(@organization, tab: 'open'), remote: true
         
         %li{:class => ('active' if params[:tab] == 'in production')}
-          = link_to "Projects in Production #{@organization.in_production_projects.count}",  organization_path(@organization, tab: 'in production') 
+          = link_to "Projects in Production #{@organization.in_production_projects.count}",  organization_path(@organization, tab: 'in production'), remote: true
       
         %li{:class => ('active' if params[:tab] == 'pending approval')}
-          = link_to "Completion Request #{@organization.projects_with_work_submitted.count}", organization_path(@organization, tab: 'pending approval')
+          = link_to "Completion Request #{@organization.projects_with_work_submitted.count}", organization_path(@organization, tab: 'pending approval'), remote: true
       
         %li{:class => ('active' if params[:tab] == 'completed')}
-          = link_to "Completed Projects #{@organization.completed_projects.count}", organization_path(@organization, tab: 'completed')
+          = link_to "Completed Projects #{@organization.completed_projects.count}", organization_path(@organization, tab: 'completed'), remote: true
       
         %li{:class => ('active' if params[:tab] == 'unfinished')}
-          = link_to "Unfinished #{@organization.unfinished_projects.count}", organization_path(@organization, tab: 'unfinished')
+          = link_to "Unfinished #{@organization.unfinished_projects.count}", organization_path(@organization, tab: 'unfinished'), remote: true
+
+        %li{:class => ('active' if params[:tab] == 'expired')}
+          = link_to "Expired #{@organization.expired_projects.count}", organization_path(@organization, tab: 'expired'), remote: true
 
       .col-lg-10
-        - if params[:tab].nil?
-          - @organization.open_projects.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'in production'
-          - @organization.in_production_projects.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'pending approval'
-          - @organization.projects_with_work_submitted.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'completed'
-          - @organization.completed_projects.each do |project|
-            = render 'shared/project_thumbnail', project: project
-        - elsif params[:tab] == 'unfinished'
-          - @organization.unfinished_projects.each do |project|  
-            = render 'shared/project_thumbnail', project: project
-
-    .row.row-custom
-      .col-lg-12
-        %h2 Amnesty International's Updates
-
-    .row
-      .col-lg-12
-        .row.row-custom.row-wrapper
-          %div.newsfeed-wrapper
-            .col-lg-2.col-lg-offset-1
-              %img.img-staff-newsfeed{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-            .col-lg-6
-              %div.newsfeed-content-wrapper
-                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-            .col-lg-3
-          .row.row-custom.row-wrapper
-          %div.newsfeed-wrapper
-            .col-lg-2.col-lg-offset-1
-              %div.newsfeed-vote-wrapper
-                %dl.vote-wrapper
-                  %dt.profile-newsfeed-number 3
-                  %dd Votes
-                %dl.comment-wrapper
-                  %dt.profile-newsfeed-number 10 
-                  %dd Comments
-            .col-lg-6
-              %div.newsfeed-content-wrapper
-                %p There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.
-            .col-lg-3
+        %div{:id => "projectsDiv"}
 
   .tab-pane#overview
     .row.row-custom
@@ -146,11 +106,3 @@
       .row#staff-wrapper
         - @organization.users.each do |user|
           = render 'shared/user_thumbnail', user: user
-
-    .row.row-custom
-      .col-lg-12
-        %h2 Board
-        
-
-    .container-wrapper 
-      .row#staff-wrapper

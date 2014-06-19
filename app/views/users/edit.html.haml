@@ -17,6 +17,8 @@
               %div.edit-input-wrapper
                 = f.label :email
                 = f.text_field :email
+              %div.edit-input-wrapper
+                = f.file_field :small_cover
             %div.edit-fieldset-wrapper
               %h3 About Your Role
               %div.edit-input-wrapper
@@ -24,18 +26,22 @@
                 = f.text_field :position
               %div.edit-input-wrapper
                 = f.label :skills
-                = f.text_field :skills
+                = f.text_field :skills, data: {autocomplete_source: skill_set.sort}
               %div.edit-input-wrapper
                 = f.label :interests
                 = f.text_field :interests
+              %div.edit-input-wrapper
+                = f.label :contact_reason, "Contact me for:"
+                = f.text_area :contact_reason, cols: 2, rows: 2, class: "form-control"
               %div.edit-input-wrapper 
                 = f.label :bio
                 = f.text_area :bio, cols: 4, rows: 4, class: "form-control"
       .col-lg-7
         .form-group
           .field#edit-organization-wrapper
+          - if @user.user_group == "nonprofit"
             %h3 Join or Create Your Nonprofit
-            = f.label :organization_name_box
+            = f.label :organization_name_box 
             = f.text_field :organization_name_box, data: {autocomplete_source: Organization.order(:name).map(&:name)}
       .col-lg-12  
         .form-group        
