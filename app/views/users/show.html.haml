@@ -1,7 +1,7 @@
 .row#profile-details-row
   .col-lg-3.col-sm-12
     %a.thumbnail.img-org{href: ""}
-      %img{alt: "", "data-src" => "holder.js/100%x180"}/
+      = image_tag("#{@user.small_cover}") if @user.small_cover
   .col-lg-7.col-sm-12#user-info
     %h2 
       = "#{@user.first_name} #{@user.last_name}"

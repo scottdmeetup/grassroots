@@ -48,16 +48,27 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     organization = Organization.find_by(name: params[:user][:organization_name_box])
-    
-    if unaffiliated_nonprofit_user_updates_profile(organization)
+    if an_unaffiliated_nonprofit_user_updates_profile?(organization)
       @user.update_columns(user_params.merge!(organization_administrator: true))
+      if uploading_image?
+        @user.small_cover = params[:user][:small_cover].original_filename
+        @user.update_columns(small_cover: @user.small_cover)
+      end
       redirect_to new_organization_admin_organization_path
-    elsif nonprofit_staff_member_updates_profile(organization)
+    elsif a_nonprofit_staff_member_updates_profile?(organization)
       @user.update_columns(user_params)
+      if uploading_image?
+        @user.small_cover = params[:user][:small_cover].original_filename
+        @user.update_columns(small_cover: @user.small_cover)
+      end
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
-    elsif volunteer_updates_profile
+    elsif a_volunteer_updates_profile?
       @user.update_columns(user_params)
+      if uploading_image?
+        @user.small_cover = params[:user][:small_cover].original_filename
+        @user.update_columns(small_cover: @user.small_cover)
+      end
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
     else
@@ -95,15 +106,19 @@ private
       :organization_id, :bio, :skills, :interests, :position, :user_group, :contact_reason)
   end
 
-  def unaffiliated_nonprofit_user_updates_profile(organization)
+  def uploading_image?
+    params[:user][:small_cover]
+  end
+
+  def an_unaffiliated_nonprofit_user_updates_profile?(organization)
     organization.nil? && current_user.user_group == "nonprofit"
   end
  
-  def nonprofit_staff_member_updates_profile(organization)
+  def a_nonprofit_staff_member_updates_profile?(organization)
     current_user.user_group == "nonprofit" && organization
   end
  
-  def volunteer_updates_profile
+  def a_volunteer_updates_profile?
     current_user.user_group == "volunteer"
   end
 end
