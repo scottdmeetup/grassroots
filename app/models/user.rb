@@ -18,14 +18,12 @@ class User < ActiveRecord::Base
   has_many :assignments, class_name: "Contract", foreign_key: 'volunteer_id'
   has_many :projects, through: :contracts, source: :volunteer
 
+  has_many :questions
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
 
   before_create :generate_token
-
-
-
 
   def open_applications
     requests_to_volunteer.where(accepted: nil, rejected: nil).to_a

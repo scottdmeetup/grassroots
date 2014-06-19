@@ -8,6 +8,7 @@ describe User do
   it { should have_many(:volunteer_requests)}
   it { should have_many(:assignments)}
   it { should have_many(:delegated_projects)}
+  it { should have_many(:questions)}
 
   it "generates a random token when the user is created for password reset" do
     alice = Fabricate(:user, user_group: "nonprofit")
