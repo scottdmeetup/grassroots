@@ -1,0 +1,23 @@
+%p.pull-right
+  = link_to 'edit this question', edit_question_path(@question) if @question.author == current_user
+
+%h3= @question.title
+
+%p
+  = @question.description
+%h5 Comments:
+- @question.comments.each do |comment|
+  = render 'comments/comment', comment: comment
+%h5 Comment below:
+= form_for [@question, @comment] do |f|
+  = f.text_area :content
+  %br/
+  = f.submit "comment on the question", class: "btn btn-primary"
+%h3 Answers:
+- @answers.each do |answer|
+  = render 'answers/answer', answer: answer
+%h3 Answer below:
+= form_for [@question, @answer] do |f|
+  = f.text_area :description
+  %br/
+  = f.submit "provid an answer", class: "btn btn-primary"

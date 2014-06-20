@@ -1,0 +1,7 @@
+.btn-group.nav_item
+  = link_to '#', class: 'btn btn-default dropdown-toggle', 'data-toggle' => 'dropdown' do
+    Categories
+    %span.caret
+.btn-group.nav_item
+  .nav_item
+    = link_to 'Ask a question', new_question_path, class: "btn btn-success"

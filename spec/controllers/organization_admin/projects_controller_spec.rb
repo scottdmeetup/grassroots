@@ -42,7 +42,7 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
         post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site")
         expect(Project.count).to eq(1)
       end
-      it "redirects to the organization administrator to the view project's show view " do
+      it "redirects to the organization administrator to the view project's show view" do
         huggey_bears = Fabricate(:organization, name: "Huggey Bears")
         alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
         huggey_bears.organization_administrator = alice

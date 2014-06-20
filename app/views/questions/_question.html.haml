@@ -1,0 +1,14 @@
+.row.row-custom
+  .span0
+    %i.icon-arrow-up
+    %i.icon-arrow-down
+  .span8
+    %h4= link_to question.title, question_path(question.id) 
+    %p= question.description
+    %p
+      %span.quiet posted by
+      = link_to "#{question.author.first_name} #{question.author.last_name}", user_path(question.author.id)
+      %small
+        at #{fix_date_time(question.created_at)}
+    %small
+      %span

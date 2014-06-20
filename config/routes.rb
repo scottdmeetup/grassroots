@@ -49,5 +49,12 @@ Grassroots::Application.routes.draw do
   resources :password_resets, only: [:show, :create]
   get 'expired_token', to: 'password_resets#expired_token'
 
-  resources :questions, only: [:index, :show]
+  resources :questions, only: [:index, :show, :new, :create, :edit] do
+    #post 'comments', to: 'comments#create'
+    resources :comments, only: [:create]
+    resources :answers, only: [:create] do
+      resources :comments, only: [:create]
+      #post 'comments', to: 'comments#create'
+    end
+  end
 end

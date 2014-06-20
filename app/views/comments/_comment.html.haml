@@ -1,0 +1,9 @@
+.row.row-custom
+  %p
+    = "#{comment.content}"
+    %p
+      by
+      = link_to comment.author.first_name, user_path(comment.author)
+    %small 
+      created at
+      = "#{fix_date_time(comment.created_at)}"

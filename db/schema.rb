@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620113145) do
+ActiveRecord::Schema.define(version: 20140620165810) do
+
+  create_table "answers", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "user_id"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "attachinary_files", force: true do |t|
     t.integer  "attachinariable_id"
@@ -28,6 +36,26 @@ ActiveRecord::Schema.define(version: 20140620113145) do
   end
 
   add_index "attachinary_files", ["attachinariable_type", "attachinariable_id", "scope"], name: "by_scoped_parent"
+
+  create_table "categories", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "categorizations", force: true do |t|
+    t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "question_id"
+  end
+
+  create_table "comments", force: true do |t|
+    t.integer  "question_id"
+    t.integer  "answer_id"
+    t.integer  "user_id"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "contracts", force: true do |t|
     t.integer  "contractor_id"

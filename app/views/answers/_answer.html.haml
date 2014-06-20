@@ -1,0 +1,17 @@
+.row.row-custom
+  %p
+    = "#{answer.description}"
+    %p
+      by
+      = link_to answer.author.first_name, user_path(answer.author)
+    %small 
+      created at
+      = "#{fix_date_time(answer.created_at)}"
+  %h5 Comments:
+  - answer.comments.each do |comment|
+    = render 'comments/comment', comment: comment
+  %h5 Comment below:
+  = form_for [@question, answer, @comment] do |f|
+    = f.text_area :content
+    %br/
+    = f.submit "comment on this answer", class: "btn btn-primary"
