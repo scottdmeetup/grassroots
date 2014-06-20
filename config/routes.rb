@@ -4,6 +4,8 @@ Grassroots::Application.routes.draw do
   post 'log_in', to: 'sessions#create'
   get 'log_out', to: 'sessions#destroy'
 
+  mount Attachinary::Engine => "/attachinary"
+
   namespace :organization_admin do
     resources :projects, only: [:new, :create, :edit, :update]
     resources :organizations, only: [:edit, :update, :new, :create]

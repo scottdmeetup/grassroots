@@ -17,7 +17,8 @@ gem 'bootstrap_form'
 gem 'sidekiq'
 gem 'unicorn'
 gem 'paratrooper'
-gem 'carrierwave'
+gem 'cloudinary'
+gem 'attachinary'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

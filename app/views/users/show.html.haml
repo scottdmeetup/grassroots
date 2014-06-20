@@ -1,7 +1,8 @@
 .row#profile-details-row
   .col-lg-3.col-sm-12
     %a.thumbnail.img-org{href: ""}
-      = image_tag("#{@user.small_cover}") if @user.small_cover
+      - if @user.avatar?
+        = cl_image_tag(@user.avatar.path, { size: '150x150' })
   .col-lg-7.col-sm-12#user-info
     %h2 
       = "#{@user.first_name} #{@user.last_name}"

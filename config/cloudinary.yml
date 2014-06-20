@@ -1,0 +1,19 @@
+---
+development:
+  cloud_name: grassroots
+  api_key: '874789879283176'
+  api_secret: D1q37K9OmU-ABJtjdQXtWnNt-H4
+  enhance_image_tag: true
+  static_image_support: false
+production:
+  cloud_name: grassroots
+  api_key: '874789879283176'
+  api_secret: D1q37K9OmU-ABJtjdQXtWnNt-H4
+  enhance_image_tag: true
+  static_image_support: true
+test:
+  cloud_name: grassroots
+  api_key: '874789879283176'
+  api_secret: D1q37K9OmU-ABJtjdQXtWnNt-H4
+  enhance_image_tag: true
+  static_image_support: false

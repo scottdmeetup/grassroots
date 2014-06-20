@@ -50,24 +50,24 @@ class UsersController < ApplicationController
     organization = Organization.find_by(name: params[:user][:organization_name_box])
     if an_unaffiliated_nonprofit_user_updates_profile?(organization)
       @user.update_columns(user_params.merge!(organization_administrator: true))
-      if uploading_image?
-        @user.small_cover = params[:user][:small_cover].original_filename
-        @user.update_columns(small_cover: @user.small_cover)
+      if uploading_profile_avatar?
+        @user.avatar = params[:user][:avatar]
+        @user.avatar.save
       end
       redirect_to new_organization_admin_organization_path
     elsif a_nonprofit_staff_member_updates_profile?(organization)
       @user.update_columns(user_params)
-      if uploading_image?
-        @user.small_cover = params[:user][:small_cover].original_filename
-        @user.update_columns(small_cover: @user.small_cover)
+      if uploading_profile_avatar?
+        @user.avatar = params[:user][:avatar]
+        @user.avatar.save
       end
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
     elsif a_volunteer_updates_profile?
       @user.update_columns(user_params)
-      if uploading_image?
-        @user.small_cover = params[:user][:small_cover].original_filename
-        @user.update_columns(small_cover: @user.small_cover)
+      if uploading_profile_avatar?
+        @user.avatar = params[:user][:avatar]
+        @user.avatar.save
       end
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
@@ -103,11 +103,12 @@ private
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, 
-      :organization_id, :bio, :skills, :interests, :position, :user_group, :contact_reason)
+      :organization_id, :bio, :skills, :interests, :position, :user_group, 
+      :contact_reason)
   end
 
-  def uploading_image?
-    params[:user][:small_cover]
+  def uploading_profile_avatar?
+    params[:user][:avatar]
   end
 
   def an_unaffiliated_nonprofit_user_updates_profile?(organization)

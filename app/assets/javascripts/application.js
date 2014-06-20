@@ -13,6 +13,11 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require bootstrap
+//= require jquery.ui.widget
+//= require jquery.iframe-transport
+//= require jquery.fileupload
+//= require cloudinary/jquery.cloudinary
+//= require attachinary
 
 jQuery(function() {
   return $('#user_organization_name_box').autocomplete({
@@ -24,6 +29,7 @@ $(document).ready(function() {
   return $('#user_skills').autocomplete({
     source: $('#user_skills').data('autocomplete-source')
   });
+  $('.attachinary-input').attachinary()
 });
 
 
@@ -38,16 +44,6 @@ $(document).ready(function() {
       $('.navbar-toggle').addClass('navbar-toggle-collapse'); 
     }
   });
-
-
-  //$('#open_applications').on('click', function() {
-  //  $.ajax({
-  //    type: 'GET', 
-  //    url: '/user/#{id}'
-  //  }).done(function(open_projects) {
-  //    $('#open_applications').replaceWith(open_projects);
-  //  });
-  //});
 });
 
 
