@@ -9,6 +9,8 @@ describe User do
   it { should have_many(:assignments)}
   it { should have_many(:delegated_projects)}
   it { should have_many(:questions)}
+  it { should have_many(:accomplishments)}
+  it { should have_many(:badges).through(:accomplishments)}
 
   it "generates a random token when the user is created for password reset" do
     alice = Fabricate(:user, user_group: "nonprofit")
@@ -210,7 +212,6 @@ describe User do
     end
 
     describe "#update_profile_progress" do
-
       it "returns 18 for the user's profile completion if the user only has first and last name" do
         bob = User.create(first_name: "bob", last_name: "smith", user_group: "volunteer")
         expect(bob.update_profile_progress).to eq(20)
@@ -222,6 +223,21 @@ describe User do
           city: "Birmingham", bio: "I like to juggle apples.", position: "CEO")
 
         expect(bob.update_profile_progress).to eq(100)
+      end
+    end
+
+    describe "#awarded?(badge)" do
+      let!(:alice) {Fabricate(:organization_administrator, first_name: "Alice", user_group: "nonprofit")}
+      let!(:profile_completion) {Fabricate(:badge, name: "100% User Profile Completion")}
+
+      it "returns false when the user does not have the badge" do
+        expect(alice.awarded?(profile_completion)).to eq(false)
+      end
+
+      it "returns true if the user has the badge" do
+        alice.badges << profile_completion
+
+        expect(alice.awarded?(profile_completion)).to eq(true)
       end
     end
   end

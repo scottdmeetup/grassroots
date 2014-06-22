@@ -50,24 +50,19 @@ class UsersController < ApplicationController
     organization = Organization.find_by(name: params[:user][:organization_name_box])
     if an_unaffiliated_nonprofit_user_updates_profile?(organization)
       @user.update_columns(user_params.merge!(organization_administrator: true))
-      if uploading_profile_avatar?
-        @user.avatar = params[:user][:avatar]
-        @user.avatar.save
-      end
+      uploading_profile_avatar?
       redirect_to new_organization_admin_organization_path
     elsif a_nonprofit_staff_member_updates_profile?(organization)
       @user.update_columns(user_params)
-      if uploading_profile_avatar?
-        @user.avatar = params[:user][:avatar]
-        @user.avatar.save
-      end
+      uploading_profile_avatar?
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
     elsif a_volunteer_updates_profile?
       @user.update_columns(user_params)
-      if uploading_profile_avatar?
-        @user.avatar = params[:user][:avatar]
-        @user.avatar.save
+      uploading_profile_avatar?
+      if @user.update_profile_progress == 100
+        badge = Badge.find_by(name: "100% User Profile Completion")
+        @user.badges << badge unless @user.awarded?(badge)
       end
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
@@ -104,11 +99,14 @@ private
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, 
       :organization_id, :bio, :skills, :interests, :position, :user_group, 
-      :contact_reason)
+      :contact_reason, :state_abbreviation, :city)
   end
 
   def uploading_profile_avatar?
-    params[:user][:avatar]
+    if params[:user][:avatar]
+      @user.avatar = params[:user][:avatar]
+      @user.avatar.save
+    end
   end
 
   def an_unaffiliated_nonprofit_user_updates_profile?(organization)

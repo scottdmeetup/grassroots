@@ -1,0 +1,2 @@
+Fabricator(:badge) do
+end

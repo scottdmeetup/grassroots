@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe OrganizationAdmin::ProjectsController, :type => :controller do
+  let!(:first_submitted_project) {Fabricate(:badge, name: "First Submitted Project")}
+  Badge.create(name: "First Submitted Project")
   describe "GET new" do
     it "renders the new template for creating a project" do
       alice = Fabricate(:user, organization_administrator: true, user_group: "nonprofit")

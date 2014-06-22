@@ -186,6 +186,36 @@ describe UsersController, :type => :controller do
         expect(jerry.reload.first_name).to eq("Jerry")
       end
     end
+
+    context "when the user has 100% profile completion" do
+      let!(:jerry) {Fabricate(:user, first_name: "Jerry", last_name: "Smith", user_group: "volunteer", 
+        email: "test@example.com", skills: "", interests: "", 
+        contact_reason: "", state_abbreviation: "", city: "", 
+        bio: "", position: "")}
+      let!(:profile_completion) {Fabricate(:badge, name: "100% User Profile Completion")}
+
+      before do
+        set_current_user(jerry)
+      end
+      
+      it "awards the user with the profile completion badge" do
+
+        patch :update, id: jerry.id, user: {skills: "Web Development", interests: "Environment", 
+          contact_reason: "if you wanna hang out!", state_abbreviation: "AL", city: "Birmingham", 
+          bio: "I like to juggle apples.", position: "Programmer"}
+
+        expect(jerry.reload.badges).to match_array([profile_completion])
+      end
+
+      it "only awards the user with the badge once" do
+        jerry.badges << profile_completion
+        patch :update, id: jerry.id, user: {skills: "Web Development", interests: "Environment", 
+          contact_reason: "if you wanna hang out!", state_abbreviation: "AL", city: "Birmingham", 
+          bio: "I like to juggle apples.", position: "Programmer"}
+
+        expect(jerry.reload.badges.count).to eq(1)
+      end
+    end
   end
 
   describe "DELETE remove" do

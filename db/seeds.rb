@@ -22,43 +22,43 @@ global_giving = Organization.create(name: "Global Giving", cause: "Social Good",
 User.destroy_all
 
 alice = User.create(organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 
-  interests: "Animal Rights", skills: "Grant Writing", street1: nil, street2: nil, 
+  interests: "Animal Rights", skills: "Grant Writing", street1: nil, street2: nil, small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
   organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")
 bob = User.create(organization_id: 2, first_name: "Bob", last_name: "Adams", email: "bob@amnesty.org", 
-  interests: "Human Rights", skills: "Web Development", street1: nil, street2: nil, 
+  interests: "Human Rights", skills: "Web Development", street1: nil, street2: nil, small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
   organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")
 catherine = User.create(organization_id: 3, first_name: "Catherine", last_name: "Hemingway", email: "cat@globalgiving.org", 
-  interests: "Health", skills: "Graphic Design", street1: nil, street2: nil, 
+  interests: "Health", skills: "Graphic Design", street1: nil, street2: nil,  small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
   organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")
 dan = User.create(organization_id: 1, first_name: "Daniel", last_name: "Montgomey", email: "dan@huggey_bear.org", 
-  interests: "Urban Affairs", skills: "Business Development", street1: nil, street2: nil, 
+  interests: "Urban Affairs", skills: "Business Development", street1: nil, street2: nil,  small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: true, volunteer: nil, position: "Business Development Executive", password: "password", user_group: "nonprofit")
 elena = User.create(organization_id: 1, first_name: "Elena", last_name: "Lincoln", email: "elena@huggey_bear.org", 
-  interests: "International Development", skills: "Social Media", street1: nil, street2: nil, 
+  interests: "International Development", skills: "Social Media", street1: nil, street2: nil,  small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: true, volunteer: nil, position: "Fundraising Manager", password: "password", user_group: "nonprofit")
 fred = User.create(organization_id: 2, first_name: "Fred", last_name: "Montgomery", email: "fred@amnesty.org", 
-  interests: "Youth and Development", skills: "Accounting", street1: nil, street2: nil, 
+  interests: "Youth and Development", skills: "Accounting", street1: nil, street2: nil,  small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: true, volunteer: nil, position: "Junior Associate", password: "password", user_group: "nonprofit")
 genna = User.create(organization_id: 2, first_name: "Genna", last_name: "Kennedy", email: "genna@amnesty.org", 
-  interests: "Politics", skills: "Events", street1: nil, street2: nil, 
+  interests: "Politics", skills: "Events", street1: nil, street2: nil,  small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: true, volunteer: nil, position: "Event Coordinator", password: "password", user_group: "nonprofit")
 harry = User.create(organization_id: 3, first_name: "Harry", last_name: "Swift", email: "harry@global.org", 
-  interests: "Tech", skills: "Finance", street1: nil, street2: nil, 
+  interests: "Tech", skills: "Finance", street1: nil, street2: nil, small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: true, volunteer: nil, position: "Financial Officer", password: "password", user_group: "nonprofit")
 ingrid = User.create(organization_id: 3, first_name: "Ingrid", last_name: "Washington", email: "ingrid@global.org", 
-  interests: "Architecture", skills: "Drafting", street1: nil, street2: nil, 
+  interests: "Architecture", skills: "Drafting", street1: nil, street2: nil, small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: true, volunteer: nil, position: "IT", password: "password", user_group: "nonprofit")
 jacob = User.create(first_name: "Jacob", last_name: "Seltzer", email: "jacob@example.org", 
-  interests: "Animals", skills: "Web Development", street1: nil, street2: nil, 
+  interests: "Animals", skills: "Web Development", street1: nil, street2: nil, small_cover: "profile_photo.png",
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
 
@@ -129,6 +129,8 @@ alice_question2.categories << uncategorized
 Contract.destroy_all  
 PrivateMessage.destroy_all
 Conversation.destroy_all
+
+profile_completion = Badge.create(name: "100% Profile Completion")
 
 =begin
 huggey_bear = Fabricate(:organization, name: "Huggey Bear Land", cause: "Animal Rights", 

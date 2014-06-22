@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
 
   has_many :questions
 
+  has_many :accomplishments
+  has_many :badges, through: :accomplishments
+
+
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
 
@@ -104,6 +108,10 @@ class User < ActiveRecord::Base
     end
     entirety = progress * 100
     self.profile_progress_status = entirety / profile_completeness.count
+  end
+
+  def awarded?(badge)
+    self.badges.where(name: badge.name).present?
   end
 
 private
