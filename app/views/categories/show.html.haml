@@ -1,0 +1,3 @@
+= render 'questions/navigation'
+- @category.questions.each do |question| 
+	= render 'questions/question', question: question

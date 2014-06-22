@@ -57,4 +57,6 @@ Grassroots::Application.routes.draw do
       #post 'comments', to: 'comments#create'
     end
   end
+
+  resources :categories, only: [:show]
 end

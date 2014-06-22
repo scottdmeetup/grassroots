@@ -1,6 +1,7 @@
-%p.pull-right
-  = link_to 'edit this question', edit_question_path(@question) if @question.author == current_user
 
+%p= link_to 'edit this question', edit_question_path(@question) if @question.author == current_user
+
+= render @question.categories
 %h3= @question.title
 
 %p
@@ -12,7 +13,7 @@
 = form_for [@question, @comment] do |f|
   = f.text_area :content
   %br/
-  = f.submit "comment on the question", class: "btn btn-primary"
+  = f.submit "Comment on the question", class: "btn btn-primary"
 %h3 Answers:
 - @answers.each do |answer|
   = render 'answers/answer', answer: answer
@@ -20,4 +21,4 @@
 = form_for [@question, @answer] do |f|
   = f.text_area :description
   %br/
-  = f.submit "provid an answer", class: "btn btn-primary"
+  = f.submit "Submit an answer", class: "btn btn-primary"

@@ -112,6 +112,20 @@ web_development = Category.create(name: "Web Development")
 graphic_design = Category.create(name: "Graphic Design")
 social_media = Category.create(name: "Social Media")
 
+alice_question = Question.create(user_id: alice.id, title: "How do I set up WordPress", description: "Should I get a host first?")
+bob_question = Question.create(user_id: bob.id, title: "How do I talk to my Web Developer?", description: "I'm new to web development, but I'd like 
+  to learn how to talk to a developer. Any advice would be great.")
+cat_question = Question.create(user_id: catherine.id, title: "What's the best way to solicit a Graphic Designer?", description: "How 
+  should I go about doing this?")
+dan_question = Question.create(user_id: dan.id, title: "Twitter question", description: "How many tweets should I do a day?")
+alice_question2 = Question.create(user_id: alice.id, title: "GR Question", description: "How do I speak with GR support?")
+
+alice_question.categories << web_development
+bob_question.categories << web_development
+cat_question.categories << graphic_design
+dan_question.categories << social_media
+alice_question2.categories << uncategorized
+
 Contract.destroy_all  
 PrivateMessage.destroy_all
 Conversation.destroy_all
