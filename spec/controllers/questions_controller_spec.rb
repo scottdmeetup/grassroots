@@ -133,4 +133,38 @@ describe QuestionsController, :type => :controller do
       expect(question.categories).to eq([web_development, social_media])
     end
   end
+
+  describe "GET edit" do
+    let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
+    let!(:alice_question1) {Fabricate(:question, user_id: alice.id)}
+
+    it "renders the edit template" do
+      get :edit, id: alice_question1.id
+
+      expect(response).to render_template(:edit)
+    end
+
+    it "sets @question" do
+      get :edit, id: alice_question1.id
+
+      expect(assigns(:question)).to be_instance_of(Question)
+    end
+  end
+
+  describe "PATCH update" do
+    let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
+    let!(:alice_question1) {Fabricate(:question, user_id: alice.id, title: "PHP Advice")}
+
+    it "redirects to the question show view" do
+      patch :update, id: alice_question1.id, question: {title: "Ruby Advice"}
+
+      expect(response).to redirect_to(question_path(alice_question1.id))
+    end
+
+    it "updates the question" do
+      patch :update, id: alice_question1.id, question: {title: "Ruby Advice"}
+
+      expect(alice_question1.reload.title).to eq("Ruby Advice")
+    end
+  end
 end

@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 feature 'User has a conversation with messages with other user' do 
