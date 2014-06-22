@@ -1,5 +1,5 @@
 .row#conversation-thread-wrapper
-  .col-lg-2#inbox-tabs
+  .col-lg-2#tabs
     %ul.nav.nav-tabs.nav-stacked
       %li
         %a{:href => "#"}Messages
@@ -12,9 +12,9 @@
       %li 
         %a{:href => "#"}Archived 
   .col-lg-9
-    .col-lg-2#convo-img-wrapper
-      %img#conversation-header-img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-    .col-lg-7#convo-subject-details
+    .col-lg-2#img-wrapper
+      %img.header-img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+    .col-lg-7#title
       %h4
         %strong= @conversation.private_messages.first.subject
       - if @conversation.private_messages.first.sender_id == current_user.id
@@ -24,19 +24,19 @@
       %p= @conversation.private_messages.first.created_at
     
     .row
-      .col-lg-12.convo-msg-wrapper
+      .col-lg-12.msg-wrapper
         - @conversation.private_messages.each do |message|
           %p 
             %span On May 21, 2014 7:33 PM, 
             = "#{message.sender.first_name} #{message.sender.last_name}" if message.sender
             %span Wrote:
-          %p.conversation-message-body 
+          %p.msg-body 
             = message.body
 
     %section.register
       .col-lg-12
         = form_for [@reply], url: private_messages_path do |f|
-          %fieldset#convo-form-fieldset
+          %fieldset#form-field
             .form-group
               %label.control-label.col-sm-3 Body:
               = f.text_area :body, cols: 6, rows: 6, class: "form-control"

@@ -1,12 +1,12 @@
 .row.msg-thumbnail
   .col-lg-2
-    %img#conversation-header-img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
-  .col-lg-10.msg-content-wrapper
+    %img.header-img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+  .col-lg-10.content-wrapper
     %h2
       %strong 
         - if conversation.sender_user_name_of_recent_message
           = link_to conversation.sender_user_name_of_recent_message, user_path(conversation.the_id_of_sender)
-    %h4.org-head
+    %h4.header-spacing
       %strong
         = link_to conversation.private_messages.first.subject, conversation_path(conversation.id)
     %p 

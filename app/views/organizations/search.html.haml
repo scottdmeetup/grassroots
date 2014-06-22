@@ -1,4 +1,4 @@
-.col-lg-2.pull-right                 
+.col-lg-2.pull-right               
   = form_tag search_organizations_path, method: 'get' do
     %input.form-control{:placeholder => "Search by organization name", :type => "text", :id => "project-search-bar", :name => "search_term"}
     %h3 Cause
@@ -12,6 +12,6 @@
       %input{:name => 'cause', :type => "checkbox", :value => "Animal Rights"}
       Animal Rights
     = submit_tag "Search", :id => "project-filter-submit"
-.row
+.row#org-search-results
   - @results.each do |organization|
     = render "shared/organization_thumbnail", organization: organization

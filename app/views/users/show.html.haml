@@ -1,6 +1,6 @@
 .row#profile-details-row
   .col-lg-3.col-sm-12
-    %a.thumbnail.img-org{href: ""}
+    %a.thumbnail.img-thumb{href: ""}
       = image_tag("#{@user.small_cover}") if @user.small_cover
   .col-lg-7.col-sm-12#user-info
     %h2 
@@ -11,15 +11,15 @@
           = link_to 'Remove Staff', remove_path(id: @user.id), :method => :delete, data: {confirm: 'Are you sure you want to remove this person from your organization?'}
     .row
       .col-lg-4.col-md-3#user-header-info
-        %h5.org-head
+        %h5.header-spacing
           %strong 
             - if @user.organization
               = "#{@user.position} at"
               = link_to "#{@user.organization_name}", organization_path(@user.organization.id)
-        %h5.org-head 
+        %h5.header-spacing 
           %strong 
             = "#{@user.city}"
-        %h5.org-head
+        %h5.header-spacing
           %strong 
             = "#{@user.skills}"
         %btn
@@ -68,13 +68,13 @@
           = link_to "Completed Work #{@user.completed_projects.count}", user_path(@user, tab: 'completed'), remote: true
 
       .col-lg-10
-        %div{:id => "projectsDiv"}
+        %div{:id => "projectsDiv"}  
               
   .tab-pane#about
     .row.row-custom
       .col-lg-12
         %h2 About Me
-    .row#org-data-wrapper 
+    .row#user-data-wrapper 
       .col-lg-12
         .col-lg-8
           %dl
