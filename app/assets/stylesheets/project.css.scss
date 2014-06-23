@@ -1,0 +1,207 @@
+#project-index-wrapper {
+  padding: 20px 0 0 0;
+} 
+
+/* Project Index and Search */ 
+
+#project-search-wrapper {
+  margin-top: 31px;
+  label {
+    display: block;
+    font-weight: 400;
+    input {
+      margin-top: -1px;
+      margin-bottom: 5px;
+    }
+  }
+    #project-search-bar {
+      width: 117%;
+    }
+    #project-filter-submit {
+      margin-top: 5px;
+      /* Copies Bootstrap Form */
+      margin-bottom: 0;
+      display: inline-block;
+      background-color: #fff;
+      font-weight: normal;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      background-image: none;
+      border: 1px solid #ccc;
+      white-space: nowrap;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.428571429;
+      border-radius: 4px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    #project-filter-submit:hover {
+      color: #333333;
+      background-color: #e6e6e6;
+      border-color: #adadad;
+    }
+}
+
+
+/* Project Show */ 
+
+  #project-details {
+    .right-column {
+      margin-top: 43px;
+    }
+  }
+  #description-wrapper {
+    .row {
+      padding: 20px 0;
+    }
+  }
+
+#organization-details {
+  #project-img {
+    margin-top: 0px;
+  }
+  .cause-area {
+    clear: both;
+  }
+}
+
+/* Project Thumbnails */
+/* Appears in User Profile, Organization Profile, Search Projects
+ and Project Index */   
+.project-thumb-wrapper {
+  width: 30%;
+}
+
+  .thumbnail-project {
+    height: 23.5em;
+    margin-top: 31px;
+    padding: 4px 10px;
+    .img {
+      width: 115px;
+      float: left;
+      margin-bottom: 15px;
+    }
+    .volunteer-project-requests {
+      float: right;
+      margin: -14px 0 0 15px;
+      .volunteer-glyph {
+        font-size: 1.5em;
+        line-height: 2;
+      }
+      .volunteer-plus {
+        float: right;
+        margin-top: -42px;
+        .volunteer-plus-glyph {
+          font-size: .79em;
+          font-weight: 400;
+        }
+        .volunteer-number {
+          margin-left: -7px;
+          font-weight: 800;
+          font-size: 1.25em;
+        }
+      }
+    }
+    h4 {
+      clear: both;
+    }
+    p {
+      height: 28px;
+      margin-bottom: 32px;
+    }
+    dl {
+      float: left;
+    }
+    dl.deadline {
+      float: right;
+    }
+  }
+
+  .btn-project {
+    margin-top: 1em;
+  }
+
+  .btn-project, .text-clear {
+    clear: both;
+  }
+
+/* Create New Form and Edit Form */ 
+
+section#form {
+    .col-project-form {
+        background-color: #fff;
+              #skills {
+                margin-right: -73px;
+              }
+              #deadline {
+                margin-right: -175px;
+              }
+              #skills, 
+              #deadline {
+                .project-gen-input-fix {
+                  line-height: 2.5em;
+                }
+              }
+      } 
+  .btn { 
+    margin-right: 15px;
+  }
+} 
+              /* Overrides on Bootrap for Inputs */ 
+
+              #skills.col-lg-5, 
+              #deadline.col-lg-3 , 
+              #hours.col-lg-8 {
+                padding-right: 10px;
+              }
+
+              #project_skills {
+                height: 30px;
+                border-radius: 3px;
+                border-color: #ccc;
+              }
+              #project_skills:focus{
+                border-color: #66afe9;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+              }
+          
+              #project_deadline_2i, 
+              #project_deadline_3i, 
+              #project_deadline_1i {
+                height: 30px;
+                border-radius: 3px;
+                border-color: #ccc;
+              }
+              #project_deadline_2i:focus, 
+              #project_deadline_3i:focus, 
+              #project_deadline_1i:focus {
+                border-color: #66afe9;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+              }
+
+              /* End Overrides */ 
+          
+      #form-tip {
+        margin-top: 114px;
+      }
+
+              
+
+      
+    
+
+
+/* =============================================================================
+                  Bootstrap Overrides 
+================================================================================*/          
+
+
+    
+      
+  

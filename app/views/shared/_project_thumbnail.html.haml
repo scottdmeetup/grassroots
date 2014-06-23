@@ -1,6 +1,6 @@
 .col-lg-3.col-sm-6.project-thumb-wrapper
   .thumbnail.thumbnail-project
-    = link_to image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk", :class => "thumb-img-org") , project_path(project.id)
+    = link_to image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJdY7uIWUze-daCnYOvAq3oXVWI1pnUZXs2Y4UK3SmyjJx_fMQvVNcmdgk", :class => "img") , project_path(project.id)
     .caption
     - if project.applicants.count > 0
       %div.volunteer-project-requests
@@ -9,7 +9,7 @@
           %span.glyphicon.glyphicon-plus.volunteer-plus-glyph 
             %span.volunteer-number
               = "#{project.applicants.count}"
-    %h4.project-org-name
+    %h4
       = link_to project.organization.name, organization_path(project.organization.id)
     %h5 
       = project_title(project)
@@ -18,7 +18,7 @@
         = "#{project.description.first(60)}..."
       - else 
         = project.description
-    %dl.skillset
+    %dl
       %dt Skill Set
       %dd 
         = project.skills

@@ -15,9 +15,9 @@ gem 'jbuilder', '~> 1.2'
 gem "bcrypt-ruby"
 gem 'bootstrap_form'
 gem 'sidekiq'
-gem 'unicorn'
 gem 'paratrooper'
 gem 'cloudinary'
+gem 'unicorn'
 gem 'attachinary'
 
 group :doc do

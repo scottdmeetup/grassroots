@@ -1,0 +1,98 @@
+/*  Organization and User Show Area */
+/* Banner Section of Profiles */ 
+#profile-details-row {
+  padding: 28px 0 10px;
+    #org-info,
+    #user-info {
+      margin-top: 15px;
+      margin-left: -5%;
+    }
+      #org-header-info > .header-spacing, 
+      #user-header-info > .header-spacing {
+        float: left;
+        margin-top: 0px;
+        margin-right: 15px;
+     }
+}
+      
+/* Bio Information */ 
+
+  #user-data-wrapper,
+  #org-data-wrapper {
+   padding: 10px 0;
+    dl {
+      float: none;
+    }
+  }
+       #org-data-wrapper {
+        #org-data-pts {
+          margin-bottom: 20px;
+          .org-data {
+            width: 150px;
+          }
+          #org-address-line {
+            width: 350px;
+          }
+        }
+      } 
+         #org-address-line {
+          width: 350px;
+         }
+
+/* Organization Staff Members - Org View Only */ 
+
+#staff-wrapper {
+  padding: 10px;
+  .thumbnail-staff {
+    padding: 5px 10px 0;
+    .img-staff {
+      margin-top: 7px;
+      margin-bottom: 10px;
+      margin-left: 17px;
+    }
+    h5{
+    margin-top: 5px;
+    } 
+  }
+} 
+
+/* Organization and User Thumbnails */ 
+
+/* Edit Profile Section */
+/* Shared By Editing Organization Admin and User */ 
+  .edit-profile-wrapper {
+    padding-right: 5px;
+    input {
+      text-indent: 5px;
+      width: 200px;
+    }
+  }
+              .edit-fieldset-wrapper {
+                padding: 5px 0;
+                h3 {
+                  border-bottom: 1px solid #E9EAEC;
+                }
+                .edit-input-wrapper {
+                  margin-bottom: 5px;
+                  label {
+                    width: 100px;
+                  }
+                }
+              }
+
+            #edit-organization-wrapper {
+              h3 {
+                padding: 5px 0;
+              }
+              label {
+                width: 180px;
+              }
+              input {
+                width: 250px;
+              }
+            }
+
+              #edit-submit {
+              width: 80px;
+            }
+

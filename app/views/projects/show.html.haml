@@ -1,4 +1,4 @@
-#project-details-info
+#project-details
   .container-wrapper
     .row
       .col-lg-12
@@ -8,16 +8,16 @@
               = "Status: #{@project.state}"
             %h1 
               = @project.title
-            %h4.org-head
+            %h4.header-spacing
               %strong 
                 = @project.skills
             %h4
               = link_to "Edit Project", edit_organization_admin_project_path(@project.id)
-          .col-lg-6#project-details-top-right
-            %h4.org-head 
+          .col-lg-6.right-column
+            %h4.header-spacing 
               %strong 
                 = @project.deadline
-            %h4.org-head 
+            %h4.header-spacing 
               %strong 
                 = "Estimated Hours:  #{@project.estimated_hours}"
     .row
@@ -34,24 +34,24 @@
 .row.row-custom
   .col-lg-6
     %h2 Project Description 
-#project-desc-wrapper
+#description-wrapper
   .container-wrapper
-    .row#project-desc-row
+    .row
       .col-lg-12
         %p 
           = @project.description
-#project-details-org
+#organization-details
   .container-wrapper 
     .row 
       .col-lg-2
         %h2
           = link_to @project.organization.name, organization_path(@project.organization.id)
-        %a.thumbnail.img-org#img-org-project.pull-left{href: ""}
+        %a.thumbnail.img-thumb#project-img.pull-left{href: ""}
           %img{alt: "", "data-src" => "holder.js/100%x180"}/
-        %h4#project-details-cause
+        %h4.cause-area
           %strong 
             = "Cause: #{@project.causes}"
-        %h5#project-details-cause
+        %h5.cause-area
           %strong 
             Project Administrator:
             = link_to "#{@project.project_admin.first_name} #{@project.project_admin.last_name}", user_path(@project.project_admin.id)
