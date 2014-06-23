@@ -178,6 +178,4 @@ ActiveRecord::Schema.define(version: 20140620165810) do
     t.integer  "applicant_id"
     t.integer  "administrator_id"
   end
-
 end
-

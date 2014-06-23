@@ -50,30 +50,37 @@
 /* Project Show */ 
 
   #project-details {
-    .right-column {
-      margin-top: 43px;
+    .project-board {
+      min-height: 275px;
+      background-color: #fff;
+      position:relative;
+      .form-group{
+        position: absolute;
+        bottom: 0;
+      }
+    }
+    .project-notice {
+      width: 75%;
+      padding: 1px 0 0;
+      
+      p {
+        display: block;
+        text-align: center;
+      }
+    }
+    .open {
+      background-color: #2BBD60;
+    }
+    .closed {
+      background-color: #C01D1F;
     }
   }
-  #description-wrapper {
-    .row {
-      padding: 20px 0;
-    }
-  }
-
-#organization-details {
-  #project-img {
-    margin-top: 0px;
-  }
-  .cause-area {
-    clear: both;
-  }
-}
 
 /* Project Thumbnails */
 /* Appears in User Profile, Organization Profile, Search Projects
  and Project Index */   
 .project-thumb-wrapper {
-  width: 30%;
+  width: 33%;
 }
 
   .thumbnail-project {

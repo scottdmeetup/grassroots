@@ -9,15 +9,65 @@ ul {
 body {
   background-color: #E9EAEC;
 }
-	.row {
-	  background-color: #fff;
-	}
-	.row-custom {
-	  /* Overrides Row Background Color
-	  For Areas that Need Body Color */ 
-	  background-color: #E9EAEC;
-	}     
+  .row {
+    background-color: #fff;
+  }
+  .white {
+    background-color: #fff;
+  }
+  .row-custom {
+    /* Overrides Row Background Color
+    For Areas that Need Body Color */ 
+    background-color: #E9EAEC;
+  }     
 
+/* Fonts */ 
+
+.bold {
+  font-weight: 700;
+}
+
+.gr-green-font {
+  color: #2BBD60
+}
+
+.text-alert {
+  color: #fff;
+  text-transform: uppercase;
+}
+/* Buttons */ 
+
+.notice {
+  width: 75%;
+  min-height: 25px;
+  margin-top: -4px;
+  margin-right: 4px;
+  margin-bottom: 10px;
+  background-color: buttonface;
+  border: 1px solid #BDBDBD;
+  border-radius: 3px;
+  padding: 4px;
+  cursor: initial;
+  a,
+  span {
+    text-decoration: initial;
+    display: block;
+    text-align: center;
+    font-weight: 700;
+  }
+  a:first-letter, 
+  span:first-letter, 
+  p:first-letter {
+    text-transform: uppercase;
+  }
+}
+.notice:hover {
+  background-color: buttonface  ;
+  a:hover, 
+  span:hover {
+
+  }
+}
 
 /* Images */ 
 
@@ -32,4 +82,8 @@ body {
 
 .img-staff {
       width: 150px;
+}
+
+.testing {
+  height: 33px;
 }
