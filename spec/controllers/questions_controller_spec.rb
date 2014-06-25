@@ -68,6 +68,18 @@ describe QuestionsController, :type => :controller do
 
       expect(alice_question1.comments).to match_array([bob_comment])
     end
+
+    it "shows numerous comments on their respective answers" do
+      bob = Fabricate(:user, user_group: "volunteer")
+      bob_answer = Fabricate(:answer, description: "You need to do this......", question_id: alice_question1.id, user_id: bob.id)
+      cat = Fabricate(:user, user_group: "volunteer")
+      cat_answer = Fabricate(:answer, description: "I think you should do this......", question_id: alice_question1.id, user_id: cat.id)
+      alice_comment = Comment.create(user_id: alice.id, content: "thank you!", answer_id: bob_answer.id)
+      alice_comment2 = Comment.create(user_id: alice.id, content: "that was a good point", answer_id: cat_answer.id)
+      get :show, id: alice_question1
+
+      expect(cat_answer.comments).to match_array([alice_comment2])
+    end
   end
 
   describe "GET new" do
