@@ -51,19 +51,18 @@ class UsersController < ApplicationController
     if an_unaffiliated_nonprofit_user_updates_profile?(organization)
       @user.update_columns(user_params.merge!(organization_administrator: true))
       uploading_profile_avatar?
+      earns_profile_completion_badge?
       redirect_to new_organization_admin_organization_path
     elsif a_nonprofit_staff_member_updates_profile?(organization)
       @user.update_columns(user_params)
       uploading_profile_avatar?
+      earns_profile_completion_badge?
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
     elsif a_volunteer_updates_profile?
       @user.update_columns(user_params)
       uploading_profile_avatar?
-      if @user.update_profile_progress == 100
-        badge = Badge.find_by(name: "100% User Profile Completion")
-        @user.badges << badge unless @user.awarded?(badge)
-      end
+      earns_profile_completion_badge?
       flash[:notice] = "You have updated your profile successfully."
       redirect_to user_path(@user.id)
     else
@@ -119,5 +118,12 @@ private
  
   def a_volunteer_updates_profile?
     current_user.user_group == "volunteer"
+  end
+
+  def earns_profile_completion_badge?
+    if @user.update_profile_progress == 100
+      badge = Badge.find_by(name: "100% User Profile Completion")
+      @user.badges << badge unless @user.awarded?(badge)
+    end
   end
 end

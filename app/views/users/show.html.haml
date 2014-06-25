@@ -45,6 +45,10 @@
         %a{:href => "#activity", 'data-toggle' => "tab"} Activity
       %li
         %a{:href => "#about", 'data-toggle' => "tab"} About
+      %li
+        %a{:href => "#badges", 'data-toggle' => "tab"} My Badges
+      %li
+        %a{:href => "#contacts", 'data-toggle' => "tab"} My Contacts
 
 .tab-content
   .tab-pane.active#activity
@@ -93,5 +97,16 @@
           %dl 
             %dt Contact Me for: 
             %dd= @user.contact_reason
+  .tab-pane#badges
+    .row.row-custom
+      .col-lg-12
+        - if @user.badges.count >= 1
+          - @user.badges.each do |badge|
+            = render "badges/badges_thumbnail", badge: badge
+        - else
+          %p= "#{@user.first_name} has earned no badges"
+  .tab-pane#contacts
+    .row.row-custom
+      %p no contacts
 
       

@@ -19,6 +19,9 @@
                 = f.text_field :email
               %div.edit-input-wrapper
                 = f.attachinary_file_field :avatar
+              %div.edit-input-wrapper
+                = f.label :state
+                = f.select :state_abbreviation, options_for_select(us_states), include_blank: true
             %div.edit-fieldset-wrapper
               %h3 About Your Role
               %div.edit-input-wrapper

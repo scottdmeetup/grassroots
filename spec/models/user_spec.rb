@@ -240,6 +240,8 @@ describe User do
         expect(alice.awarded?(profile_completion)).to eq(true)
       end
     end
+
+    describe ".profile_completion_badge"
   end
 end
   
