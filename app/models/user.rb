@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
   has_many :accomplishments
   has_many :badges, through: :accomplishments
 
+  has_many :following_relationships, class_name: 'Relationship', foreign_key: :follower_id
+
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email

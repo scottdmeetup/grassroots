@@ -59,6 +59,6 @@ Grassroots::Application.routes.draw do
   end
 
   resources :categories, only: [:show]
-
   resources :badges, only: [:show]
+  resources :relationships, only: [:create, :destroy]
 end

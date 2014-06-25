@@ -33,5 +33,7 @@ describe AnswersController, :type => :controller do
 
       expect(Answer.first.question).to eq(alice_question1)
     end
+
+    it "does not create an empty answer"
   end 
 end

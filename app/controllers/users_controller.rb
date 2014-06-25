@@ -1,11 +1,13 @@
 class UsersController < ApplicationController
   def index
     @users = User.all
+    
   end
 
   def show
-    
     @user = User.find(params[:id])
+    @relationships = @user.following_relationships
+
     @open_params = params[:tab] == 'open'
     @production_params = params[:tab] == 'in production' 
     @work_submitted_params = params[:tab] == 'pending approval'
