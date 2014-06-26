@@ -8,7 +8,9 @@ class VolunteerApplicationsController < ApplicationController
 
   def create
     sends_application_and_conversation_to_admin(@volunteer_application, @conversation1_about_volunteer_application)
-    Relationship.create(follower: current_user, leader: @organization_administrator) && Relationship.create(follower: @organization_administrator, leader: current_user)
+    if current_user.can_follow?(@organization_administrator)
+      Relationship.create(follower: current_user, leader: @organization_administrator) && Relationship.create(follower: @organization_administrator, leader: current_user)
+    end
   end
 
 private
