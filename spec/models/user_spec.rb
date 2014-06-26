@@ -241,7 +241,20 @@ describe User do
       end
     end
 
-    describe ".profile_completion_badge"
+    describe "#follows?" do
+      it "returns true if the user yhas a following relationship with another user" do
+        alice = Fabricate(:user, user_group: "volunteer")
+        bob = Fabricate(:user, user_group: "volunteer")
+        Fabricate(:relationship, leader: bob, follower: alice)
+        expect(alice.follows?(bob)).to eq(true)
+      end
+      it "returns false if the user does not have a following relationship with another user" do
+        alice = Fabricate(:user, user_group: "volunteer")
+        bob = Fabricate(:user, user_group: "volunteer")
+        Fabricate(:relationship, leader: alice, follower: bob)
+        expect(alice.follows?(bob)).to eq(false)
+      end
+    end
   end
 end
   

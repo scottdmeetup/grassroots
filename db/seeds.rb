@@ -131,6 +131,8 @@ PrivateMessage.destroy_all
 Conversation.destroy_all
 
 profile_completion = Badge.create(name: "100% User Profile Completion")
+relationship = Relationship.create(follower: alice, leader: bob)
+relationship = Relationship.create(follower: alice, leader: catherine)
 
 =begin
 huggey_bear = Fabricate(:organization, name: "Huggey Bear Land", cause: "Animal Rights", 

@@ -18,20 +18,31 @@ describe UsersController, :type => :controller do
   end
 
   describe "GET show" do
+    let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
+    let!(:bob) {Fabricate(:user, user_group: "volunteer")}
+
+    before do
+      set_current_user(alice)
+    end
+
     it "shows the user's profile" do
-      alice = Fabricate(:user, user_group: "nonprofit")
       get :show, id: alice
 
       expect(response).to render_template(:show)
     end
 
     it "sets @relationships to the current users following relationships" do
-      alice = Fabricate(:user, user_group: "nonprofit")
-      bob = Fabricate(:user, user_group: "volunteer")
       relationship = Relationship.create(follower: alice, leader: bob)
       get :show, id: alice
 
       expect(assigns(:relationships)).to eq([relationship])
+    end
+
+    it "sets @following_relationship" do
+      relationship = Relationship.create(follower: alice, leader: bob)
+      get :show, id: bob
+
+      expect(assigns(:following_relationship)).to eq(relationship)
     end
   end
 

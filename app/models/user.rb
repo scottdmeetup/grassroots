@@ -116,6 +116,15 @@ class User < ActiveRecord::Base
     self.badges.where(name: badge.name).present?
   end
 
+  def follows?(another_user)
+    self.following_relationships.map(&:leader).include?(another_user)
+  end
+
+  def can_follow?(another_user)
+    # '!', reads like, unless
+    !(self.follows?(another_user) || self == another_user)
+  end
+
 private
 
 end

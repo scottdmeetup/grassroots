@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @relationships = @user.following_relationships
+    @following_relationship = Relationship.where(follower: current_user, leader: @user).first
 
     @open_params = params[:tab] == 'open'
     @production_params = params[:tab] == 'in production' 
