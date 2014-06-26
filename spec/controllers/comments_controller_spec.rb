@@ -51,5 +51,11 @@ describe CommentsController, :type => :controller do
 
       expect(Comment.first.content).to eq("this is a great question")
     end
+
+    it "does not create a comment with empty content" do
+      post :create, comment: {content: ""}, question_id: alice_question1.id
+
+      expect(Comment.count).to eq(0)
+    end
   end
 end

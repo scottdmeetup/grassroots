@@ -34,6 +34,10 @@ describe AnswersController, :type => :controller do
       expect(Answer.first.question).to eq(alice_question1)
     end
 
-    it "does not create an empty answer"
+    it "does not create an answer which is an empty string" do
+      post :create, answer: {user_id: bob.id, description: ""}, question_id: alice_question1.id
+
+      expect(Answer.count).to eq(0)
+    end
   end 
 end

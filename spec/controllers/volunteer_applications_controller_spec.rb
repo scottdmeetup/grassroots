@@ -80,6 +80,24 @@ describe VolunteerApplicationsController, :type => :controller do
       bobs_sent_message = convo.private_messages.first
       expect(bob.sent_messages.first).to eq(bobs_sent_message)
     end
+
+    it "creates a following relationship" do
+      post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
+
+      expect(Relationship.count).to eq(2)
+    end
+    
+    it "makes the volunteer follow the administrator" do
+      post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
+
+      expect(bob.follows?(alice)).to eq(true)
+    end
+
+    it "makes the administrator follow the volunteer" do
+      post :create, project_id: word_press.id, private_message: {recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project"}
+
+      expect(alice.follows?(bob)).to eq(true)
+    end
   end
 end
 
