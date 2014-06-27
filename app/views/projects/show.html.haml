@@ -64,7 +64,7 @@
           %img.testing{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
         %p.bold.gr-green-font= @project.state == "open" ? "Volunteer Requests" : "Project Volunteer"
         - if @project.applicants == []
-          Nothing to report
+          %em No volunteer have applied yet. 
         - else
           - @project.applicants.each do |applicant|
             - if applicant.organization != @project.organization
