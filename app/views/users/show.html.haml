@@ -64,8 +64,8 @@
           - if @user.organization_administrator && current_user == @user
             = link_to "Create a Project", new_organization_admin_project_path(organization_id: @user.organization_id), class: "btn btn-primary btn-lg pull-right btn-project"
 
-    .row
-      %ul.nav.nav-tabs
+    .row.row-custom
+      %ul.nav.nav-tabs.white
         %li{:class => ('active' if params[:tab] == 'open')}
           = link_to "Open Applications #{@user.open_applications.count}", user_path(@user, tab: 'open'), remote: true
 
@@ -108,17 +108,38 @@
           - @user.badges.each do |badge|
             = render "badges/badges_thumbnail", badge: badge
         - else
-          %p= "#{@user.first_name} has earned no badges"
+          %p.no-content= "#{@user.first_name} has earned no badges"
+  
   .tab-pane#contacts
-    .row.row-custom 
-      - if @relationships.count >= 1
-        - @relationships.each do |relationship|
-          %tr
-            %td
-              = link_to "#{relationship.leader.first_name} #{relationship.leader.last_name}", user_path(relationship.leader.id)
-            %td 
-              = link_to "Unfollow", relationship_path(relationship.id), method: :delete, class: 'btn btn-primary'
-      - else
-        %p no contacts
+    .row.row-custom
+      .col-lg-8.white#user-network
+        %h4.bold Following
+        - if @relationships.count >= 1
+          - @relationships.each do |relationship|  
+            %div.user-follower
+              %div.user-follower-info
+                %div.pic
+                  %img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+                %div.network-user-content  
+                  %div.name
+                  = link_to "#{relationship.leader.first_name} #{relationship.leader.last_name}", user_path(relationship.leader.id)
+                  %div.work-status
+                    %p 
+                      = "#{relationship.leader.position} at"
+                      %span 
+                        = link_to "#{relationship.leader.organization_name}", user_path(relationship.leader.id)
+                  %div.follower-location
+                    %p 
+                      = "#{relationship.leader.city}" 
+                  %div.follower-engaged
+                    %table
+                      %tr
+                        %td.follower-reason 
+                          = "Engaged #{relationship.leader.first_name} on a placeholder" 
+                        %td.follower-reason-date= "#{fix_date_time(relationship.created_at)}"
+              %div.follower-button   
+                = link_to "Unfollow", relationship_path(relationship.id), method: :delete, class: 'btn btn-primary'
+        - else
+          %p.no-content You haven't made any connections yet.
 
-      
+        
