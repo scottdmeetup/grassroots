@@ -16,6 +16,8 @@ class Project < ActiveRecord::Base
   has_many :contractors, class_name: 'Contract', foreign_key: 'contractor_id'
   has_many :contractors, through: :contracts, source: :contractor
 
+  has_many :newsfeed_items, as: :newsfeedable
+
   def project_admin
     organization.organization_administrator
     User.find(organization.organization_administrator.id)

@@ -20,11 +20,15 @@ class QuestionsController < ApplicationController
       question = Question.new(question_params.merge!(category_ids: [1]))
       question.author = current_user
       question.save
+      newsfeed_item = NewsfeedItem.create(user_id: current_user.id)
+      question.newsfeed_items << newsfeed_item
       redirect_to questions_path
     else
       question = Question.new(question_params)
       question.author = current_user
       question.save
+      newsfeed_item = NewsfeedItem.create(user_id: current_user.id)
+      question.newsfeed_items << newsfeed_item
       redirect_to questions_path
     end
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140625201726) do
+ActiveRecord::Schema.define(version: 20140626201329) do
 
   create_table "accomplishments", force: true do |t|
     t.integer  "user_id"
@@ -88,6 +88,14 @@ ActiveRecord::Schema.define(version: 20140625201726) do
     t.integer  "user_id"
     t.integer  "volunteer_application_id"
     t.integer  "contract_id"
+  end
+
+  create_table "newsfeed_items", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "newsfeedable_id"
+    t.string   "newsfeedable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "organizations", force: true do |t|

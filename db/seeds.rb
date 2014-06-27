@@ -94,7 +94,7 @@ word_press = Project.create(title: "Need WordPress Site", description: "I want a
   skills: "Web Development", causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open")
 pretty_logo = Project.create(title: "Elegant Logo", description: "I want a logo that reflects the strenght of the human spirit!", 
   skills: "Graphic Design", causes: "human rights", deadline: Date.today + 1.month, organization_id: amnesty_international.id, estimated_hours: 32, state: "open")
-social_media = Project.create(title: "Twitter Help", description: "I need someone to push out 10 tweets a day for me", 
+socialmedia = Project.create(title: "Twitter Help", description: "I need someone to push out 10 tweets a day for me", 
   organization_id: global_giving.id, skills: "Social Media", causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
 fundraising = Project.create(title: "Fundraising Help", description: "I need help fundraising my organization", 
   skills: "Fundraising", causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open")
@@ -133,6 +133,23 @@ Conversation.destroy_all
 profile_completion = Badge.create(name: "100% User Profile Completion")
 relationship = Relationship.create(follower: alice, leader: bob)
 relationship = Relationship.create(follower: alice, leader: catherine)
+
+
+newsfeed_item1 = NewsfeedItem.create(user_id: bob.id, created_at: Date.today)
+pretty_logo.newsfeed_items << newsfeed_item1
+
+newsfeed_item2 = NewsfeedItem.create(user_id: catherine.id, created_at: 2.days.ago)
+socialmedia.newsfeed_items << newsfeed_item2
+
+newsfeed_item3 = NewsfeedItem.create(user_id: bob.id, created_at: 3.days.ago)
+rails_app.newsfeed_items << newsfeed_item3
+
+newsfeed_item4 = NewsfeedItem.create(user_id: catherine.id, created_at: 4.days.ago)
+nice_pages.newsfeed_items << newsfeed_item4
+
+newsfeed_item5 = NewsfeedItem.create(user_id: bob.id, created_at: 5.days.ago)
+tax_assistance.newsfeed_items << newsfeed_item5
+
 
 =begin
 huggey_bear = Fabricate(:organization, name: "Huggey Bear Land", cause: "Animal Rights", 

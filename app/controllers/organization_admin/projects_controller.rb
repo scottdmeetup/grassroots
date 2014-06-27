@@ -8,6 +8,8 @@ class OrganizationAdmin::ProjectsController < OrganizationAdminController
     if @project.save
       organization = Organization.find_by(params[:id])
       @project.update_columns(state: "open", causes: organization.cause)
+      @newsfeed_item = NewsfeedItem.create(user_id: current_user.id)
+      @project.newsfeed_items << @newsfeed_item
       flash[:notice] = "You successfully created a project"
       redirect_to project_path(@project.id)
     else

@@ -39,5 +39,12 @@ describe AnswersController, :type => :controller do
 
       expect(Answer.count).to eq(0)
     end
+    it "publishes this as activity on the newsfeed of others who follow the current user" do
+      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id )
+      post :create, answer: {user_id: bob.id, description: "you want to do this and that"}, question_id: alice_question1.id
+
+      item = NewsfeedItem.first
+      expect(NewsfeedItem.from_users_followed_by(alice)).to match_array([item])
+    end
   end 
 end

@@ -98,6 +98,7 @@ describe QuestionsController, :type => :controller do
 
   describe "POST create" do
     let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
+    let!(:bob) {Fabricate(:user, user_group: "volunteer")}
     let!(:uncategorized) {Fabricate(:category, name: "Uncategorized")}
     let!(:web_development) {Fabricate(:category, name: "Web Development")}
     let!(:graphic_design) {Fabricate(:category, name: "Graphic Design")}
@@ -143,6 +144,14 @@ describe QuestionsController, :type => :controller do
 
       question = Question.first
       expect(question.categories).to eq([web_development, social_media])
+    end
+
+    it "publishes this as activity on the newsfeed of others who follow the current user" do
+      Fabricate(:relationship, follower_id: bob.id, leader_id: alice.id )
+      post :create, question: {title: "WordPress?", description: "Should I use wordpress, yo?", category_ids: [web_development.id, social_media.id]}
+
+      item = NewsfeedItem.first
+      expect(NewsfeedItem.from_users_followed_by(bob)).to match_array([item])
     end
   end
 

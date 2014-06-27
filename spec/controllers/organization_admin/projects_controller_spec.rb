@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe OrganizationAdmin::ProjectsController, :type => :controller do
   let!(:first_submitted_project) {Fabricate(:badge, name: "First Submitted Project")}
-  Badge.create(name: "First Submitted Project")
+  
   describe "GET new" do
     it "renders the new template for creating a project" do
       alice = Fabricate(:user, organization_administrator: true, user_group: "nonprofit")
@@ -35,74 +35,78 @@ describe OrganizationAdmin::ProjectsController, :type => :controller do
   end
 
   describe "POST create" do
-    context "with valid inputs" do
-      it "creates a project" do
-        huggey_bears = Fabricate(:organization, name: "Huggey Bears")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
-        huggey_bears.organization_administrator = alice
-        session[:user_id] = alice.id
-        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site")
-        expect(Project.count).to eq(1)
-      end
-      it "redirects to the organization administrator to the view project's show view" do
-        huggey_bears = Fabricate(:organization, name: "Huggey Bears")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
-        huggey_bears.organization_administrator = alice
-        session[:user_id] = alice.id
-        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site")
-        word_press = Project.first
-        expect(response).to redirect_to(project_path(word_press.id))
-      end
-      it "creates a project associated with an organization" do
-        huggey_bears = Fabricate(:organization, name: "Huggey Bears")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
-        huggey_bears.organization_administrator = alice
+    
+    let!(:huggey_bears) {Fabricate(:organization, cause: "animals")}
+    let!(:alice) {Fabricate(:organization_administrator, first_name: "Alice", organization_id: huggey_bears.id, user_group: "nonprofit")}
+    let!(:bob) {Fabricate(:user, first_name: "Bob", user_group: "volunteer")}
+    let!(:cat) {Fabricate(:user, first_name: "Cat", user_group: "volunteer")}
 
-        session[:user_id] = alice.id
-        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization: huggey_bears)
+    before do
+      huggey_bears.update_columns(user_id: alice.id)
+      set_current_user(alice)
+    end
+    
+    it "creates a project" do
+      post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site")
+      expect(Project.count).to eq(1)
+    end
+    it "redirects to the organization administrator to the view project's show view" do
+      post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site")
 
-        word_press = Project.first
-        expect(word_press.organization).to eq(huggey_bears)
-      end
-      it "adds the created project to the organization's dashboard of projects" do
-        huggey_bears = Fabricate(:organization, name: "Huggey Bears")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
-        huggey_bears.organization_administrator = alice
-        session[:user_id] = alice.id
-        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id)
+      word_press = Project.first
+      expect(response).to redirect_to(project_path(word_press.id))
+    end
 
-        word_press = Project.first
-        expect(huggey_bears.open_projects).to eq([word_press])
-      end
-      it "creates a project associated with a work-type" do
-        huggey_bears = Fabricate(:organization)
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
-        session[:user_id] = alice.id
-        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
+    it "creates a project associated with an organization" do
+      post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization: huggey_bears)
 
-        word_press = Project.first
-        expect(word_press.skills).to eq("Web Development")
-      end
+      word_press = Project.first
+      expect(word_press.organization).to eq(huggey_bears)
+    end
+    it "adds the created project to the organization's dashboard of projects" do
+      post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id)
 
-      it "creates a project associated with the organization's cause" do
-        huggey_bears = Fabricate(:organization, cause: "animals")
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
-        session[:user_id] = alice.id
-        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
+      word_press = Project.first
+      expect(huggey_bears.open_projects).to eq([word_press])
+    end
+    it "creates a project associated with a work-type" do
+      post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
 
-        word_press = Project.first
-        expect(word_press.causes).to eq("animals")
-      end
+      word_press = Project.first
+      expect(word_press.skills).to eq("Web Development")
+    end
 
-      it "sets the project's state to open" do
-        huggey_bears = Fabricate(:organization)
-        alice = Fabricate(:organization_administrator, organization_id: huggey_bears.id, user_group: "nonprofit")
-        session[:user_id] = alice.id
-        post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
+    it "creates a project associated with the organization's cause" do
+      post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
 
-        word_press = Project.first
-        expect(word_press.state).to eq("open")
-      end
+      word_press = Project.first
+      expect(word_press.causes).to eq("animals")
+    end
+
+    it "sets the project's state to open" do
+      post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
+
+      word_press = Project.first
+      expect(word_press.state).to eq("open")
+    end
+    
+    it "creates a newsfeed item" do
+      post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
+
+      expect(NewsfeedItem.count).to eq(1)
+    end
+
+    it "publishes this as activity on the newsfeed of others who follow the current user" do
+      Fabricate(:relationship, follower_id: bob.id, leader_id: alice.id )
+      graphic_design = Fabricate(:project, title: "graphic design", organization_id: huggey_bears.id)
+      newsfeed_item2 = NewsfeedItem.create(user_id: alice.id)
+      graphic_design.newsfeed_items << newsfeed_item2
+
+      post :create, project: Fabricate.attributes_for(:project, title: "WordPress Site", organization_id: huggey_bears.id, skills: "Web Development")
+
+      item = NewsfeedItem.first
+      item2 = NewsfeedItem.last
+      expect(NewsfeedItem.from_users_followed_by(bob)).to match_array([item, item2])
     end
   end
 

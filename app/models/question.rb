@@ -4,6 +4,7 @@ class Question < ActiveRecord::Base
   has_many :comments
   has_many :categorizations
   has_many :categories, through: :categorizations
+  has_many :newsfeed_items, as: :newsfeedable
 
   validates_presence_of :title, :description
 end

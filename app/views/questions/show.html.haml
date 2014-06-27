@@ -16,11 +16,14 @@
             = @question.description
           %p= link_to 'edit', edit_question_path(@question) if @question.author == current_user
           %div.avatar-wrapper
-            %img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"} 
+            - if @question.author.avatar?
+              = cl_image_tag(@question.author.avatar.path, size: "20x20")
+            - else
+              = image_tag(@question.author.to_s, class: "testing")
             %div
               %ul
-                %li Ben Cohen
-                %li Grassroots.org
+                %li= link_to "#{@question.author.first_name} #{@question.author.last_name}", user_path(@question.author)
+                %li= link_to "#{@question.author.organization_name}", organization_path(@question.author.organization) if @question.author.organization
         %div.comment-wrapper
           - @question.comments.each do |comment|
             = render 'comments/comment', comment: comment
