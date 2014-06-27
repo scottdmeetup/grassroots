@@ -35,6 +35,11 @@ body {
   color: #fff;
   text-transform: uppercase;
 }
+
+.no-content {
+  text-align: center;
+  font-style: italic;
+}
 /* Buttons */ 
 
 .notice {
@@ -70,6 +75,12 @@ body {
 }
 
 /* Images */ 
+
+.pic {
+  img {
+    max-width: 100%;
+  }
+}
 
 .thumbnail-staff {
     padding: 0;

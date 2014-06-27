@@ -1,4 +1,9 @@
-.col-lg-3.col-sm-6
-	.thumbnail
-		.glyphicon.glyphicon-star-empty
-			= link_to badge.name, badge_path(badge.id)
+.col-lg-3.col-sm-6#badges-wrapper
+  .thumbnail.badges
+    %div.badge-icon
+      .glyphicon.glyphicon-star-empty
+    %div.badge-info 
+      %ul
+        %li
+          = link_to badge.name, badge_path(badge.id)
+        %li 10/12/2014
