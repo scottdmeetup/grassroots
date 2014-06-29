@@ -188,4 +188,77 @@ describe QuestionsController, :type => :controller do
       expect(alice_question1.reload.title).to eq("Ruby Advice")
     end
   end
+
+  describe "POST vote" do
+    let!(:bob) {Fabricate(:user, user_group: "volunteer")}
+    let!(:bob_question1) {Fabricate(:question, user_id: bob.id)}
+    let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
+    let!(:alice_question1) {Fabricate(:question, user_id: alice.id, title: "PHP Advice")}
+
+    before(:each) do
+      request.env["HTTP_REFERER"] = "/questions/2" unless request.nil? or request.env.nil?
+    end
+
+    it "redirects user to the sign in page if not logged in" do
+      post :vote, vote: true, id: alice_question1.id
+      expect(response).to redirect_to(sign_in_path)
+    end
+
+    it "returns the user back to the question object" do
+      set_current_user(bob)
+      post :vote, vote: true, id: alice_question1.id
+      expect(response).to redirect_to(question_path(alice_question1.id))
+    end
+
+    it "creates a vote" do
+      set_current_user(bob)
+      post :vote, vote: true, id: alice_question1.id
+      expect(Vote.count).to eq(1)
+    end
+
+    it "creates an up vote" do
+      set_current_user(bob)
+      post :vote, vote: true, id: alice_question1.id
+      expect(Vote.first.vote).to eq(true)
+    end
+
+    it "creates a down vote" do
+      set_current_user(bob)
+      post :vote, vote: false, id: alice_question1.id
+      expect(Vote.first.vote).to eq(false)
+    end
+
+    it "assigns a vote to a question" do
+      set_current_user(bob)
+      post :vote, vote: false, id: alice_question1.id
+      expect(Vote.first.voteable_id).to eq(alice_question1.id)
+      expect(Vote.first.voteable_type).to eq("Question")
+    end
+
+    it "assigns a vote to a user" do
+      set_current_user(bob)
+      post :vote, vote: false, id: alice_question1.id
+      expect(Vote.first.user_id).to eq(bob.id)
+    end
+
+    it "does not let the user vote on his/her own question" do
+      set_current_user(alice)
+      post :vote, vote: false, id: alice_question1.id
+      expect(Vote.count).to eq(0)
+    end
+
+    it "flashes a notice letting that user know that the vote has been counted" do
+      set_current_user(bob)
+      post :vote, vote: false, id: alice_question1.id
+      expect(flash[:success]).to eq("Thank you for voting.")
+    end
+
+    it "only lets the user vote once" do
+      set_current_user(bob)
+      Fabricate(:vote, vote: true, user_id: bob.id, voteable: alice_question1)
+
+      post :vote, vote: true, id: alice_question1.id
+      expect(Vote.count).to eq(1)
+    end
+  end
 end

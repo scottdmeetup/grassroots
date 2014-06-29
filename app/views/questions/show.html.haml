@@ -9,9 +9,10 @@
           %div.forum-vote
             %ul
               %li
-                %span.glyphicon.glyphicon.glyphicon-chevron-up
+                = link_to votes_question_path(@question, vote: true), method: 'post' do
+                  %span.glyphicon.glyphicon.glyphicon-chevron-up
               %li 
-                %span.vote-number 0
+                %span.vote-number= @question.total_votes
           %p
             = @question.description
           %p= link_to 'edit', edit_question_path(@question) if @question.author == current_user

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe NewsfeedItem do
+  it {should belong_to(:author)}
 
   let!(:huggey_bears) {Fabricate(:organization, cause: "animals")}
   let!(:global) {Fabricate(:organization, cause: "social good")}

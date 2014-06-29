@@ -1,10 +1,13 @@
 class QuestionsController < ApplicationController
+  before_action :authorize, only: [:create, :vote]
+  before_action :set_question, only: [:vote, :show, :edit, :update]
+  
+
   def index
     @questions = Question.all
   end
 
   def show
-    @question = Question.find(params[:id])
     @comment = Comment.new
     @answer = Answer.new
     @answers = @question.answers
@@ -33,19 +36,32 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def edit
-    @question = Question.find(params[:id])
-  end
+  def edit; end
 
   def update
-    @question = Question.find(params[:id])
     @question.update_columns(question_params)
     redirect_to question_path(@question.id)
+  end
+
+  def vote
+
+    if @question.author.id == current_user.id
+      flash[:error] = "You cannot vote on your own question."
+    else
+      vote = Vote.create(voteable: @question, voter: current_user, vote: params[:vote]) 
+      vote.valid? ? flash[:success] = "Thank you for voting." : flash[:error] = "You can only vote once on this question."
+    end
+    
+    redirect_to :back
   end
 
 private
 
   def question_params
     params.require(:question).permit(:title, :description, category_ids: [])
+  end
+
+  def set_question
+    @question = Question.find(params[:id])
   end
 end
