@@ -55,7 +55,7 @@ describe QuestionsController, :type => :controller do
     it "shows the answers comments" do
       bob = Fabricate(:user, user_group: "volunteer")
       bob_answer = Fabricate(:answer, description: "You need to do this......", question_id: alice_question1.id, user_id: bob.id)
-      alice_comment = Comment.create(user_id: alice.id, content: "thank you!", answer_id: bob_answer.id)
+      alice_comment = Comment.create(user_id: alice.id, content: "thank you!", commentable: bob_answer)
       get :show, id: alice_question1
 
       expect(bob_answer.comments).to match_array([alice_comment])
@@ -63,7 +63,7 @@ describe QuestionsController, :type => :controller do
 
     it "shows the questions comments" do
       bob = Fabricate(:user, user_group: "volunteer")
-      bob_comment = Comment.create(user_id: bob.id, content: "can you clarify your question?", question_id: alice_question1.id)
+      bob_comment = Comment.create(user_id: bob.id, content: "can you clarify your question?", commentable: alice_question1)
       get :show, id: alice_question1
 
       expect(alice_question1.comments).to match_array([bob_comment])
@@ -74,8 +74,8 @@ describe QuestionsController, :type => :controller do
       bob_answer = Fabricate(:answer, description: "You need to do this......", question_id: alice_question1.id, user_id: bob.id)
       cat = Fabricate(:user, user_group: "volunteer")
       cat_answer = Fabricate(:answer, description: "I think you should do this......", question_id: alice_question1.id, user_id: cat.id)
-      alice_comment = Comment.create(user_id: alice.id, content: "thank you!", answer_id: bob_answer.id)
-      alice_comment2 = Comment.create(user_id: alice.id, content: "that was a good point", answer_id: cat_answer.id)
+      alice_comment = Comment.create(user_id: alice.id, content: "thank you!", commentable: bob_answer)
+      alice_comment2 = Comment.create(user_id: alice.id, content: "that was a good point", commentable: cat_answer)
       get :show, id: alice_question1
 
       expect(cat_answer.comments).to match_array([alice_comment2])
@@ -259,6 +259,54 @@ describe QuestionsController, :type => :controller do
 
       post :vote, vote: true, id: alice_question1.id
       expect(Vote.count).to eq(1)
+    end
+  end
+
+  describe "POST comment" do
+    
+    let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
+    let!(:alice_question1) {Fabricate(:question, user_id: alice.id)}
+    let!(:bob) {Fabricate(:user, user_group: "volunteer")}
+
+    before(:each) do
+      set_current_user(bob)
+      request.env["HTTP_REFERER"] = "/questions/1" unless request.nil? or request.env.nil?
+    end
+
+    it "redirects user to the question show view when commenting on a question" do
+      post :comment, comment: {content: "this is a great question"}, id: alice_question1.id
+
+      expect(response).to redirect_to(question_path(alice_question1.id))
+    end
+
+    it "creates a comment" do
+      post :comment, comment: {content: "this is a great question"}, id: alice_question1.id
+
+      expect(Comment.count).to eq(1)
+    end
+
+    it "creates a comment associated with an author" do
+      post :comment, comment: {content: "this is a great question"}, id: alice_question1.id
+
+      expect(Comment.first.author).to eq(bob)
+    end
+
+    it "creates a comment associated with a question when commenting on a question" do
+      post :comment, comment: {content: "this is a great question"}, id: alice_question1.id
+
+      expect(Comment.first.commentable_type).to eq('Question')
+    end
+
+    it "sets the content attribute of the comment with the submitted parameters" do
+      post :comment, comment: {content: "this is a great question"}, id: alice_question1.id
+
+      expect(Comment.first.content).to eq("this is a great question")
+    end
+
+    it "does not create a comment with empty content" do
+      post :comment, comment: {content: ""}, id: alice_question1.id
+
+      expect(Comment.count).to eq(0)
     end
   end
 end

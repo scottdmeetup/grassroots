@@ -52,12 +52,14 @@ Grassroots::Application.routes.draw do
   resources :questions, only: [:index, :show, :new, :create, :edit, :update] do
     
     member do
-      post '/votes', to: 'questions#vote' 
+      post '/votes', to: 'questions#vote'
+      post '/questions', to: 'questions#comment'
     end
 
-    resources :comments, only: [:create]
     resources :answers, only: [:create] do
-      resources :comments, only: [:create]
+      member do
+        post '/answers', to: 'answers#comment'
+      end
     end
   end
 

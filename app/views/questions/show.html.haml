@@ -31,10 +31,10 @@
         %div.new-comment-wrapper
           %a{:title => "Use the comments section to ask for a clarification on the question", :class => "comment-link"} add comment
           %div.comment-form
-            = form_for [@question, @comment] do |f|
+            = form_for @comment, url: questions_question_path(@question) do |f|
               = f.text_area :content
               %br/
-              = f.submit "Add a Comment", class: "btn btn-primary"
+              = f.submit "Comment on the question", class: "btn btn-primary"
       %h4.bold= "#{@answers.count} Answers"
       %div#all-answers-wrapper
         - @answers.each do |answer|

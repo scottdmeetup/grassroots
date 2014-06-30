@@ -46,5 +46,30 @@ describe AnswersController, :type => :controller do
       item = NewsfeedItem.first
       expect(NewsfeedItem.from_users_followed_by(alice)).to match_array([item])
     end
-  end 
+  end
+
+  describe "POST comment" do
+
+    let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
+    let!(:alice_question1) {Fabricate(:question, user_id: alice.id)}
+    let!(:bob) {Fabricate(:user, user_group: "volunteer")}
+
+    before do
+      set_current_user(alice)
+    end
+
+    it "redirects user to the answer show view when commenting on an answer" do
+      bob_answer = Fabricate(:answer, question_id: alice_question1.id)
+      post :comment, comment: {content: "this is a great question"}, question_id: alice_question1.id, id: bob_answer.id
+      
+      expect(response).to redirect_to(question_path(alice_question1))
+    end
+
+    it "creates a comment associated with a answer when commenting on a answer" do
+      bob_answer = Fabricate(:answer, question_id: alice_question1.id)
+      post :comment, comment: {content: "this is a great question"}, question_id: alice_question1.id, id: bob_answer.id
+
+      expect(Comment.first.commentable).to eq(bob_answer)
+    end
+  end
 end

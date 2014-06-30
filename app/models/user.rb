@@ -18,14 +18,17 @@ class User < ActiveRecord::Base
   has_many :assignments, class_name: "Contract", foreign_key: 'volunteer_id'
   has_many :projects, through: :contracts, source: :volunteer
 
-  has_many :questions
-
   has_many :accomplishments
   has_many :badges, through: :accomplishments
 
   has_many :following_relationships, class_name: 'Relationship', foreign_key: :follower_id
 
   has_many :newsfeed_items
+
+  has_many :questions
+  has_many :votes
+  has_many :comments
+  has_many :answers
 
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group

@@ -38,4 +38,56 @@ feature 'User engages the forum and other users on it' do
     click_on('Post question')
     expect(page).to have_content("PHP Advice")
   end
+
+  scenario 'user signs in to comment on a question' do
+    alice_question.categories << web_development
+    bob_question.categories << web_development
+    
+    john_doe = Fabricate(:user, user_group: "nonprofit")
+    user_signs_in(john_doe)
+    
+    visit questions_path
+    expect(page).to have_content("#{alice_question.title}")
+    expect(page).to have_content("#{bob_question.title}")
+    click_on("#{alice_question.title}")
+    fill_in "comment[content]", with: "that's a great question"
+    click_on("Comment on the question")
+    expect(page).to have_content("that's a great question")
+  end
+
+  scenario 'user signs in to answer a question' do
+    alice_question.categories << web_development
+    bob_question.categories << web_development
+    
+    john_doe = Fabricate(:user, user_group: "nonprofit")
+    user_signs_in(john_doe)
+    
+    visit questions_path
+    expect(page).to have_content("#{alice_question.title}")
+    expect(page).to have_content("#{bob_question.title}")
+    click_on("#{alice_question.title}")
+    fill_in "answer[description]", with: "You should do this...."
+    click_on("Post Your Answer")
+    expect(page).to have_content("You should do this....")
+  end
+=begin
+  scenario 'user signs in to comment on an answer' do
+    alice_question.categories << web_development
+    bob_question.categories << web_development
+    alice_answer = Fabricate(:answer, user_id: alice.id, description: "you should do this and that", question_id: bob_question.id)
+    
+    john_doe = Fabricate(:user, user_group: "nonprofit")
+    user_signs_in(john_doe)
+    
+    visit questions_path
+    expect(page).to have_content("#{alice_question.title}")
+    expect(page).to have_content("#{bob_question.title}")
+    click_on("#{bob_question.title}")
+    expect(page).to have_content("you should do this and that")
+    
+    fill_in "comment[content]", with: "that's a great answer"
+    click_on("Comment on the answer")
+    expect(page).to have_content("that's a great answer")
+  end
+=end
 end

@@ -9,6 +9,13 @@ class AnswersController < ApplicationController
     redirect_to :back
   end
 
+  def comment
+    @answer = Answer.find(params[:id])
+    @question = Question.find(params[:question_id])
+    @comment = Comment.create(commentable: @answer, user_id: current_user.id, content: params[:comment][:content])
+    redirect_to question_path(@question)
+  end
+
 private
 
   def answer_params

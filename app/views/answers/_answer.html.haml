@@ -25,7 +25,7 @@
   %div.new-comment-wrapper  
     %a{:title => "Use the comments to ask for a clarification on the answer", :class => "comment-link"} add comment
     %div.comment-form
-      = form_for [@question, answer, @comment] do |f|
+      = form_for @comment, url: answers_question_answer_path(id: answer.id, question_id: @question.id) do |f|
         = f.text_area :content
         %br/
-        = f.submit "Add a Comment", class: "btn btn-primary"
+        = f.submit "Comment on the answer", class: "btn btn-primary"

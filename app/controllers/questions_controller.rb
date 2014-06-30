@@ -55,6 +55,12 @@ class QuestionsController < ApplicationController
     redirect_to :back
   end
 
+  def comment
+    @question = Question.find(params[:id])
+    @comment = Comment.create(commentable: @question, user_id: current_user.id, content: params[:comment][:content])
+    redirect_to :back
+  end
+
 private
 
   def question_params
@@ -63,5 +69,9 @@ private
 
   def set_question
     @question = Question.find(params[:id])
+  end
+
+  def comment_params
+    params.require(:comment).permit(:content, :user_id)
   end
 end
