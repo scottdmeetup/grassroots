@@ -53,13 +53,23 @@ Grassroots::Application.routes.draw do
     
     member do
       post '/votes', to: 'questions#vote'
-      post '/questions', to: 'questions#comment'
+    end
+
+    resources :comments, only: [:create] do
+      member do
+        post '/votes', to: 'comments#vote'
+      end
     end
 
     resources :answers, only: [:create] do
       member do
         post '/votes', to: 'answers#vote'
-        post '/answers', to: 'answers#comment'
+      end
+      
+      resources :comments, only: [:create] do
+        member do
+          post '/votes', to: 'comments#vote'
+        end
       end
     end
   end
