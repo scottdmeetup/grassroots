@@ -3,9 +3,10 @@
     %div.forum-vote
       %ul
         %li
-          %span.glyphicon.glyphicon.glyphicon-chevron-up
+          = link_to votes_question_answer_path(question_id: @question.id, id: answer.id, vote: true), method: 'post' do
+            %span.glyphicon.glyphicon.glyphicon-chevron-up
         %li 
-          %span.vote-number 0
+          %span.vote-number= answer.total_votes
     %p
       = "#{answer.description}"
     -#  

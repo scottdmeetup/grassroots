@@ -58,6 +58,7 @@ Grassroots::Application.routes.draw do
 
     resources :answers, only: [:create] do
       member do
+        post '/votes', to: 'answers#vote'
         post '/answers', to: 'answers#comment'
       end
     end

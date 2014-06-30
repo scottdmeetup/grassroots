@@ -44,14 +44,12 @@ class QuestionsController < ApplicationController
   end
 
   def vote
-
     if @question.author.id == current_user.id
       flash[:error] = "You cannot vote on your own question."
     else
       vote = Vote.create(voteable: @question, voter: current_user, vote: params[:vote]) 
       vote.valid? ? flash[:success] = "Thank you for voting." : flash[:error] = "You can only vote once on this question."
     end
-    
     redirect_to :back
   end
 
