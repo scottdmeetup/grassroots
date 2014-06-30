@@ -1,13 +1,67 @@
 .row.row-custom
-  .span8
-    %h4
-      = link_to "#{item.author.first_name} #{item.author.last_name}", user_path(item.author)
-      - if item.newsfeedable_type == "Project"
-        = link_to "creates a #{item.newsfeedable_type}", project_path(item.newsfeedable_id)
-        = "at #{fix_date_time(item.created_at)}"
-      - elsif item.newsfeedable_type == "Question"
-        = link_to "creates a #{item.newsfeedable_type}", question_path(item.newsfeedable_id)
-        = "at #{fix_date_time(item.created_at)}"
-      - else
-        = link_to "creates a #{item.newsfeedable_type}", question_path(item.answers_question_id)
-        = "at #{fix_date_time(item.created_at)}"      
+  .col-lg-2
+  .col-lg-8.white#newsfeed-wrapper 
+    - if item.newsfeedable_type == "Project"
+      %div.newsfeed-category-heading
+        = link_to "#{item.newsfeedable_type} added to Cateory of Placeholder", project_path(item.newsfeedable_id)
+        %span.small-text 3m 
+        -# Placeholder
+    - elsif item.newsfeedable_type == "Question"
+      %div.newsfeed-category-heading
+        = link_to "#{item.newsfeedable_type} added to Category of Placeholder", question_path(item.newsfeedable_id)
+        %span.small-text 3m 
+        -# Placeholder
+    - else
+      %div.newsfeed-category-heading
+        = link_to "#{item.newsfeedable_type} added to Category of Placeholder", question_path(item.answers_question_id)
+        %span.small-text 3m
+        -# Placeholder
+    %table
+      %tr
+        %td.left-cell
+          %div.pic
+            %img.sm-image{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+        %td.user-name-cell     
+          = link_to "#{item.author.first_name} #{item.author.last_name}", user_path(item.author)
+          %p
+            = "#{item.author.position} at"
+            %span 
+            -#
+              = link_to "#{item.author.organization_name}" organization_path(@item.author.organization.id)
+      %tr
+        %td.left-cell.newsfeed-voting
+          %div.vote-size
+            %ul
+              %li
+                %span.glyphicon.glyphicon.glyphicon-chevron-up
+              %li
+                %span.vote-number 0 
+                -# Placeholder 
+        %td.content-cell 
+          %ul
+            %li.title Link to Title
+            %li.description A Chinese tale tells of some men sent to harm a young girl who, upon seeing her beauty, become her protectors rather than her violators. That's how I felt seeing the Earth for the first time. I could not help but love and cherish her. 
+          %div.comment-section
+            %table
+              %tr.previous-comment 
+                %td
+                  %span.glyphicon.glyphicon-comment
+                  %a{:href => "#"}Show previous comments
+              %tr.comment-row
+                %td.comment-pic-wrapper
+                  %div.pic
+                    %img.tiny-image{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+                  -# Placeholder
+                %td.comment-content-wrapper 
+                  %span Placeholder Link Name 
+                  %span When I orbited the Earth in a spaceship, I saw for the first time how beautiful our planet is. Mankind, let us preserve and increase this beauty, and not destroy it!
+                  %div.comment-notifications
+                    %span.small-text 1m
+                    %span.glyphicon.glyphicon-circle-arrow-up
+              %tr
+                %td.new-comment-field 
+                  %form 
+                    %textarea.newsfeed-new-comment{:placeholder => "Add a comment"}
+                    %button.comment-button Comment
+      
+        
