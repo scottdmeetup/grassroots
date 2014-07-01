@@ -8,6 +8,10 @@
       - elsif item.newsfeedable_type == "Question"
         = link_to "creates a #{item.newsfeedable_type}", question_path(item.newsfeedable_id)
         = "at #{fix_date_time(item.created_at)}"
-      - else
+      - elsif item.newsfeedable_type == "Answer"
         = link_to "creates a #{item.newsfeedable_type}", question_path(item.answers_question_id)
-        = "at #{fix_date_time(item.created_at)}"      
+        = "at #{fix_date_time(item.created_at)}"
+      - else
+        = "creates a #{item.newsfeedable_type}"
+        = "#{item.prints_status_update}"
+        = "at #{fix_date_time(item.created_at)}"

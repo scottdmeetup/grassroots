@@ -15,4 +15,9 @@ class NewsfeedItem < ActiveRecord::Base
     answer = Answer.find(self.newsfeedable_id)
     answer.question_id
   end
+
+  def prints_status_update
+    status_update = StatusUpdate.find(self.newsfeedable_id)
+    status_update.content
+  end
 end
