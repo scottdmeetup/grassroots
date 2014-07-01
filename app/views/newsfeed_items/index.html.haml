@@ -1,2 +1,7 @@
+= form_for @status_update do |f|
+  .control-group
+    = f.label :status_update
+    = f.text_area :content, rows: 1, class: 'form-control'
+  = f.submit 'Submit an update', class: 'btn btn-primary'
 - @relevent_activity.each do |item|
   = render 'newsfeed_item', item: item

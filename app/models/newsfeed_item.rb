@@ -7,6 +7,7 @@ class NewsfeedItem < ActiveRecord::Base
       following = User.find(leader.leader_id)
       following.newsfeed_items
     end
+    relevent_items << a_user.newsfeed_items
     relevent_items.flatten
   end
 

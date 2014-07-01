@@ -78,4 +78,5 @@ Grassroots::Application.routes.draw do
   resources :badges, only: [:show]
   resources :relationships, only: [:create, :destroy]
   resources :newsfeed_items, only: [:index]
+  resources :status_updates, only: [:create]
 end
