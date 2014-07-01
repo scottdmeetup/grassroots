@@ -87,7 +87,6 @@ class UsersController < ApplicationController
     filter = {state_abbreviation: params[:state_abbreviation]} if params[:state_abbreviation]
     filter = {city: params[:city]} if params[:city]
     filter = {position: params[:position]} if params[:position]
-    filter = {interests: params[:interests]} if params[:interests]
     
     if filter != nil
       @results = User.where(filter).to_a
