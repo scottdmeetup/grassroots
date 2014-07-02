@@ -20,7 +20,7 @@
             - if @question.author.avatar?
               = cl_image_tag(@question.author.avatar.path, size: "20x20")
             - else
-              = image_tag(@question.author.to_s, class: "testing")
+              = image_tag(@question.author.small_cover, class: "testing")
             %div
               %ul
                 %li= link_to "#{@question.author.first_name} #{@question.author.last_name}", user_path(@question.author)

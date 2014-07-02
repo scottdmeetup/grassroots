@@ -8,10 +8,11 @@ class OrganizationAdmin::OrganizationsController < OrganizationAdminController
   end
 
   def update
-    organization = Organization.find(params[:id])
-    organization.update_columns(organization_params)
+    @organization = Organization.find(params[:id])
+    @organization.update_columns(organization_params)
+    uploading_logo?(@organization)
     flash[:notice] = "You have updated your organization's profile."
-    redirect_to organization_path(organization.id)
+    redirect_to organization_path(@organization.id)
   end
 
   def create
@@ -28,5 +29,12 @@ private
     params.require(:organization).permit(:name, :date_of_incorporation, 
       :ein, :street1, :street2, :city, :state_abbreviation, :zip, :cause, 
       :contact_number, :contact_email, :mission_statement, :goal, :user_id)
+  end
+
+  def uploading_logo?(a_organization)
+    if params[:organization][:logo]
+      a_organization.logo = params[:organization][:logo]
+      a_organization.logo.save
+    end
   end
 end

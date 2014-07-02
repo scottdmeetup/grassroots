@@ -35,6 +35,7 @@ body {
 
 .bold {
   font-weight: 700;
+  color: black;
 }
 
 .gr-green-font {
@@ -69,6 +70,10 @@ textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
 }
 textarea:-ms-input-placeholder { /* Internet Explorer 10+ */
     color:    #B5B5B5;
+}
+
+.no-links {
+  color: gray;
 }
 /* Buttons */ 
 
@@ -111,7 +116,7 @@ textarea:-ms-input-placeholder { /* Internet Explorer 10+ */
     max-width: 100%;
   }
   .sm-image {
-    width: 50px;
+    width: 30px;
   }
   .tiny-image {
     width: 35px;

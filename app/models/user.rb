@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
 
   before_create :generate_token
 
-  has_attachment  :avatar, accept: [:jpg, :png, :gif]
+  has_attachment :avatar, accept: [:jpg, :png, :gif]
 
   def open_applications
     requests_to_volunteer.where(accepted: nil, rejected: nil).to_a

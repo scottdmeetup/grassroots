@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140701164626) do
+ActiveRecord::Schema.define(version: 20140702160525) do
 
   create_table "accomplishments", force: true do |t|
     t.integer  "user_id"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 20140701164626) do
     t.string   "contact_number"
     t.string   "contact_email"
     t.string   "budget"
+    t.string   "small_cover"
   end
 
   create_table "private_messages", force: true do |t|

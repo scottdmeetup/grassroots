@@ -14,7 +14,10 @@
         created at
         = "#{fix_date_time(answer.created_at)}"
     %div.avatar-wrapper
-      %img{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"} 
+      - if @question.author.avatar?
+        = cl_image_tag(@question.author.avatar.path, size: "20x20")
+      - else
+        = image_tag(@question.author.small_cover, class: "testing")
       %div
         %ul
           %li
