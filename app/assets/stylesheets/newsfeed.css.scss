@@ -1,0 +1,129 @@
+#status-update {
+  margin-bottom: 10px;
+  padding: 0px 0px;
+  .update-text {
+    border-bottom: 1px solid black;
+    margin: 0 15px;
+      p {
+        margin: 5px 0 0 0; 
+        
+      }
+    }
+    .status-update-field {
+      margin-top: 10px;
+      outline-color: transparent;
+    }
+    div.update-button-wrapper {
+      background-color: #f4f4f4;
+      border-top: 1px solid #E2E6DF;
+      width: 100%;
+      overflow: hidden;
+      .comment-button {
+        float: right;
+        margin: 10px 15px 10px 0;
+      }
+  }
+  .status-update-field {
+    width: 100%;
+    resize: none;
+    border: none;
+  }
+}
+
+#newsfeed-wrapper {
+  padding: 20px 30px 20px 0;
+    .newsfeed-category-heading {
+      margin-left: 12.15%;
+    }
+  table {
+    width: 100%;
+    margin-top: 5px;
+    .left-cell {
+      width: 8%;
+    }
+    .user-name-cell, 
+    .content-cell {
+      vertical-align: top;
+      padding-left: 20px;
+    }
+    .newsfeed-voting {
+      vertical-align: top;
+      padding-top: 6px;
+    }
+      .vote-number {
+        display: block;
+        text-align: center;
+        margin-right: 1px;
+      }
+    .content-cell {
+      width: 80%;
+      ul {
+        margin-top: 5px;
+        .title,
+        .description {
+          margin-bottom: 5px;
+        }
+      }
+      .comment-section {
+        width: 100%;
+        min-height: 50px;
+        background-color: #F4F4F4;
+        .previous-comment {
+          display: block;
+          border-bottom: 1px solid #E2E6DF;
+          padding: 2px 8px 4px;
+          .glyphicon-comment {
+            vertical-align: middle;
+            margin-left: 6px;
+          } 
+        }
+        .comment-row {
+          display: block;  
+          padding: 6px 0 6px 6px;
+          .comment-pic-wrapper {
+            vertical-align: top;
+            width: 9%;
+          }
+          .comment-content-wrapper {
+            width: 75%;
+            padding-left: 6px;
+            vertical-align: top;
+            .comment-notifications {
+              span {
+                margin-right: 7px
+              }
+              .small-text {
+                vertical-align: top;
+              }
+            }
+          } 
+      }
+          .new-comment-field {
+              padding: 6px 0 4px 14px;
+              .newsfeed-new-comment {
+              width: 97%;
+              height: 25px;
+              resize: none;
+              border: none;
+              box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.10);
+              moz-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.10);
+              webkit-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.10);
+            }
+            .new-comment-field-expanded {
+              height: 50px;
+            }
+            .comment-button {
+              display: none;
+              color: #fff;
+              background-color: rgba(66,139,202,.65);
+              border-radius: 2px;
+              border: 1px solid #357ebd;
+            }
+            .comment-button-active {
+              background-color: rgba(66,139,202,1);
+            }
+          } 
+        }
+    }
+  }
+}

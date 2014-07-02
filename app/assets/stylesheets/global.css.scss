@@ -1,8 +1,18 @@
+/* Global Element Resets */ 
+
 ul {
   list-style-type: none;
+  padding-left: 0px;
+} 
+
+textarea {
+  padding: 3px 0;
+  text-indent: .83em;
+  overflow: hidden;
 }
 
 
+  
 /* Background Colors */
 
 
@@ -36,9 +46,29 @@ body {
   text-transform: uppercase;
 }
 
+.small-text {
+  color: gray;
+  font-size: .75em;
+}
+
 .no-content {
   text-align: center;
   font-style: italic;
+}
+
+textarea::-webkit-input-placeholder { /* WebKit browsers */
+    color: #B5B5B5;
+}
+textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #B5B5B5;
+    opacity:  1;
+}
+textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #B5B5B5;
+    opacity:  1;
+}
+textarea:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #B5B5B5;
 }
 /* Buttons */ 
 
@@ -80,6 +110,12 @@ body {
   img {
     max-width: 100%;
   }
+  .sm-image {
+    width: 50px;
+  }
+  .tiny-image {
+    width: 35px;
+  }
 }
 
 .thumbnail-staff {
@@ -103,4 +139,17 @@ body {
 
 .glyphicon-star-empty {
   font-size: 20px;
+}
+.glyphicon-chevron-up {
+  display: block;
+  text-align: center;
+}
+.glyphicon-chevron-up:hover, 
+.glyphicon-circle-arrow-up:hover {
+    color: #F9BF3A;
+  }
+
+/* Global Features */ 
+.vote-size {
+  font-size: 2em;
 }

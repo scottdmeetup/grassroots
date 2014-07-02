@@ -18,4 +18,6 @@ class Answer < ActiveRecord::Base
   def down_votes
     self.votes.where(vote: false).size
   end
+
+  
 end

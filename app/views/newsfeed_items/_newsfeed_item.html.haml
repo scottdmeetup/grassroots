@@ -1,17 +1,73 @@
 .row.row-custom
-  .span8
-    %h4
-      = link_to "#{item.author.first_name} #{item.author.last_name}", user_path(item.author)
-      - if item.newsfeedable_type == "Project"
-        = link_to "creates a #{item.newsfeedable_type}", project_path(item.newsfeedable_id)
-        = "at #{fix_date_time(item.created_at)}"
-      - elsif item.newsfeedable_type == "Question"
-        = link_to "creates a #{item.newsfeedable_type}", question_path(item.newsfeedable_id)
-        = "at #{fix_date_time(item.created_at)}"
-      - elsif item.newsfeedable_type == "Answer"
-        = link_to "creates a #{item.newsfeedable_type}", question_path(item.answers_question_id)
-        = "at #{fix_date_time(item.created_at)}"
-      - else
-        = "creates a #{item.newsfeedable_type}"
-        = "#{item.prints_status_update}"
-        = "at #{fix_date_time(item.created_at)}"
+  .col-lg-2
+  .col-lg-8.white#newsfeed-wrapper 
+    %table
+      %tr
+        %td.left-cell
+          %div.pic
+            %img.sm-image{:src => "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/t1.0-1/c204.44.552.552/s160x160/303330_10100328964694072_324662327_n.jpg"}
+        %td.user-name-cell     
+          = link_to "#{item.author.first_name} #{item.author.last_name}", user_path(item.author)
+          %p= "#{item.author.position}"
+          - if item.author.organization 
+            = link_to "#{item.author.organization_name}", organization_path(item.author.organization.id)
+      %tr
+        %td.left-cell
+        %td
+          - if item.newsfeedable_type == "Project"
+            %div.newsfeed-category-heading
+              = link_to "has added a #{item.newsfeedable_type} requiring a skillset in #{item.project_type}", project_path(item.newsfeedable_id)
+              %span.small-text 3m 
+              -# Placeholder
+          - elsif item.newsfeedable_type == "Question"
+            %div.newsfeed-category-heading
+              = link_to "has added a #{item.newsfeedable_type} in #{item.question_categories}", question_path(item.newsfeedable_id)
+              %span.small-text 3m 
+              -# Placeholder
+          - elsif item.newsfeedable_type == "Answer"
+            %div.newsfeed-category-heading
+              = link_to "has provided an #{item.newsfeedable_type} within #{item.answer_categories} ", question_path(item.answers_question_id)
+
+              %span.small-text 3m
+              -# Placeholder
+          - else
+            %div.newsfeed-category-heading
+              = "creates a #{item.newsfeedable_type}"
+              = "#{item.prints_status_update}"
+              %span.small-text= "at #{fix_date_time(item.created_at)}"
+              -# Placeholder
+      %tr
+        %td.left-cell.newsfeed-voting
+          %div.vote-size
+            %ul
+              %li
+                %span.glyphicon.glyphicon.glyphicon-chevron-up
+              %li
+                %span.vote-number 0 
+                -# Placeholder 
+        %td.content-cell 
+          - if item.newsfeedable_type == "Project"
+            %ul
+              %li.title= link_to item.newsfeedable.title, project_path(item.newsfeedable_id)
+              %li.description= item.newsfeedable.description
+          - elsif item.newsfeedable_type == "Question"
+            %ul
+              %li.title= link_to item.newsfeedable.title, question_path(item.newsfeedable_id)
+              %li.description= item.newsfeedable.description
+          - elsif item.newsfeedable_type == "Answer"
+            %ul
+              %li.title= link_to item.title_of_answers_question, question_path(item.answers_question_id)
+              %li.description= item.newsfeedable.description
+          - else
+            %ul
+              %li.description= item.newsfeedable.content
+          %div.comment-section
+            %table
+              - if item.comments
+                - item.comments.each do |comment|
+                  = render 'newsfeed_comments', comment: comment
+              %tr
+                %td.new-comment-field 
+                  %form 
+                    %textarea.newsfeed-new-comment{:placeholder => "Add a comment"}
+                    %button.comment-button Comment
