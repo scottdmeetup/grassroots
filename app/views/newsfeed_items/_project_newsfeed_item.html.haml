@@ -1,0 +1,11 @@
+Request to join
+= link_to "#{item.author.first_name} #{item.author.last_name}", user_path(item.author), class: 'bold'
+= link_to "#{item.project_type} #{item.newsfeedable_type}", project_path(item.newsfeedable_id), class: 'no-links'
+%span.small-text= "at #{fix_date_time(item.created_at)}"
+%tr
+  %td.left-cell.newsfeed-voting
+
+  %td.content-cell 
+    %ul
+      %li.title= link_to item.newsfeedable.title, project_path(item.newsfeedable_id)
+      %li.description= item.newsfeedable.description

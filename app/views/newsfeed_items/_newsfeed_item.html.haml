@@ -10,45 +10,14 @@
             - else
               = image_tag(item.author.small_cover, class: "testing")
         %td.user-name-cell     
-          = link_to "#{item.author.first_name} #{item.author.last_name}", user_path(item.author), class: 'bold'
           - if item.newsfeedable_type == "Project"
-            = link_to "has added a #{item.newsfeedable_type} requiring a skillset in #{item.project_type}", project_path(item.newsfeedable_id), class: 'no-links'
-            %span.small-text= "at #{fix_date_time(item.created_at)}"
-            -# Placeholder
+            = render 'project_newsfeed_item', item: item
           - elsif item.newsfeedable_type == "Question"
-            = link_to "has added a #{item.newsfeedable_type} in #{item.question_categories}", question_path(item.newsfeedable_id), class: 'no-links'
-            %span.small-text= "at #{fix_date_time(item.created_at)}"
-            -# Placeholder
+            = render 'question_newsfeed_item', item: item
           - elsif item.newsfeedable_type == "Answer"
-            = link_to "has provided an #{item.newsfeedable_type} within #{item.answer_categories} ", question_path(item.answers_question_id), class: 'no-links'
-            %span.small-text= "at #{fix_date_time(item.created_at)}"
-            -# Placeholder
-          - else
-            = "creates a #{item.newsfeedable_type}"
-            %span.small-text= "at #{fix_date_time(item.created_at)}"
-            -# Placeholder
-          %p
-            = "#{item.author.position}"
-            = link_to "at   #{item.author.organization_name}", organization_path(item.author.organization.id), class: 'no-links' if item.author.organization 
-      %tr
-        %td.left-cell.newsfeed-voting
-          
-        %td.content-cell 
-          - if item.newsfeedable_type == "Project"
-            %ul
-              %li.title= link_to item.newsfeedable.title, project_path(item.newsfeedable_id)
-              %li.description= item.newsfeedable.description
-          - elsif item.newsfeedable_type == "Question"
-            %ul
-              %li.title= link_to item.newsfeedable.title, question_path(item.newsfeedable_id)
-              %li.description= item.newsfeedable.description
-          - elsif item.newsfeedable_type == "Answer"
-            %ul
-              %li.title= link_to item.title_of_answers_question, question_path(item.answers_question_id)
-              %li.description= item.newsfeedable.description
-          - else
-            %ul
-              %li.description= item.newsfeedable.content
+            = render 'answer_newsfeed_item', item: item
+          - else    
+            = render 'status_update_newsfeed_item', item: item
           %div.comment-section
             %table
               - if item.comments
@@ -59,3 +28,4 @@
                   %form 
                     %textarea.newsfeed-new-comment{:placeholder => "Add a comment"}
                     %button.comment-button Comment
+            %div= link_to "#{item.author.organization.open_projects.count} Available Projects", organization_path(item.author.organization.id) if item.author.organization
