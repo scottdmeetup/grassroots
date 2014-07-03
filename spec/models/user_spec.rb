@@ -255,6 +255,24 @@ describe User do
         expect(alice.follows?(bob)).to eq(false)
       end
     end
+
+    describe "#follow!" do
+      it "makes the current user follow the other user" do
+        alice = Fabricate(:user, user_group: "volunteer")
+        bob = Fabricate(:user, user_group: "volunteer")
+        alice.follow!(bob)
+
+        expect(alice.follows?(bob)).to eq(true)
+      end
+
+      it "creates a newsfeed item for the current user" do
+        alice = Fabricate(:user, user_group: "volunteer")
+        bob = Fabricate(:user, user_group: "volunteer")
+        alice.follow!(bob)
+
+        expect(alice.reload.newsfeed_items.count).to eq(1)
+      end
+    end
   end
 end
   

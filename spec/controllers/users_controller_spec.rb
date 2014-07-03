@@ -236,6 +236,14 @@ describe UsersController, :type => :controller do
 
         expect(jerry.reload.badges.count).to eq(1)
       end
+
+      it "creates a makes the badge a newsfeed item for the current user" do
+        patch :update, id: jerry.id, user: {skills: "Web Development", interests: "Environment", 
+          contact_reason: "if you wanna hang out!", state_abbreviation: "AL", city: "Birmingham", 
+          bio: "I like to juggle apples.", position: "Programmer"}
+
+        expect(jerry.reload.newsfeed_items.count).to eq(1)
+      end
     end
   end
 

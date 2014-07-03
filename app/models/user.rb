@@ -130,6 +130,11 @@ class User < ActiveRecord::Base
     !(self.follows?(another_user) || self == another_user)
   end
 
-private
+  def follow!(another_user)
+    self.following_relationships.create!(leader_id: another_user.id)
+    relationship = Relationship.where(leader_id: another_user, follower_id: self.id).first
+    newsfeed_item = NewsfeedItem.create(user_id: self.id)
+    relationship.newsfeed_items << newsfeed_item
+  end
 
 end

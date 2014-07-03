@@ -125,6 +125,8 @@ private
     if @user.update_profile_progress == 100
       badge = Badge.find_by(name: "100% User Profile Completion")
       @user.badges << badge unless @user.awarded?(badge)
+      @newsfeed_item = NewsfeedItem.create(user_id: current_user.id)
+      badge.newsfeed_items << @newsfeed_item
     end
   end
 end
