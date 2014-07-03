@@ -25,9 +25,10 @@
             - item.comments.each do |comment|
               = render 'newsfeed_comments', comment: comment
           %tr
-            %td.new-comment-field 
-              %form 
-                %textarea.newsfeed-new-comment{:placeholder => "Add a comment"}
-                %button.comment-button Comment
+            %td.new-comment-field
+              = form_for @comment, url: newsfeed_item_comments_path(newsfeed_item_id: item.id) do |f|
+                = f.text_area :content, class: "newsfeed-new-comment"
+                %br/
+                = f.submit "Comment", class: "comment-button"
       %div= link_to "#{item.author.organization.open_projects.count} Available Projects", organization_path(item.author.organization.id) if item.author.organization
             

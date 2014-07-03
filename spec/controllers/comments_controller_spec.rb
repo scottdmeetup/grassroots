@@ -2,17 +2,17 @@ require 'spec_helper'
 
 describe CommentsController, :type => :controller do
   describe "POST create" do
-    
-    let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
-    let!(:alice_question1) {Fabricate(:question, user_id: alice.id)}
-    let!(:bob) {Fabricate(:user, user_group: "volunteer")}
-
-    before(:each) do
-      set_current_user(bob)
-      request.env["HTTP_REFERER"] = "/questions/1" unless request.nil? or request.env.nil?
-    end
 
     context "when commenting on a question" do
+
+      let!(:alice) {Fabricate(:user, user_group: "nonprofit")}
+      let!(:alice_question1) {Fabricate(:question, user_id: alice.id)}
+      let!(:bob) {Fabricate(:user, user_group: "volunteer")}
+
+      before(:each) do
+        set_current_user(bob)
+        request.env["HTTP_REFERER"] = "/questions/1" unless request.nil? or request.env.nil?
+      end
 
       it "redirects user to the question show view when commenting on a question" do
         post :create, comment: {content: "this is a great question"}, question_id: alice_question1.id
@@ -59,6 +59,7 @@ describe CommentsController, :type => :controller do
 
       before do
         set_current_user(alice)
+        request.env["HTTP_REFERER"] = "/questions/1" unless request.nil? or request.env.nil?
       end
 
       it "redirects user to the answer show view when commenting on an answer" do
@@ -71,6 +72,34 @@ describe CommentsController, :type => :controller do
         post :create, comment: {content: "this is a great question"}, question_id: alice_question1.id, answer_id: bob_answer.id
 
         expect(Comment.first.commentable).to eq(bob_answer)
+      end
+    end
+
+    context "when commenting on newsfeed item" do
+      let!(:huggey_bears) {Fabricate(:organization, cause: "animals")}
+      let!(:alice) {Fabricate(:organization_administrator, first_name: "Alice", organization_id: huggey_bears.id, user_group: "nonprofit")}
+
+      before(:each) do
+        set_current_user(alice)
+        request.env["HTTP_REFERER"] = "/newsfeed_items" unless request.nil? or request.env.nil?
+      end
+
+      it "redirects the user to the newsfeed index" do
+        project = Fabricate(:project, organization_id: huggey_bears.id)
+        newsfeed_item = NewsfeedItem.create(user_id: alice.id)
+        project.newsfeed_items << newsfeed_item
+        post :create, comment: {content: "I can't wait to join this project."}, newsfeed_item_id: newsfeed_item.id
+
+        expect(response).to redirect_to(newsfeed_items_path)
+      end
+
+      it "creates a comment associated with a newsfeed item" do
+        project = Fabricate(:project, organization_id: huggey_bears.id)
+        newsfeed_item = NewsfeedItem.create(user_id: alice.id)
+        project.newsfeed_items << newsfeed_item
+        post :create, comment: {content: "I can't wait to join this project."}, newsfeed_item_id: newsfeed_item.id
+
+        expect(Comment.first.commentable).to eq(newsfeed_item)
       end
     end
   end

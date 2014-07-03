@@ -4,10 +4,13 @@ class CommentsController < ApplicationController
   def create
     @question = Question.find(params[:question_id]) if params[:question_id]
     @answer = Answer.find(params[:answer_id]) if params[:answer_id]
+    @newsfeed_item = NewsfeedItem.find(params[:newsfeed_item_id]) if params[:newsfeed_item_id]
     if @question && @answer
       @comment = Comment.create(commentable: @answer, user_id: current_user.id, content: params[:comment][:content])
-    else
+    elsif @question
       @comment = Comment.create(commentable: @question, user_id: current_user.id, content: params[:comment][:content])
+    else
+      @comment = Comment.create(commentable: @newsfeed_item, user_id: current_user.id, content: params[:comment][:content])
     end
     redirect_to :back
   end
