@@ -22,6 +22,9 @@
               %div.edit-input-wrapper
                 = f.label :state
                 = f.select :state_abbreviation, options_for_select(us_states), include_blank: true
+              %div.edit-input-wrapper
+                = f.label :city
+                = f.text_field :city
             %div.edit-fieldset-wrapper
               %h3 About Your Role
               %div.edit-input-wrapper

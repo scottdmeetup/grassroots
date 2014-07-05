@@ -17,8 +17,12 @@
               = render 'question_newsfeed_item', item: item
             - elsif item.newsfeedable_type == "Answer"
               = render 'answer_newsfeed_item', item: item
-            - else    
+            - elsif item.newsfeedable_type == "StatusUpdate"
               = render 'status_update_newsfeed_item', item: item
+            - elsif item.newsfeedable_type == "Badge" 
+              = render 'badge_newsfeed_item', item: item
+            - else 
+              = render 'relationship_newsfeed_item', item: item
       %div.comment-section
         %table
           - if item.comments
@@ -26,7 +30,7 @@
               = render 'newsfeed_comments', comment: comment
           %tr
             %td.new-comment-field
-              = form_for @comment, url: newsfeed_item_comments_path(newsfeed_item_id: item.id) do |f|
+              = form_for @comment, url: newsfeed_item_comments_path(newsfeed_item_id: item.id), data: {item_type: item.newsfeedable_type } do |f|
                 = f.text_area :content, class: "newsfeed-new-comment"
                 %br/
                 = f.submit "Comment", class: "comment-button"
