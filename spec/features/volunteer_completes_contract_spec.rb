@@ -127,7 +127,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     click_on("Project Complete")
     
     
-    fill_in "private_message[body]", with: "This is done"
+    fill_in "message[body]", with: "This is done"
     click_on('Create')
     visit user_path(volunteer.id)
     expect(page).to have_text("Submitted Work 1")
@@ -140,7 +140,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     expect(page).to have_text("Contract Complete")
     click_on('Contract Complete')
     click_on('Completed')
-    fill_in "private_message[body]", with: "Great work."
+    fill_in "message[body]", with: "Great work."
     click_on('Send')
     visit organization_path(administrator.organization.id)
     expect(page).to have_text("Completed Projects 1")
@@ -152,7 +152,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     visit projects_path
     expect(page).to have_content("Need WordPress Site")
     click_on('Join Project')
-    fill_in "private_message[body]", with: "I'd like to join this project"
+    fill_in "message[body]", with: "I'd like to join this project"
     
     click_on('Create')
     sign_out   
@@ -166,7 +166,7 @@ let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description:
     click_on("Accept")
     #page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
     
-    fill_in "private_message[body]", with: "I have accepted your participation"
+    fill_in "message[body]", with: "I have accepted your participation"
     click_on('Send')
     visit conversations_path
     expect(page).to have_text("Drop Contract")

@@ -3,8 +3,8 @@ class User < ActiveRecord::Base
   has_secure_password validations: false
   belongs_to :organization
   has_one :administrated_organization, foreign_key: 'user_id', class_name: 'Organization'
-  has_many :sent_messages, class_name: 'PrivateMessage', foreign_key: 'sender_id'
-  has_many :received_messages, -> {order('created_at DESC')}, class_name: 'PrivateMessage', foreign_key: 'recipient_id'
+  has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id'
+  has_many :received_messages, -> {order('created_at DESC')}, class_name: 'Message', foreign_key: 'recipient_id'
   
   has_many :administrated_projects, through: :administrated_organization, source: :projects
 
@@ -74,7 +74,7 @@ class User < ActiveRecord::Base
     self.organization = Organization.find_by_name(name) if name.present?
   end
 
-  def private_messages
+  def messages
     messages = self.sent_messages + self.received_messages
     messages.sort!
   end

@@ -32,7 +32,7 @@ feature  "Administrator contracts a volunteer"do
     visit conversations_path
     page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
     
-    fill_in "private_message[body]", with: "I have accepted your participation"
+    fill_in "message[body]", with: "I have accepted your participation"
     click_on('Send')
     visit conversations_path
     expect(page).to have_text("Drop Contract")
@@ -51,14 +51,14 @@ feature  "Administrator contracts a volunteer"do
     visit projects_path
     expect(page).to have_content("Need WordPress Site")
     click_on('Join Project')
-    fill_in "private_message[body]", with: "I'd like to join this project"
+    fill_in "message[body]", with: "I'd like to join this project"
     click_on('Create')   
   end
 
   def project_administrator_contracts_volunteer_and_accepts_application(admin)
     visit conversations_path
     click_on('Accept')
-    fill_in "private_message[body]", with: "I have accepted your participation"
+    fill_in "message[body]", with: "I have accepted your participation"
     click_on('Send')
     visit conversations_path
     expect(page).to have_text("Drop Volunteer")

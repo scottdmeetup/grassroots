@@ -7,7 +7,7 @@
           %td.left-cell
             %div.pic
               - if item.author.avatar?
-                = cl_image_tag(item.author.avatar.path, size: "20x20")
+                = cl_image_tag(item.author.avatar.path, size: "50x50")
               - else
                 = image_tag(item.author.small_cover, class: "md-image")
           %td    

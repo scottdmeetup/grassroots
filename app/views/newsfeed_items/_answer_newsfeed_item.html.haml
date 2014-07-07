@@ -4,7 +4,7 @@
     %span= link_to "has provided an #{item.newsfeedable_type} on #{item.answer_categories} ", question_path(item.newsfeedable.question_id), class: 'no-links'
     %span.small-text
       - if item.created_at < 1.day.ago
-        = "#{fix_date_time(item.created)}"
+        = "#{fix_date_time(item.created_at)}"
       - else
         = "#{time_ago_in_words(item.created_at)}"
   %table.newsfeed-nested-table

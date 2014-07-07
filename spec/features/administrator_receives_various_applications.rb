@@ -65,7 +65,7 @@ feature "Administrator interacts with various applications, contracts and messag
     expect(page).to have_text("Available Projects 2")
     visit conversations_path
     page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
-    fill_in "private_message[body]", with: "I have accepted your participation"
+    fill_in "message[body]", with: "I have accepted your participation"
     click_on('Send')
     visit conversations_path
     expect(page).to have_text("Drop Contract")
@@ -78,7 +78,7 @@ feature "Administrator interacts with various applications, contracts and messag
     user_signs_in(bob)
     click_on('Work in Production')
     click_on('Project Complete')
-    fill_in "private_message[body]", with: "This is done"
+    fill_in "message[body]", with: "This is done"
     click_on('Create')
     visit user_path(bob.id)
     expect(page).to have_text("Submitted Work 1")
@@ -92,12 +92,12 @@ feature "Administrator interacts with various applications, contracts and messag
     expect(page).to have_text("Contract Complete")
     expect(page).to have_text("Volunteer Application")
     click_on('Accept')
-    fill_in "private_message[body]", with: "I accept you to join this project."
+    fill_in "message[body]", with: "I accept you to join this project."
     click_on('Send')
     expect(page).to have_text("Contract Complete")
     expect(page).to have_text("Drop Contract")
     click_on('Completed')
-    fill_in "private_message[body]", with: "Great work."
+    fill_in "message[body]", with: "Great work."
     click_on('Send')
     expect(page).to have_text("Drop Contract")
     visit organization_path(alice.organization.id)
@@ -116,7 +116,7 @@ private
     expect(page).to have_content("Need WordPress Site")
     page.find(:xpath, "//a[@href='/projects/#{Project.first.id}']").click
     click_on('Request to Join')
-    fill_in "private_message[body]", with: "I'd like to join this project"
+    fill_in "message[body]", with: "I'd like to join this project"
     click_on('Create')
     sign_out       
   end
@@ -128,7 +128,7 @@ private
     
     page.find(:xpath, "//a[@href='/projects/#{Project.last.id}']").click
     click_on('Request to Join')
-    fill_in "private_message[body]", with: "I'd like to join this project"
+    fill_in "message[body]", with: "I'd like to join this project"
     
     click_on('Create')
     sign_out
@@ -140,7 +140,7 @@ private
     expect(page).to have_text("Available Projects 2")
     visit conversations_path
     page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
-    fill_in "private_message[body]", with: "I have accepted your participation"
+    fill_in "message[body]", with: "I have accepted your participation"
     click_on('Send')
     visit conversations_path
     expect(page).to have_text("Drop Contract")
@@ -155,7 +155,7 @@ private
     expect(page).to have_text("Available Projects 2")
     visit conversations_path
     page.find(:xpath, "//a[@href='/contracts?conversation_id=#{Conversation.first.id}&volunteer_application_id=#{VolunteerApplication.first.id}']").click
-    fill_in "private_message[body]", with: "I have accepted your participation"
+    fill_in "message[body]", with: "I have accepted your participation"
     click_on('Send')
     visit conversations_path
     expect(page).to have_text("Drop Contract")
