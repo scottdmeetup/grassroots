@@ -29,7 +29,7 @@ feature  "Volunteer applies to a project"do
     
     expect(page).to have_content("Need WordPress Site")
     click_on('Join Project')
-    fill_in "private_message[body]", with: "I'd like to join this project"
+    fill_in "message[body]", with: "I'd like to join this project"
     
     click_on('Create')
     sign_out   

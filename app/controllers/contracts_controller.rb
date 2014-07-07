@@ -3,7 +3,7 @@ class ContractsController < ApplicationController
   def new
     contract = Contract.find(params[:contract_id])
     @project = Project.find(contract.project_id)
-    @private_message = PrivateMessage.new(recipient_id: @project.project_admin.id, subject: "Please Review Work: #{@project.title}")
+    @message = Message.new(recipient_id: @project.project_admin.id, subject: "Please Review Work: #{@project.title}")
   end
 
   def create
@@ -25,7 +25,7 @@ class ContractsController < ApplicationController
 private
 
   def message_params
-    params.require(:private_message).permit(:subject, :sender_id, :recipient_id, :body)
+    params.require(:message).permit(:subject, :sender_id, :recipient_id, :body)
   end
 
   def find_volunteer_application
@@ -62,8 +62,8 @@ private
   def send_automated_message
     @contract = Contract.find(params[:id])
     @conversation = Conversation.find_by(contract_id: @contract.id)
-    first_message = @conversation.private_messages.first
-    @conversation.private_messages << PrivateMessage.create(subject: first_message.subject, body: "Automated Message: #{first_message.sender.first_name} #{first_message.sender.last_name} has been dropped on this project. This is an automated message." )
+    first_message = @conversation.messages.first
+    @conversation.messages << Message.create(subject: first_message.subject, body: "Automated Message: #{first_message.sender.first_name} #{first_message.sender.last_name} has been dropped on this project. This is an automated message." )
   end
 
   def contract_drops_and_project_becomes_open(contract)
