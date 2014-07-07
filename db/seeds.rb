@@ -107,11 +107,13 @@ facebook_help = Project.create(title: "Facebook assistance", description: "We ne
 tax_assistance = Project.create(title: "Accounting Help", description: "We forgot to do our taxes. O well.....", 
   organization_id: global_giving.id, skills: "Accounting", causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
 
+Category.destroy_all
 uncategorized = Category.create(name: "Uncategorized")
 web_development = Category.create(name: "Web Development")
 graphic_design = Category.create(name: "Graphic Design")
 social_media = Category.create(name: "Social Media")
 
+Question.destroy_all
 alice_question = Question.create(user_id: alice.id, title: "How do I set up WordPress", description: "Should I get a host first?")
 bob_question = Question.create(user_id: bob.id, title: "How do I talk to my Web Developer?", description: "I'm new to web development, but I'd like 
   to learn how to talk to a developer. Any advice would be great.")
@@ -126,15 +128,14 @@ cat_question.categories << graphic_design
 dan_question.categories << social_media
 alice_question2.categories << uncategorized
 
-Contract.destroy_all  
-PrivateMessage.destroy_all
-Conversation.destroy_all
-
+Badge.destroy_all
 profile_completion = Badge.create(name: "100% User Profile Completion")
+
+Relationship.destroy_all
 relationship = Relationship.create(follower: alice, leader: bob)
 relationship = Relationship.create(follower: alice, leader: catherine)
 
-
+NewsfeedItem.destroy_all
 newsfeed_item1 = NewsfeedItem.create(user_id: bob.id, created_at: Date.today)
 pretty_logo.newsfeed_items << newsfeed_item1
 
@@ -149,6 +150,11 @@ nice_pages.newsfeed_items << newsfeed_item4
 
 newsfeed_item5 = NewsfeedItem.create(user_id: bob.id, created_at: 5.days.ago)
 tax_assistance.newsfeed_items << newsfeed_item5
+
+Contract.destroy_all  
+PrivateMessage.destroy_all
+Conversation.destroy_all
+Vote.destroy_all
 
 
 =begin
