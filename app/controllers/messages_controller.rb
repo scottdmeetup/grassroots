@@ -14,6 +14,10 @@ class MessagesController < ApplicationController
     end
   end
 
+  def index
+    @messages = current_user.only_conversations
+  end
+
   def outgoing_messages
     @messages = current_user.sent_messages
   end

@@ -66,12 +66,12 @@ describe User do
   end
 
 
-  describe "#user_conversations" do
+  describe "#inbox" do
     it "returns a conversation of the user in an arry if there is only one received smessages" do
       convo1 = Conversation.create
       message1 = Fabricate(:message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)
       
-      expect(alice.user_conversations).to eq([convo1])
+      expect(alice.inbox).to eq([convo1])
     end
 
     it "does not return a conversation of the user in an arry if there is only one sent smessages" do
@@ -82,7 +82,7 @@ describe User do
       message1 = Fabricate(:message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)
       
 
-      expect(bob.user_conversations).to eq([])
+      expect(bob.inbox).to eq([])
     end
 
     it "returns an array of multiple conversations of the user if there are multiple senders" do
@@ -96,7 +96,7 @@ describe User do
       message4 = Fabricate(:message, recipient_id: cat.id, sender_id: alice.id, subject: "Please let me join your project", body: "Let's talk. I think you could be a great asset.", conversation_id: convo2.id)
       message5 = Fabricate(:message, recipient_id: alice.id, sender_id: dan.id, subject: "Please let me join your project", body: "I think your project is cool, and I want to help out.", conversation_id: convo3.id)
 
-      expect(alice.user_conversations).to eq([convo1, convo2, convo3])
+      expect(alice.inbox).to eq([convo1, convo2, convo3])
     end
 
     it "does not return duplicate conversations" do
@@ -112,7 +112,7 @@ describe User do
       message3 = Fabricate(:message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd really like to help out with your project", conversation_id: convo3.id)
       
 
-      expect(alice.user_conversations).to eq([convo1, convo3])
+      expect(alice.inbox).to eq([convo1, convo3])
     end
   end
 
@@ -271,6 +271,80 @@ describe User do
         alice.follow!(bob)
 
         expect(alice.reload.newsfeed_items.count).to eq(1)
+      end
+    end
+
+    describe "#only_conversations" do
+      let!(:convo1) {Fabricate(:conversation)}
+      let!(:convo2) {Fabricate(:conversation)}
+      let!(:convo3) {Fabricate(:conversation)}
+
+      let!(:message1) {Fabricate(:message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)}
+      let!(:message2) {Fabricate(:message, recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Sounds good. what's your phone number?", conversation_id: convo1.id)}
+      let!(:message3) {Fabricate(:message, recipient_id: alice.id, sender_id: cat.id, subject: "Please let me join your project", body: "I'd really like to help out with your project", conversation_id: convo2.id)}
+      let!(:message4) {Fabricate(:message, recipient_id: cat.id, sender_id: alice.id, subject: "Please let me join your project", body: "Let's talk. I think you could be a great asset.", conversation_id: convo2.id)}
+      let!(:message5) {Fabricate(:message, recipient_id: alice.id, sender_id: dan.id, subject: "Please let me join your project", body: "I think your project is cool, and I want to help out.", conversation_id: convo3.id)}
+
+      it "shows the users conversations" do
+        expect(alice.only_conversations).to match_array([convo1, convo2, convo3])
+      end
+
+      it "does not show conversations about volunteer applications" do
+        application1 = Fabricate(:volunteer_application, applicant_id: cat.id, administrator_id: alice.id, project_id: word_press.id)
+        convo4 = Fabricate(:conversation, volunteer_application_id: application1.id)  
+        message7 = Fabricate(:message, recipient_id: alice.id, sender_id: cat.id, conversation_id: convo4.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+
+        expect(alice.only_conversations).to match_array([convo1, convo2, convo3])
+      end
+
+      it "does not show conversations about contracts" do
+        application1 = Fabricate(:volunteer_application, applicant_id: cat.id, administrator_id: alice.id, project_id: word_press.id)
+        convo4 = Fabricate(:conversation, volunteer_application_id: application1.id)  
+        message7 = Fabricate(:message, recipient_id: alice.id, sender_id: cat.id, conversation_id: convo4.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+
+        contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
+        conversation = Fabricate(:conversation, contract_id: contract.id)
+        message8 = Fabricate(:message, recipient_id: alice.id, sender_id: bob.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+        message9 = Fabricate(:message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation.id, subject: "Please let me join your project", body: "I've accepted you to join")
+
+        expect(alice.only_conversations).to match_array([convo1, convo2, convo3])
+      end
+    end
+    describe "#only_conversations_about_work" do
+      let!(:convo1) {Fabricate(:conversation)}
+      let!(:convo2) {Fabricate(:conversation)}
+      let!(:convo3) {Fabricate(:conversation)}
+
+      let!(:message1) {Fabricate(:message, recipient_id: alice.id, sender_id: bob.id, subject: "Please let me join your project", body: "I'd like to contribute to your project", conversation_id: convo1.id)}
+      let!(:message2) {Fabricate(:message, recipient_id: bob.id, sender_id: alice.id, subject: "Please let me join your project", body: "Sounds good. what's your phone number?", conversation_id: convo1.id)}
+      let!(:message3) {Fabricate(:message, recipient_id: alice.id, sender_id: cat.id, subject: "Please let me join your project", body: "I'd really like to help out with your project", conversation_id: convo2.id)}
+      let!(:message4) {Fabricate(:message, recipient_id: cat.id, sender_id: alice.id, subject: "Please let me join your project", body: "Let's talk. I think you could be a great asset.", conversation_id: convo2.id)}
+      let!(:message5) {Fabricate(:message, recipient_id: alice.id, sender_id: dan.id, subject: "Please let me join your project", body: "I think your project is cool, and I want to help out.", conversation_id: convo3.id)}
+
+      it "only shows conversations about work" do
+        application1 = Fabricate(:volunteer_application, applicant_id: cat.id, administrator_id: alice.id, project_id: word_press.id)
+        convo4 = Fabricate(:conversation, volunteer_application_id: application1.id)  
+        message7 = Fabricate(:message, recipient_id: alice.id, sender_id: cat.id, conversation_id: convo4.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+
+        contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
+        convo5 = Fabricate(:conversation, contract_id: contract.id)
+        message8 = Fabricate(:message, recipient_id: alice.id, sender_id: bob.id, conversation_id: convo5.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+        message9 = Fabricate(:message, recipient_id: bob.id, sender_id: alice.id, conversation_id: convo5.id, subject: "Please let me join your project", body: "I've accepted you to join")
+
+        expect(alice.only_conversations_about_work).to match_array([convo4, convo5])
+      end
+
+      it "does not show conversations without contract or application values" do
+        application1 = Fabricate(:volunteer_application, applicant_id: cat.id, administrator_id: alice.id, project_id: word_press.id)
+        convo4 = Fabricate(:conversation, volunteer_application_id: application1.id)  
+        message7 = Fabricate(:message, recipient_id: alice.id, sender_id: cat.id, conversation_id: convo4.id, subject: "Please let me join your project", body: "I'd like to contribute to your project") 
+
+        contract = Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id, work_submitted: true)
+        convo5 = Fabricate(:conversation, contract_id: contract.id)
+        message8 = Fabricate(:message, recipient_id: alice.id, sender_id: bob.id, conversation_id: convo5.id, subject: "Please let me join your project", body: "I'd like to contribute to your project")
+        message9 = Fabricate(:message, recipient_id: bob.id, sender_id: alice.id, conversation_id: convo5.id, subject: "Please let me join your project", body: "I've accepted you to join")
+
+        expect(alice.only_conversations_about_work).to_not match_array([convo1, convo2, convo3])
       end
     end
   end

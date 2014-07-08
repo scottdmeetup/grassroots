@@ -13,6 +13,7 @@ describe ContractsController, :type => :controller do
     let(:word_press) { Fabricate(:project, title: "word press website", user_id: alice.id, organization_id: huggey_bear.id, state: "open") }
 
     let(:contract) { Fabricate(:contract, contractor_id: alice.id, volunteer_id: bob.id, active: true, project_id: word_press.id) } 
+    
     before do
       application1 = Fabricate(:volunteer_application, applicant_id: bob.id, administrator_id: alice.id, project_id: word_press.id, accepted: true, rejected: false) 
       conversation1 = Fabricate(:conversation, volunteer_application_id: application1.id) 

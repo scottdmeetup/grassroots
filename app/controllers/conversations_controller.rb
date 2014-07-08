@@ -1,6 +1,6 @@
 class ConversationsController < ApplicationController
   def index
-    @conversations = current_user.user_conversations
+    @conversations = current_user.inbox
   end
 
   def show

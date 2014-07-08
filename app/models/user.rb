@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_one :administrated_organization, foreign_key: 'user_id', class_name: 'Organization'
   has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id'
   has_many :received_messages, -> {order('created_at DESC')}, class_name: 'Message', foreign_key: 'recipient_id'
+  has_many :conversations, through: :received_messages
   
   has_many :administrated_projects, through: :administrated_organization, source: :projects
 
@@ -79,13 +80,23 @@ class User < ActiveRecord::Base
     messages.sort!
   end
 
-  def user_conversations
+  def inbox
     collection = self.received_messages.select(:conversation_id)
     all_conversations = collection.map do |member|
       convo_id = member.conversation_id
       Conversation.find(convo_id)
     end  
     all_conversations.sort! {|a, b| a.updated_at <=> b.updated_at}
+  end
+
+  def only_conversations
+    self.conversations.where(volunteer_application_id: nil, contract_id: nil).to_a
+  end
+
+  def only_conversations_about_work
+    contracts = self.conversations.where(contract_id: true).to_a
+    applications = self.conversations.where(volunteer_application_id: true).to_a
+    contracts + applications
   end
 
   def organization_name

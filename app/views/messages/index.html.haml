@@ -8,6 +8,6 @@
       %li 
         = link_to "Work", work_conversations_path
   .col-lg-9 
-    - if @conversations
-      - @conversations.each do |conversation|
+    - if @messages
+      - @messages.each do |conversation|
         = render 'shared/conversation_thumbnail', conversation: conversation

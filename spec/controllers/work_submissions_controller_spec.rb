@@ -95,7 +95,7 @@ describe WorkSubmissionsController, :type => :controller do
     it "starts a new conversation with the administrator" do
       post :create, id: contract.id, message: {recipient_id: alice.id, sender_id: bob.id, subject: "Contract Complete", body: "This work is done"}
       
-      expect(alice.user_conversations.count).to eq(1)
+      expect(alice.inbox.count).to eq(1)
     end
 
     it "associated the conversation with the contract " do

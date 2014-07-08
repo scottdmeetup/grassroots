@@ -21,13 +21,13 @@ describe ConversationsController, :type => :controller do
       message2 = Fabricate(:message, recipient_id: bob.id, sender_id: alice.id, conversation_id: conversation1.id, subject: "Please let me join your project", body: "OK great. when can you start?") 
       get :index
 
-      expect(alice.user_conversations).to match_array([conversation1])
+      expect(alice.inbox).to match_array([conversation1])
     end
 
     it "sets the @conversations" do
       get :index
 
-      expect(assigns(:conversations)).to eq(alice.user_conversations)
+      expect(assigns(:conversations)).to eq(alice.inbox)
     end
   end
   
