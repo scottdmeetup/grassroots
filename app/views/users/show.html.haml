@@ -130,7 +130,7 @@
                     %p 
                       = "#{relationship.leader.position} at"
                       %span 
-                        = link_to "#{relationship.leader.organization_name}", user_path(relationship.leader.id) if relationship.leader.organization_name
+                        = link_to "#{relationship.leader_organization_name}", user_path(relationship.leader.id) if relationship.leader_organization_name
                   %div.follower-location
                     %p 
                       = "#{relationship.leader.city}" 
