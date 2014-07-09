@@ -10,7 +10,7 @@
  *
  *= require_self
  *= require bootstrap
- *= require jquery-ui
+ *= require jquery.ui.all
  *= require_tree .
  */
  //= require rails_bootstrap_forms
