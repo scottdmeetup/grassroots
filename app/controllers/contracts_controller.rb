@@ -10,7 +10,6 @@ class ContractsController < ApplicationController
     accept_application_and_project_in_production(@volunteer_application)
     reject_other_applications_and_clear_conversations_of_application_id(@volunteer_application)
     create_contract_and_associate_it_with_conversation_which_triggers_drop_opportunity(@volunteer_application)
-
   end
 
   def destroy 
