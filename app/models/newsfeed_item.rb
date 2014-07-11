@@ -28,5 +28,4 @@ class NewsfeedItem < ActiveRecord::Base
     question = Question.find(answer.question_id)
     question.title
   end
-
 end

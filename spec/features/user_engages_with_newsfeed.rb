@@ -1,4 +1,3 @@
-=begin
 require 'spec_helper'
 
 feature 'User engages with the newsfeed' do 
@@ -43,4 +42,3 @@ feature 'User engages with the newsfeed' do
     click_button 'Create'
   end
 end
-=end
