@@ -30,9 +30,9 @@
               = render 'newsfeed_comments', comment: comment
           %tr
             %td.new-comment-field
-              = form_for @comment, url: newsfeed_item_comments_path(newsfeed_item_id: item.id), data: {item_type: item.newsfeedable_type } do |f|
-                = f.text_area :content, class: "newsfeed-new-comment"
+              = form_for @comment, url: newsfeed_item_comments_path(newsfeed_item_id: item.id) do |f|
+                = f.text_area :content, class: "newsfeed-new-comment", id: "#{item.newsfeedable_type}"
                 %br/
-                = f.submit "Comment", class: "comment-button"
+                = f.submit "Comment on the #{item.newsfeedable_type.downcase}", class: "comment-button"
       %div= link_to "#{item.author.organization.open_projects.count} Available Projects", organization_path(item.author.organization.id) if item.author.organization
             

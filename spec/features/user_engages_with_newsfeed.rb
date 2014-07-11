@@ -21,11 +21,9 @@ feature 'User engages with the newsfeed' do
     newsfeed_item2 = NewsfeedItem.find(2)
     user_signs_in(alice)
     visit newsfeed_items_path
-    save_and_open_page
-    within(:xpath, "//form[contains(.,'#{newsfeed_item2.newsfeedable_type}')]") do
-        fill_in "comment[content]", with: "that looks like a cool project"
-    end
     
+    fill_in "#{newsfeed_item2.newsfeedable_type}", with: "that looks like a cool project"
+    click_on("Comment on the project")
     expect(page).to have_text("that looks like a cool project")
     
   end
