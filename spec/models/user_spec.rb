@@ -11,6 +11,8 @@ describe User do
   it { should have_many(:questions)}
   it { should have_many(:accomplishments)}
   it { should have_many(:badges).through(:accomplishments)}
+  it { should have_many(:talents)}
+  it { should have_many(:skills).through(:talents)}
 
   it "generates a random token when the user is created for password reset" do
     alice = Fabricate(:user, user_group: "nonprofit")
@@ -214,12 +216,12 @@ describe User do
     describe "#update_profile_progress" do
       it "returns 18 for the user's profile completion if the user only has first and last name" do
         bob = User.create(first_name: "bob", last_name: "smith", user_group: "volunteer")
-        expect(bob.update_profile_progress).to eq(20)
+        expect(bob.update_profile_progress).to eq(25)
       end
 
       it "returns 100 for the user's profile completion if the user has everything filled out" do
-        bob = User.create(email: "bob@example.com", first_name: "Bob", last_name:"Smith", skills: "Web Development", 
-          interests: "Environment", contact_reason: "if you wanna hang out!", state_abbreviation: "AL", 
+        bob = User.create(email: "bob@example.com", first_name: "Bob", last_name:"Smith", 
+          contact_reason: "if you wanna hang out!", state_abbreviation: "AL", 
           city: "Birmingham", bio: "I like to juggle apples.", position: "CEO")
 
         expect(bob.update_profile_progress).to eq(100)

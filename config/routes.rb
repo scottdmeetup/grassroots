@@ -82,4 +82,6 @@ Grassroots::Application.routes.draw do
     resources :comments, only: [:create]
   end
   resources :status_updates, only: [:create]
+
+  resources :skills, only: [:create]
 end

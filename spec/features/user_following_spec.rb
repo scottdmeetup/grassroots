@@ -12,7 +12,7 @@ feature 'User following' do
     goal: "We want 1 out of every 5 Americans to have a huggey bear.")}
   
   let!(:alice) {Fabricate(:user, organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 
-    interests: "Animal Rights", skills: "Grant Writing", street1: nil, street2: nil, 
+    interests: "Animal Rights", street1: nil, street2: nil, 
     city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
     organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")}
 

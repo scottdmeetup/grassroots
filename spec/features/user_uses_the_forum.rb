@@ -2,12 +2,12 @@ require 'spec_helper'
 
 feature 'User engages the forum and other users on it' do 
   let!(:alice) {Fabricate(:user, organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 
-  interests: "Animal Rights", skills: "Grant Writing", street1: nil, street2: nil, 
+  interests: "Animal Rights", street1: nil, street2: nil, 
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
   organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")}
 
   let!(:bob) {Fabricate(:user, first_name: "Bob", last_name: "Seltzer", email: "jacob@example.org", 
-  interests: "Web Development", skills: "ROR", street1: nil, street2: nil, 
+  interests: "Web Development", street1: nil, street2: nil, 
   city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
   organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")}
 

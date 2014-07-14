@@ -29,7 +29,6 @@ feature 'User engages with the newsfeed' do
   end
 
   def fills_out_project_form
-    find("#project_skills").find(:xpath,"./option[contains(.,'Web Development')]").selected?
     find("#project_deadline_2i").find(:xpath,"./option[contains(.,'October')]").selected?
     find("#project_deadline_3i").find(:xpath,"./option[contains(.,'15')]").selected?
     find("#project_deadline_1i").find(:xpath,"./option[contains(.,'2014')]").selected?

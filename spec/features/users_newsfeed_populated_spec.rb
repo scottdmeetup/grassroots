@@ -13,7 +13,7 @@ feature 'Users newsfeed becomes populated with activity' do
     goal: "We want 1 out of every 5 Americans to have a huggey bear.")}
   
   let!(:alice) {Fabricate(:user, organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 
-    interests: "Animal Rights", skills: "Grant Writing", street1: nil, street2: nil, 
+    interests: "Animal Rights", street1: nil, street2: nil, 
     city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
     organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")}
 
@@ -84,14 +84,12 @@ feature 'Users newsfeed becomes populated with activity' do
     fill_in "user[city]", with: "New York"
     fill_in "user[position]", with: "Freelancer"
     fill_in "user[interests]", with: "Environment"
-    fill_in "user[skills]", with: "Web Development"
     fill_in "user[contact_reason]", with: "If you need help with a website"  
     fill_in "user[bio]", with: "I'm from Brooklyn. chyea."
     click_on("Update")
   end
 
   def fills_out_project_form
-    find("#project_skills").find(:xpath,"./option[contains(.,'Web Development')]").selected?
     find("#project_deadline_2i").find(:xpath,"./option[contains(.,'October')]").selected?
     find("#project_deadline_3i").find(:xpath,"./option[contains(.,'15')]").selected?
     find("#project_deadline_1i").find(:xpath,"./option[contains(.,'2014')]").selected?

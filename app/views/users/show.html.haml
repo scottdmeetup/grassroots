@@ -23,8 +23,9 @@
           %strong 
             = "#{@user.city}"
         %h5.header-spacing
-          %strong 
-            = "#{@user.skills}"
+          %strong
+            Skill set:
+            = "#{@user.skills.map(&:name).join(', ')}"
         %btn.pull-right
           = link_to "Message", new_message_path(user_id: @user.id), class: 'btn btn-primary btn-lg btn-block' unless current_user == @user
   .col-lg-2

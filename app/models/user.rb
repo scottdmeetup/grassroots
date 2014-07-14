@@ -31,6 +31,8 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :answers
 
+  has_many :talents
+  has_many :skills, through: :talents
 
   validates_presence_of :email, :password, :first_name, :last_name, :user_group
   validates_uniqueness_of :email
@@ -118,8 +120,8 @@ class User < ActiveRecord::Base
   end
 
   def update_profile_progress
-    profile_completeness = [self.email, self.first_name, self.last_name, self.skills, 
-      self.interests, self.contact_reason, self.state_abbreviation, self.city, self.bio, self.position]
+    profile_completeness = [self.email, self.first_name, self.last_name, 
+      self.contact_reason, self.state_abbreviation, self.city, self.bio, self.position]
     progress = 0
     profile_completeness.each do |field|
       progress += 1 unless field.nil? || field == ""

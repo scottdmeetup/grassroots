@@ -11,7 +11,6 @@ feature 'User earns badges through his/her activity' do
     fill_in "user[city]", with: "New York"
     fill_in "user[position]", with: "Freelancer"
     fill_in "user[interests]", with: "Environment"
-    fill_in "user[skills]", with: "Web Development"
     fill_in "user[contact_reason]", with: "If you need help with a website"  
     fill_in "user[bio]", with: "I'm from Brooklyn. chyea."
     click_on("Update")

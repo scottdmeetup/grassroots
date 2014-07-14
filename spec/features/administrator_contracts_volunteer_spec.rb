@@ -10,16 +10,16 @@ feature  "Administrator contracts a volunteer"do
       goal: "We want 1 out of every 5 Americans to have a huggey bear.")
 
     alice = Fabricate(:user, organization_id: 1, first_name: "Alice", last_name: "Smith", email: "alice@huggey_bear.org", 
-      interests: "Animal Rights", skills: "Grant Writing", street1: nil, street2: nil, 
+      interests: "Animal Rights", street1: nil, street2: nil, 
       city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: true, 
       organization_staff: nil, volunteer: nil, position: "Executive Director", password: "password", user_group: "nonprofit")
     huggey_bear.update_columns(user_id: 1)
     bob = Fabricate(:user, first_name: "Bob", last_name: "Seltzer", email: "jacob@example.org", 
-      interests: "Web Development", skills: "ROR", street1: nil, street2: nil, 
+      interests: "Web Development", street1: nil, street2: nil, 
       city: "New York", state_id: "NY", phone_number: nil, zip: nil, organization_administrator: nil, 
       organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")
     word_press = Fabricate(:project, title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
-      skills: "web development", causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
+      causes: "animals", deadline: Date.today + 1.month, user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")
     
     user_signs_in(bob)
     expect(page).to have_content("You are logged in!")
