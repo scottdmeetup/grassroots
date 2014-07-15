@@ -1,23 +1,23 @@
 class UsersController < ApplicationController
   before_action :find_user, only: [:show]
-  before_action :find_open_applications, only: [:show]
-  before_action :find_in_production_projects, only: [:show]
-  before_action :find_projects_with_work_submitted, only: [:show]
-  before_action :find_completed_projects, only: [:show]
-  
-
-  before_action :find_open_projects_params_tab, only: [:show]
-  before_action :find_in_production_projects_params_tab, only: [:show]
-  before_action :find_projects_pending_approval_params_tab, only: [:show]
-  before_action :find_completed_projects_params_tab, only: [:show]
-  before_action :find_unfinished_projects_params_tab, only: [:show]
-  before_action :find_expired_projects_params_tab, only: [:show]
 
   def index
     @users = User.all
   end
 
   def show
+    @applications = @user.projects_with_open_applications
+    @projects_in_production = @user.projects_in_production
+    @submitted_work = @user.submitted_work
+    @completed_projects = @user.completed_projects
+
+    @open_params = params[:tab] == 'open'
+    @production_params = params[:tab] == 'in production'
+    @work_submitted_params = params[:tab] == 'pending approval'
+    @completed_params = params[:tab] == 'completed'
+    @unifinished_params = params[:tab] == 'unfinished'
+    @expired_params = params[:tab] == 'expired'
+
     @relationships = @user.following_relationships
     @following_relationship = Relationship.where(follower: current_user, leader: @user).first
     respond_to do |format|
@@ -136,45 +136,5 @@ private
 
   def find_user
     @user = User.find(params[:id])
-  end
-
-  def find_open_applications
-    @applications = @user.projects_with_open_applications
-  end
-
-  def find_in_production_projects
-    @projects_in_production = @user.projects_in_production
-  end
-
-  def find_projects_with_work_submitted
-    @submitted_work = @user.submitted_work
-  end
-
-  def find_completed_projects
-    @completed_projects = @user.completed_projects
-  end
-
-  def find_open_projects_params_tab
-    @open_params = params[:tab] == 'open'
-  end
-
-  def find_in_production_projects_params_tab
-    @production_params = params[:tab] == 'in production' 
-  end
-
-  def find_projects_pending_approval_params_tab
-    @work_submitted_params = params[:tab] == 'pending approval'
-  end
-
-  def find_completed_projects_params_tab
-    @completed_params = params[:tab] == 'completed' 
-  end
-
-  def find_unfinished_projects_params_tab
-    @unifinished_params = params[:tab] == 'unfinished' 
-  end
-
-  def find_expired_projects_params_tab
-    @expired_params = params[:tab] == 'expired' 
   end
 end

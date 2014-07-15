@@ -356,7 +356,7 @@ describe UsersController, :type => :controller do
 
         expect(assigns(:results)).to eq([bob_adams, isabel_david, dan_quale, jacob_seltzer, george_smith])
       end
-
+=begin
       it "shows the users under a certain cause" do
         get :search, interests: "human rights"
 
@@ -386,6 +386,7 @@ describe UsersController, :type => :controller do
 
         expect(assigns(:results)).to eq([jacob_seltzer, elena_washington])
       end
+=end
     end
     context "when using the search bar" do
       #it "sets the @results variable by search term"

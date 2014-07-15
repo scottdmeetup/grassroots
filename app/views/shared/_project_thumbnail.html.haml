@@ -1,15 +1,15 @@
 .col-lg-3.col-sm-6.project-thumb-wrapper
   .thumbnail.thumbnail-project
-    %div.pic
+    .pic
       - if project.organization.logo?
         = link_to cl_image_tag(project.organization.logo.path, { size: '150x150', crop: :fit }), project_path(project.id)
       - else
         = link_to image_tag(project.organization.small_cover.to_s, size: "100%"), project_path(project.id)
     .caption
     - if project.applicants.count > 0
-      %div.volunteer-project-requests
+      .volunteer-project-requests
         %span.glyphicon.glyphicon-user.volunteer-glyph
-        %div.volunteer-plus
+        .volunteer-plus
           %span.glyphicon.glyphicon-plus.volunteer-plus-glyph 
             %span.volunteer-number
               = "#{project.applicants.count}"
@@ -22,7 +22,7 @@
         = "#{project.description.first(60)}..."
       - else 
         = project.description
-    %div.project-thumb-info
+    .project-thumb-info
       %dl
         %dt Skill Set
         %dd 
