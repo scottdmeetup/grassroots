@@ -19,7 +19,7 @@ let(:bob) {Fabricate(:user, first_name: "Bob", last_name: "Seltzer", email: "jac
   organization_staff: nil, volunteer: true, password: "password", user_group: "volunteer")}
   
 let(:word_press) {Fabricate(:project, title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
-  skills: "web development", causes: "animals", deadline: Date.today + 1.month, 
+  causes: "animals", deadline: Date.today + 1.month, 
   user_id: 1, organization_id: 1, estimated_hours: 22, state: "open")}
 
   scenario "volunteer completes the project", :js => true do

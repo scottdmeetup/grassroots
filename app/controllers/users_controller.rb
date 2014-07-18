@@ -46,6 +46,7 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     @skill = Skill.new
+    @all_skills = Skill.all
   end
 
   def update
@@ -82,15 +83,15 @@ class UsersController < ApplicationController
   end
 
   def search
-    filter = {interests: params[:interests]}  if params[:interests]
-    filter = {state_abbreviation: params[:state_abbreviation]} if params[:state_abbreviation]
-    filter = {city: params[:city]} if params[:city]
-    filter = {position: params[:position]} if params[:position]
+    #filter = {interests: params[:interests]}  if params[:interests]
+    #filter = {state_abbreviation: params[:state_abbreviation]} if params[:state_abbreviation]
+    #filter = {city: params[:city]} if params[:city]
+    #filter = {position: params[:position]} if params[:position]
     
-    if filter != nil
-      @results = User.where(filter).to_a
-      @results.sort! {|x,y| x.last_name <=> y.last_name }
-    end 
+    #if filter != nil
+    #  @results = User.where(filter).to_a
+    #  @results.sort! {|x,y| x.last_name <=> y.last_name }
+    #end 
 
     if params[:skills]
       skill = Skill.where(name: params[:skills]).first

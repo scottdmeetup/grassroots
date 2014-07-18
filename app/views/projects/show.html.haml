@@ -49,7 +49,7 @@
           %span= @project.causes
         %p.bold.gr-green-font Skills
         %div.notice
-          %span= @project.skills
+          %span= @project.skills.map(&:name).join(', ')
         %p.bold.gr-green-font Estimated Hours
         %div.notice
           %span= @project.estimated_hours

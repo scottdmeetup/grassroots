@@ -25,8 +25,9 @@ class ProjectsController < ApplicationController
       @results.uniq!
       @results.to_a
     else
-      filter = {skills: params[:skills]} if params[:skills]
+      filter = {project_type: params[:project_type]} if params[:project_type]
       filter = {causes: params[:causes]}  if params[:causes]
+      
       @results = Project.where(filter).to_a
     end
   end

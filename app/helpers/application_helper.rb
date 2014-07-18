@@ -1,9 +1,12 @@
 module ApplicationHelper
 
-  def skill_set
-    ["Grant Writing", "Web Development", "Graphic Design",
-     "Business Planning", "Accounting", "Social Media", "Blogging", 
-      "Editing", "Writing", "Business Developemnt", "Marketing"]
+  def skill_set(skills)
+    skills.map(&:name)
+  end
+
+  def project_type_list
+    ["Web Development", "Graphic Design", "Accounting", "Business Consulting",
+     "Marketing"].sort
   end
 
   def fix_date_time(dt)

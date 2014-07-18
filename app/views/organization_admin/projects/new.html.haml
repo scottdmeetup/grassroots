@@ -1,39 +1,49 @@
 %section#form.register
-	.row.row-custom
-		.col-lg-10.col-project-form
-			= form_for [:organization_admin, @project], html: {class: 'form-horizontal'} do |f|
-				%h1 Create a Project
-				%fieldset
-					.row
-						.col-lg-4
-							.form-group#skills
-								/ Changes to No. in .col-lg in next 3 labels must be updated in CSS 
-								%label.control-label.col-lg-5 Type of Work
-								.col-lg-7.project-gen-input-fix
-									= f.select :skills, options_for_select(skill_set.sort)
-						.col-lg-5
-							.form-group#deadline
-								%label.control-label.col-lg-3 Deadline
-								.col-lg-9.project-gen-input-fix			
-									= f.date_select(:deadline, :order => [:month, :day, :year])
-						.col-lg-3
-							.form-group#hours
-								%label.control-label.col-lg-8{:for => "estimated-hours"} Estimated Hours
-								.col-lg-4
-									= f.text_field :estimated_hours, class: "form-control input-sm"
-					.form-group
-						%label.control-label.col-lg-2 Project Title
-						.col-lg-10
-							= f.text_field :title, class: "form-control"
-					.form-group
-						%label.control-label.col-lg-2 Description
-						.col-lg-10
-							= f.text_area :description, cols: 6, rows: 6, class: "form-control"
-						= f.hidden_field :organization_id
-					.form-group	
-						= f.submit "Create", class: "btn btn-lg btn-primary pull-right"
-		.col-lg-2
-			%p#form-tip <strong>Tip</strong>: The dreams of yesterday are the hopes of today and <a href="#">the reality of tomorrow</a>.
-				
-
-		
+  .row.row-custom
+    .col-lg-10.col-project-form
+      = form_for [:organization_admin, @project], url: organization_admin_projects_path, method: :post, html: {class: 'form-horizontal'} do |f|
+        %h1 Create a Project
+        %fieldset
+          .row
+            .col-lg-4
+              .form-group#skills
+                / Changes to No. in .col-lg in next 3 labels must be updated in CSS 
+                %label.control-label.col-lg-5 Type of Work
+                .col-lg-7.project-gen-input-fix
+                  = f.select :project_type, options_for_select(project_type_list), include_blank: true
+            .col-lg-5
+              .form-group#deadline
+                %label.control-label.col-lg-3 Deadline
+                .col-lg-9.project-gen-input-fix
+                  = f.date_select(:deadline, :order => [:month, :day, :year])
+            .col-lg-3
+              .form-group#hours
+                %label.control-label.col-lg-8{:for => "estimated-hours"} Estimated Hours
+                .col-lg-4
+                  = f.text_field :estimated_hours, class: "form-control input-sm"
+          .form-group
+            %label.control-label.col-lg-2 Project Title
+            .col-lg-10
+              = f.text_field :title, class: "form-control"
+          .form-group
+            %label.control-label.col-lg-2 Description
+            .col-lg-10
+              = f.text_area :description, cols: 6, rows: 6, class: "form-control"
+            = f.hidden_field :organization_id
+            = f.hidden_field :id if @project.id
+          .form-group
+            = f.submit "Publish Project", class: "btn btn-lg btn-primary pull-right"
+            = f.submit "Save Draft", class: "btn btn-lg btn-primary"
+    
+    = form_for @skill, url: organization_admin_projects_path, method: :post do |f|
+      %div.edit-input-wrapper
+        = f.label :skill_requirements
+        = f.text_field :name, data: {autocomplete_source: skill_set(@all_skills)}
+        = hidden_field_tag 'project_id', @project.id if @project.id
+      = f.submit "Add Skill", class: "btn btn-success", id: "edit-submit"
+    %ul
+      - if !@project.skills.blank?
+        - @project.skills.each do |type|
+          %li= type.name
+    .col-lg-2
+      %p#form-tip <strong>Tip</strong>: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt</a>.

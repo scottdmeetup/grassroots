@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   belongs_to :organization
   belongs_to :administrator, foreign_key: 'user_id', class_name: 'Organization'
+  has_one :project_draft
 
   has_many :volunteer_applications
   has_many :users, through: :volunteer_applications
@@ -17,6 +18,9 @@ class Project < ActiveRecord::Base
   has_many :contractors, through: :contracts, source: :contractor
 
   has_many :newsfeed_items, as: :newsfeedable
+
+  has_many :requirements
+  has_many :skills, through: :requirements
 
   def project_admin
     organization.organization_administrator

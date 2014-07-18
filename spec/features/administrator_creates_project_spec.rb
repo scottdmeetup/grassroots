@@ -33,6 +33,6 @@ feature 'Creating a project' do
     fill_in "project[title]", with: "WordPress Help"
     fill_in "project[description]", with: "I need a word press website."
     find(:xpath, "//input[@id='project_organization_id']").set "1"
-    click_button 'Create'
+    click_button 'Publish Project'
   end
 end

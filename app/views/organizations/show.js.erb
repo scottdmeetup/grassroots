@@ -48,7 +48,7 @@
 		  $('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>');
 		"<% end %>"
 	<% end %>
-<% else %>
+<% elsif @expired_params %>
 	<% if @expired_projects.empty?%>
 		$('#projectsDiv').empty()
   	$('#projectsDiv').append('<p> <%= j render "shared/empty_project_thumbnail" %></p>')
@@ -56,6 +56,16 @@
 		$('#projectsDiv').empty()
 		"<% @expired_projects.each do |project| %>"
 	  	$('#projectsDiv').append('<p> <%= j render "shared/project_thumbnail", project: project %></p>');
+		"<% end %>"
+	<% end %>
+<% else %>
+	<% if @project_drafts.empty?%>
+		$('#projectsDiv').empty()
+  	$('#projectsDiv').append('<p> <%= j render "shared/empty_project_thumbnail" %></p>')
+	<% else %>
+		$('#projectsDiv').empty()
+		"<% @project_drafts.each do |draft| %>"
+	  	$('#projectsDiv').append('<p> <%= j render "shared/project_draft_thumbnail", draft: draft %></p>');
 		"<% end %>"
 	<% end %>
 <% end %>

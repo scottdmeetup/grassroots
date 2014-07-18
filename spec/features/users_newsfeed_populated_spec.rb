@@ -36,10 +36,9 @@ feature 'Users newsfeed becomes populated with activity' do
   end
 
   scenario 'The user sees the project he/she just created on the newsfeed' do
-    huggey_bears.update_columns(user_id: 1)
+    huggey_bears.update_columns(user_id: 2)
     user_signs_in(alice)
     visit new_organization_admin_project_path
-
     fills_out_project_form
     expect(page).to have_text("You successfully created a project")
     visit newsfeed_items_path
@@ -97,7 +96,7 @@ feature 'Users newsfeed becomes populated with activity' do
     fill_in "project[title]", with: "WordPress Help"
     fill_in "project[description]", with: "I need a word press website."
     find(:xpath, "//input[@id='project_organization_id']").set "1"
-    click_button 'Create'
+    click_button 'Publish Project'
   end
 
   def answers_question

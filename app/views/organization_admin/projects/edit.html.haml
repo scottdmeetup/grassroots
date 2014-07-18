@@ -10,7 +10,7 @@
                 / Changes to No. in .col-lg in next 3 labels must be updated in CSS 
                 %label.control-label.col-lg-5 Type of Work
                 .col-lg-7.project-gen-input-fix
-                  = f.select :skills, options_for_select(skill_set.sort)
+                  = f.select :project_type, options_for_select(project_type_list)
             .col-lg-5
               .form-group#deadline
                 %label.control-label.col-lg-3 Deadline

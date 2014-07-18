@@ -54,8 +54,8 @@
   .col-lg-7
     = form_for(@skill, url: skills_path) do |f|
       %div.edit-input-wrapper
-        = f.label :name
-        = f.text_field :name, data: {autocomplete_source: skill_set.sort}
+        = f.label :skills
+        = f.text_field :name, data: {autocomplete_source: skill_set(@all_skills)}
       = f.submit "Add Skill", class: "btn btn-success", id: "edit-submit"
   .col-lg-7
     %ul

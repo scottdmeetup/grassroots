@@ -9,6 +9,9 @@ describe Project do
   it { should have_many(:volunteers).through(:contracts)}
   it { should have_many(:contractors)}
   it { should have_many(:contractors).through(:contracts)}
+  it { should have_many(:requirements)}
+  it { should have_many(:skills).through(:requirements)}
+  it { should have_one(:project_draft)}
 
   let(:huggey_bear) {Fabricate(:organization)}
   let(:amnesty) {Fabricate(:organization)}

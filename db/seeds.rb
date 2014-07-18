@@ -88,24 +88,39 @@ huggey_bears.update_columns(user_id: 1)
 amnesty_international.update_columns(user_id: 2)
 global_giving.update_columns(user_id: 3)
 
+Skill.destroy_all
+skill_rails = Skill.create(name: "Ruby on Rails")
+skill_photoshop = Skill.create(name: "Photoshop")
+skill_word_press = Skill.create(name: "WordPress") 
+skill_business_development = Skill.create(name: "Business Development")
+skill_accounting = Skill.create(name: "Auditing")
+
 
 Project.destroy_all
 word_press = Project.create(title: "Need WordPress Site", description: "I want a nice looking WordPress site for my nonprofit", 
-  causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open")
+  causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open",
+  project_type: "Web Development")
 pretty_logo = Project.create(title: "Elegant Logo", description: "I want a logo that reflects the strenght of the human spirit!", 
-  causes: "human rights", deadline: Date.today + 1.month, organization_id: amnesty_international.id, estimated_hours: 32, state: "open")
+  causes: "human rights", deadline: Date.today + 1.month, organization_id: amnesty_international.id, estimated_hours: 32, state: "open",
+  project_type: "Graphic Design")
 socialmedia = Project.create(title: "Twitter Help", description: "I need someone to push out 10 tweets a day for me", 
-  organization_id: global_giving.id, causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
+  organization_id: global_giving.id, causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open",
+  project_type: "Marketing")
 fundraising = Project.create(title: "Fundraising Help", description: "I need help fundraising my organization", 
-  causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open")
+  causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open",
+  project_type: "Fundraising")
 rails_app = Project.create(title: "Ruby on Rails Application", description: "I want robust, agile software to help ", 
-  causes: "animals", deadline: Date.today + 1.month, organization_id: amnesty_international.id, estimated_hours: 22, state: "open")
+  causes: "animals", deadline: Date.today + 1.month, organization_id: amnesty_international.id, estimated_hours: 22, state: "open",
+  project_type: "Web Development")
 nice_pages = Project.create(title: "Front-end Design", description: "I need someone to snaz up our current organization's pages", 
-  organization_id: global_giving.id, causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
+  organization_id: global_giving.id, causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open",
+  project_type: "Web Development")
 facebook_help = Project.create(title: "Facebook assistance", description: "We need someone to help run a facebook campaign", 
-  causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open")
+  causes: "animals", deadline: Date.today + 1.month, organization_id: huggey_bears.id, estimated_hours: 22, state: "open",
+  project_type: "Marketing")
 tax_assistance = Project.create(title: "Accounting Help", description: "We forgot to do our taxes. O well.....", 
-  organization_id: global_giving.id,causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open")
+  organization_id: global_giving.id,causes: "social", deadline: Date.today + 1.month, estimated_hours: 11, state: "open",
+  project_type: "Accounting")
 
 Category.destroy_all
 uncategorized = Category.create(name: "Uncategorized")
@@ -130,13 +145,6 @@ alice_question2.categories << uncategorized
 
 Badge.destroy_all
 profile_completion = Badge.create(name: "100% User Profile Completion")
-
-Skill.destroy_all
-Skill.create(name: "Grant Writing")
-Skill.create(name: "Web Development")
-Skill.create(name: "Graphic Design") 
-Skill.create(name: "Business Planning")
-Skill.create(name: "Accounting")
 
 Relationship.destroy_all
 relationship = Relationship.create(follower: alice, leader: bob)

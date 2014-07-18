@@ -54,6 +54,9 @@
         %li{:class => ('active' if params[:tab] == 'expired')}
           = link_to "Expired #{@organization.expired_projects.count}", organization_path(@organization, tab: 'expired'), remote: true
 
+        %li{:class => ('active' if params[:tab] == 'drafts')}
+          = link_to "Drafts #{@organization.project_drafts.count}", organization_path(@organization, tab: 'drafts'), remote: true
+
       .col-lg-10
         %div{:id => "projectsDiv"}
 

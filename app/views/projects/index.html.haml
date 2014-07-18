@@ -7,22 +7,22 @@
       .form-group
         = form_tag search_projects_path, method: 'get' do
           %input.form-control{:placeholder => "Search by project title or project description", :type => "text", :id => "project-search-bar", :name => "search_term"}
-          %h3 Skill Set
+          %h3 Project Type
           %label 
-            %input{:name => 'skills', :type => "checkbox", :value => "Graphic Design"}
+            %input{:name => 'project_type[]', :type => "checkbox", :value => "Graphic Design"}
             Graphic Design
           %label
-            %input{:name => 'skills', :type => "checkbox", :value => "Web Development"}
+            %input{:name => 'project_type[]', :type => "checkbox", :value => "Web Development"}
             Web Development
           %label
-            %input{:name => 'skills', :type => "checkbox", :value => "Accounting"}
+            %input{:name => 'project_type[]', :type => "checkbox", :value => "Accounting"}
             Accounting
           %label 
-            %input{:name => 'skills', :type => "checkbox", :value => "Fundraising"}
+            %input{:name => 'project_type[]', :type => "checkbox", :value => "Fundraising"}
             Fundraising
           %label 
-            %input{:name => 'skills', :type => "checkbox", :value => "Business Planning"}
-            Business Planning
+            %input{:name => 'project_type[]', :type => "checkbox", :value => "Business Consulting"}
+            Business Consulting
           %h3 Cause
           %label
             %input{:name => 'causes', :type => "checkbox", :value => "Animals"}
