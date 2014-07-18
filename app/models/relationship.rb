@@ -4,6 +4,6 @@ class Relationship < ActiveRecord::Base
   has_many :newsfeed_items, as: :newsfeedable
 
   def leader_organization_name
-    leader.organization.name
+    leader.organization.name if leader.organization == true
   end
 end
